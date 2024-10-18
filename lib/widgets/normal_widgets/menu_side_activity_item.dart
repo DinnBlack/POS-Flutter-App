@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pos_flutter_app/utils/ui_util/app_colors.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
 class MenuSideActivityItem extends StatefulWidget {
   const MenuSideActivityItem({
@@ -33,16 +34,16 @@ class _MenuSideActivityItemState extends State<MenuSideActivityItem> {
         onTap: widget.onTap,
         child: AnimatedContainer(
           height: 60,
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
           margin: const EdgeInsets.only(bottom: 10),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
             color: widget.isSelected
-                ? AppColors.primary
+                ? PRIMARY_COLOR
                 : _isPressed
-                    ? AppColors.primary.withOpacity(0.7)
+                    ? PRIMARY_COLOR.withOpacity(0.7)
                     : _isHovered
-                        ? AppColors.primary.withOpacity(0.1)
+                        ? PRIMARY_COLOR.withOpacity(0.1)
                         : Colors.white,
           ),
           duration: const Duration(milliseconds: 300),
@@ -50,11 +51,9 @@ class _MenuSideActivityItemState extends State<MenuSideActivityItem> {
           alignment: Alignment.centerLeft,
           child: Text(
             widget.title,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: widget.isSelected || _isPressed
-                  ? AppColors.white
-                  : Colors.black87,
+            style: AppTextStyle.medium(
+              MEDIUM_TEXT_SIZE,
+              widget.isSelected || _isPressed ? WHITE_COLOR : Colors.black87,
             ),
           ),
         ),

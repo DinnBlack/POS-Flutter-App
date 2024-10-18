@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pos_flutter_app/utils/ui_util/app_colors.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
 class MenuSideItem extends StatefulWidget {
   const MenuSideItem({
@@ -35,14 +36,14 @@ class _MenuSideItemState extends State<MenuSideItem> {
         onTap: widget.onTap,
         child: AnimatedContainer(
           height: 60,
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
           decoration: BoxDecoration(
             color: widget.isSelected
-                ? AppColors.primary
+                ? PRIMARY_COLOR
                 : _isPressed
-                ? AppColors.primary.withOpacity(0.7)
+                ? PRIMARY_COLOR.withOpacity(0.7)
                 : _isHovered
-                ? AppColors.primary.withOpacity(0.1)
+                ? PRIMARY_COLOR.withOpacity(0.1)
                 : Colors.white,
           ),
           duration: const Duration(milliseconds: 300),
@@ -53,24 +54,24 @@ class _MenuSideItemState extends State<MenuSideItem> {
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
                   color: widget.isSelected || _isHovered || _isPressed
-                      ? AppColors.primary
-                      : AppColors.grey_02,
+                      ? PRIMARY_COLOR
+                      : GREY_LIGHT_COLOR,
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Icon(
                   widget.icon,
                   color: widget.isSelected || _isHovered || _isPressed
-                      ? AppColors.white
-                      : AppColors.grey,
+                      ? WHITE_COLOR
+                      : GREY_COLOR,
                 ),
               ),
               const SizedBox(width: 10),
               Text(
                 widget.title,
-                style:  TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: widget.isSelected  || _isPressed
-                      ? AppColors.white
+                style:  AppTextStyle.medium(
+                  MEDIUM_TEXT_SIZE,
+                  widget.isSelected  || _isPressed
+                      ? WHITE_COLOR
                       : Colors.black87,
                 ),
               ),

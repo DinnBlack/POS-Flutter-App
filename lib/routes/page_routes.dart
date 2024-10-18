@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../screens/mobile/pages/activity_page/activity_page_mobile_screen.dart';
+import '../screens/mobile/pages/inventory_page/inventory_page_mobile_screen.dart';
+import '../screens/mobile/pages/order_page/order_page_mobile_screen.dart';
 import '../screens/services/billing_queue/billing_queue_screen.dart';
 import '../screens/services/orders/order_history/order_history_screen.dart';
 import '../screens/services/tables/tables_screen.dart';
@@ -9,19 +12,33 @@ import '../screens/tablet/pages/setting_page/setting_page_tablet_screen.dart';
 import '../screens/tablet/pages/staff_page/staff_page_tablet_screen.dart';
 
 class PageRoutes {
-  static const String activityPage = 'ActivityPageTabletScreen';
-  static const String orderPage = 'OrderPageTabletScreen';
-  static const String reportPage = 'ReportPageTabletScreen';
-  static const String settingPage = 'SettingPageTabletScreen';
-  static const String staffPage = 'StaffPageTabletScreen';
+  // tablet devices
+  static const String activityPageTablet = 'ActivityPageTabletScreen';
+  static const String orderPageTablet = 'OrderPageTabletScreen';
+  static const String reportPageTablet = 'ReportPageTabletScreen';
+  static const String settingPageTablet = 'SettingPageTabletScreen';
+  static const String staffPageTablet = 'StaffPageTabletScreen';
 
-  static Map<String, WidgetBuilder> getRoutes() {
+  static Map<String, WidgetBuilder> getTabletRoutes() {
     return {
-      activityPage: (context) => const ActivityPageTabletScreen(),
-      orderPage: (context) => const OrderPageTabletScreen(),
-      reportPage: (context) => const ReportPageTabletScreen(),
-      settingPage: (context) => const SettingPageTabletScreen(),
-      staffPage: (context) => const StaffPageTabletScreen(),
+      activityPageTablet: (context) => const ActivityPageTabletScreen(),
+      orderPageTablet: (context) => const OrderPageTabletScreen(),
+      reportPageTablet: (context) => const ReportPageTabletScreen(),
+      settingPageTablet: (context) => const SettingPageTabletScreen(),
+      staffPageTablet: (context) => const StaffPageTabletScreen(),
+    };
+  }
+
+  // mobile devices
+  static const String activityPageMobile = 'ActivityPageMobileScreen';
+  static const String orderPageMobile = 'OrderPageMobileScreen';
+  static const String inventoryPageMobile = 'InventoryPageMobileScreen';
+
+  static Map<String, WidgetBuilder> getMobileRoutes() {
+    return {
+      activityPageMobile: (context) => const ActivityPageMobileScreen(),
+      orderPageMobile: (context) => const OrderPageMobileScreen(),
+      inventoryPageMobile: (context) => const InventoryPageMobileScreen(),
     };
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pos_flutter_app/utils/ui_util/app_colors.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
 class MenuSideItemLogout extends StatefulWidget {
   const MenuSideItemLogout({super.key});
@@ -16,7 +17,7 @@ class _MenuSideItemLogoutState extends State<MenuSideItemLogout> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: WHITE_COLOR,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -26,7 +27,7 @@ class _MenuSideItemLogoutState extends State<MenuSideItemLogout> {
           ),
         ],
       ),
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(DEFAULT_PADDING),
       child: MouseRegion(
         onEnter: (_) => setState(() => _isHovered = true),
         onExit: (_) => setState(() => _isHovered = false),
@@ -39,12 +40,12 @@ class _MenuSideItemLogoutState extends State<MenuSideItemLogout> {
           child: AnimatedContainer(
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(LARGE_BORDER_RADIUS),
               color: _isPressed
                   ? Colors.red[700]
                   : _isHovered
-                      ? Colors.red.withOpacity(0.1)
-                      : AppColors.grey_02,
+                      ? RED_COLOR.withOpacity(0.1)
+                      : GREY_LIGHT_COLOR,
             ),
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
@@ -54,19 +55,18 @@ class _MenuSideItemLogoutState extends State<MenuSideItemLogout> {
                   padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                     color: Colors.red,
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(LARGE_BORDER_RADIUS),
                   ),
                   child: const Icon(
                     Icons.logout,
-                    color: AppColors.white,
+                    color: WHITE_COLOR,
                   ),
                 ),
                 const SizedBox(width: 10),
-                const Text(
+                Text(
                   'Log Out',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style:
+                      AppTextStyle.medium(MEDIUM_TEXT_SIZE, BLACK_TEXT_COLOR),
                 ),
               ],
             ),

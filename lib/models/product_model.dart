@@ -1,76 +1,118 @@
 class ProductModel {
-  final String image;
   final String title;
-  final String unit;
   final double price;
+  final String? image;
+  final String? unit;
   final String? request;
+  final double? primeCost;
+  final double? promotionCost;
+  final String? description;
+  final String? category;
 
 //<editor-fold desc="Data Methods">
   const ProductModel({
-    required this.image,
     required this.title,
-    required this.unit,
     required this.price,
+    this.image,
+    this.unit,
     this.request,
+    this.primeCost,
+    this.promotionCost,
+    this.description,
+    this.category,
   });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          (other is ProductModel &&
-              runtimeType == other.runtimeType &&
-              image == other.image &&
-              title == other.title &&
-              unit == other.unit &&
-              price == other.price &&
-              request == other.request);
+      (other is ProductModel &&
+          runtimeType == other.runtimeType &&
+          title == other.title &&
+          price == other.price &&
+          image == other.image &&
+          unit == other.unit &&
+          request == other.request &&
+          primeCost == other.primeCost &&
+          promotionCost == other.promotionCost &&
+          description == other.description &&
+          category == other.category);
 
   @override
   int get hashCode =>
-      image.hashCode ^
       title.hashCode ^
-      unit.hashCode ^
       price.hashCode ^
-      (request?.hashCode ?? 0);
+      image.hashCode ^
+      unit.hashCode ^
+      request.hashCode ^
+      primeCost.hashCode ^
+      promotionCost.hashCode ^
+      description.hashCode ^
+      category.hashCode;
 
   @override
   String toString() {
-    return 'ProductModel{ image: $image, title: $title, unit: $unit, price: $price, request: $request,}'; // Thêm yêu cầu vào toString
+    return 'ProductModel{' +
+        ' title: $title,' +
+        ' price: $price,' +
+        ' image: $image,' +
+        ' unit: $unit,' +
+        ' request: $request,' +
+        ' primeCost: $primeCost,' +
+        ' promotionCost: $promotionCost,' +
+        ' description: $description,' +
+        ' category: $category,' +
+        '}';
   }
 
   ProductModel copyWith({
-    String? image,
     String? title,
-    String? unit,
     double? price,
+    String? image,
+    String? unit,
     String? request,
+    double? primeCost,
+    double? promotionCost,
+    String? description,
+    String? category,
   }) {
     return ProductModel(
-      image: image ?? this.image,
       title: title ?? this.title,
-      unit: unit ?? this.unit,
       price: price ?? this.price,
+      image: image ?? this.image,
+      unit: unit ?? this.unit,
       request: request ?? this.request,
+      primeCost: primeCost ?? this.primeCost,
+      promotionCost: promotionCost ?? this.promotionCost,
+      description: description ?? this.description,
+      category: category ?? this.category,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'image': this.image,
       'title': this.title,
-      'unit': this.unit,
       'price': this.price,
+      'image': this.image,
+      'unit': this.unit,
       'request': this.request,
+      'primeCost': this.primeCost,
+      'promotionCost': this.promotionCost,
+      'description': this.description,
+      'category': this.category,
     };
   }
 
   factory ProductModel.fromMap(Map<String, dynamic> map) {
     return ProductModel(
-      image: map['image'] as String,
       title: map['title'] as String,
-      unit: map['unit'] as String,
       price: map['price'] as double,
-      request: map['request'] as String?,
+      image: map['image'] as String,
+      unit: map['unit'] as String,
+      request: map['request'] as String,
+      primeCost: map['primeCost'] as double,
+      promotionCost: map['promotionCost'] as double,
+      description: map['description'] as String,
+      category: map['category'] as String,
     );
   }
 

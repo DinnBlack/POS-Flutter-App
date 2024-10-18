@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:pos_flutter_app/utils/ui_util/app_colors.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
 import '../../routes/page_routes.dart';
 import '../normal_widgets/menu_side_item.dart';
 import '../normal_widgets/menu_side_item_logout.dart';
@@ -20,49 +20,47 @@ class MenuSide extends StatefulWidget {
 }
 
 class _MenuSideState extends State<MenuSide> {
-  String selectedRoute = PageRoutes.orderPage;
+  String selectedRoute = PageRoutes.orderPageTablet;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 300,
-      color: AppColors.white,
+      color: WHITE_COLOR,
       child: Column(
         children: [
-          const MenuSideItemLogout(),
-          const SizedBox(height: 60),
           Expanded(
             child: ListView(
               children: [
                 MenuSideItem(
                   title: 'Point Of Sales',
                   icon: Iconsax.shopping_bag_copy,
-                  isSelected: widget.selectedRoute == PageRoutes.orderPage,
-                  onTap: () => _onMenuItemTapped(PageRoutes.orderPage),
+                  isSelected: widget.selectedRoute == PageRoutes.orderPageTablet,
+                  onTap: () => _onMenuItemTapped(PageRoutes.orderPageTablet),
                 ),
                 MenuSideItem(
                   title: 'Activity',
                   icon: Iconsax.trend_up_copy,
-                  isSelected: widget.selectedRoute == PageRoutes.activityPage,
-                  onTap: () => _onMenuItemTapped(PageRoutes.activityPage),
+                  isSelected: widget.selectedRoute == PageRoutes.activityPageTablet,
+                  onTap: () => _onMenuItemTapped(PageRoutes.activityPageTablet),
                 ),
                 MenuSideItem(
                   title: 'Report',
                   icon: Iconsax.chart_3_copy,
-                  isSelected: widget.selectedRoute == PageRoutes.reportPage,
-                  onTap: () => _onMenuItemTapped(PageRoutes.reportPage),
+                  isSelected: widget.selectedRoute == PageRoutes.reportPageTablet,
+                  onTap: () => _onMenuItemTapped(PageRoutes.reportPageTablet),
                 ),
                 MenuSideItem(
                   title: 'Teams',
                   icon: Iconsax.profile_2user_copy,
-                  isSelected: widget.selectedRoute == PageRoutes.staffPage,
-                  onTap: () => _onMenuItemTapped(PageRoutes.staffPage),
+                  isSelected: widget.selectedRoute == PageRoutes.staffPageTablet,
+                  onTap: () => _onMenuItemTapped(PageRoutes.staffPageTablet),
                 ),
                 MenuSideItem(
                   title: 'Settings',
                   icon: Iconsax.setting_2_copy,
-                  isSelected: widget.selectedRoute == PageRoutes.settingPage,
-                  onTap: () => _onMenuItemTapped(PageRoutes.settingPage),
+                  isSelected: widget.selectedRoute == PageRoutes.settingPageTablet,
+                  onTap: () => _onMenuItemTapped(PageRoutes.settingPageTablet),
                 ),
                 MenuSideItem(
                   title: 'App Information',

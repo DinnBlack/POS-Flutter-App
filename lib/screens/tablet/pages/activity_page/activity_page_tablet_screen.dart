@@ -4,7 +4,7 @@ import 'package:pos_flutter_app/screens/services/orders/order_history/order_hist
 import 'package:pos_flutter_app/screens/services/tables/tables_screen.dart';
 
 import '../../../../routes/page_routes.dart';
-import '../../../../utils/ui_util/app_colors.dart';
+import '../../../../utils/constants/constants.dart';
 import '../../../../widgets/common_widgets/header_side.dart';
 import '../../../../widgets/normal_widgets/menu_side_activity.dart';
 import '../../main_tablet_screen.dart';
@@ -13,7 +13,8 @@ class ActivityPageTabletScreen extends StatefulWidget {
   const ActivityPageTabletScreen({super.key});
 
   @override
-  State<ActivityPageTabletScreen> createState() => _ActivityPageTabletScreenState();
+  State<ActivityPageTabletScreen> createState() =>
+      _ActivityPageTabletScreenState();
 }
 
 class _ActivityPageTabletScreenState extends State<ActivityPageTabletScreen> {
@@ -41,21 +42,31 @@ class _ActivityPageTabletScreenState extends State<ActivityPageTabletScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final mainScreenState = context.findAncestorStateOfType<MainTabletScreenState>();
+    final mainScreenState =
+        context.findAncestorStateOfType<MainTabletScreenState>();
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: BACKGROUND_COLOR,
       body: Column(
         children: [
-          HeaderSide(scaffoldKey: mainScreenState!.scaffoldKey, currentPageName: pageName, subPageName: currentPageName,),
+          HeaderSide(
+            scaffoldKey: mainScreenState!.scaffoldKey,
+            currentPageName: pageName,
+            subPageName: currentPageName,
+          ),
           Expanded(
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                MenuSideActivity(
-                  onItemSelected: updateRoute,
-                  selectedRoute: currentRoute,
+                Flexible(
+                  flex: 1,
+                  child: MenuSideActivity(
+                    onItemSelected: updateRoute,
+                    selectedRoute: currentRoute,
+                  ),
                 ),
-                Expanded(
+                Flexible(
+                  flex: 4,
                   child: _getPage(currentRoute),
                 ),
               ],

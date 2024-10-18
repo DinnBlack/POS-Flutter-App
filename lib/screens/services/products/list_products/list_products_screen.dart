@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pos_flutter_app/database/db_products.dart';
-import 'package:pos_flutter_app/utils/ui_util/app_colors.dart';
 import 'package:pos_flutter_app/widgets/common_widgets/custom_grid_products_item.dart';
 
-class ProductsLandscapeScreen extends StatelessWidget {
-  const ProductsLandscapeScreen({super.key});
+class ListProductsScreen extends StatelessWidget {
+  const ListProductsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class ProductsLandscapeScreen extends StatelessWidget {
             crossAxisCount = 2;
           }
 
-          double itemHeight = 260;
+          double itemHeight = 250;
           double itemWidth =
               (constraints.maxWidth - (crossAxisCount - 1) * 10) / crossAxisCount;
 

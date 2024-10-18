@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:pos_flutter_app/database/db_orders.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
 import 'package:pos_flutter_app/widgets/common_widgets/custom_list_track_orders_item.dart';
 
-import '../../../../utils/ui_util/app_colors.dart';
 
 class TrackOrdersScreen extends StatefulWidget {
   const TrackOrdersScreen({super.key});
@@ -67,8 +68,8 @@ class _TrackOrdersScreenState extends State<TrackOrdersScreen> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: WHITE_COLOR,
+        borderRadius: BorderRadius.circular(MEDIUM_BORDER_RADIUS),
       ),
       child: Column(
         children: [
@@ -104,13 +105,13 @@ class _TrackOrdersScreenState extends State<TrackOrdersScreen> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(DEFAULT_PADDING),
       decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+        color: WHITE_COLOR,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(DEFAULT_BORDER_RADIUS)),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: GREEN_COLOR.withOpacity(0.1),
             offset: const Offset(0, 1),
             blurRadius: 6,
             spreadRadius: 1,
@@ -127,7 +128,7 @@ class _TrackOrdersScreenState extends State<TrackOrdersScreen> {
           IconButton(
             icon: const Icon(
               Icons.search_rounded,
-              color: AppColors.grey,
+              color: GREY_COLOR,
             ),
             onPressed: () {},
           ),
@@ -158,13 +159,13 @@ class _TrackOrdersScreenState extends State<TrackOrdersScreen> {
         shape: BoxShape.circle,
         border: Border.all(
           width: 1,
-          color: isEnabled ? AppColors.primary : AppColors.grey.withOpacity(0.2),
+          color: isEnabled ? PRIMARY_COLOR : GREY_COLOR.withOpacity(0.2),
         ),
       ),
       child: IconButton(
         icon: Icon(
           icon,
-          color: isEnabled ? AppColors.primary : AppColors.grey,
+          color: isEnabled ? PRIMARY_COLOR : GREY_COLOR,
         ),
         onPressed: onPressed,
       ),

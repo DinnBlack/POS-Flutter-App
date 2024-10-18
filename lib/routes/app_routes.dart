@@ -1,11 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:pos_flutter_app/screens/mobile/main_mobile_screen.dart';
+import 'package:pos_flutter_app/screens/services/login/login_screen.dart';
 
+import '../models/store_model.dart';
+import '../screens/services/register/register_screen.dart';
+import '../screens/services/stores/store_create_screen.dart';
+import '../screens/services/stores/store_select_screen.dart';
 import '../screens/tablet/main_tablet_screen.dart';
 
-Route<dynamic?> appRoutes(settings) {
-  return switch (settings.name) {
-    MainTabletScreen.route =>
-      MaterialPageRoute(builder: (context) => const MainTabletScreen()),
-    _ => MaterialPageRoute(builder: (context) => const MainTabletScreen())
-  };
+Route<dynamic?> appRoutes(RouteSettings settings) {
+  switch (settings.name) {
+    case LoginScreen.route:
+      return MaterialPageRoute(builder: (context) => const LoginScreen());
+    case RegisterScreen.route:
+      return MaterialPageRoute(builder: (context) => const RegisterScreen());
+    case StoreSelectScreen.route:
+      return MaterialPageRoute(builder: (context) => const StoreSelectScreen());
+    case StoreCreateScreen.route:
+      return MaterialPageRoute(builder: (context) => const StoreCreateScreen());
+    case MainMobileScreen.route:
+      final StoreModel store = settings.arguments as StoreModel;
+      return MaterialPageRoute(
+        builder: (context) => MainMobileScreen(store: store),
+      );
+    case MainTabletScreen.route:
+      return MaterialPageRoute(builder: (context) => const MainTabletScreen());
+    default:
+      return MaterialPageRoute(builder: (context) => const MainTabletScreen());
+  }
 }
+

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pos_flutter_app/utils/ui_util/app_colors.dart';
 import 'package:pos_flutter_app/widgets/common_widgets/custom_text_field_search.dart';
 
+import '../../../../utils/constants/constants.dart';
 import '../../../../widgets/common_widgets/header_side.dart';
 import '../../../services/categories/list_categories_screen.dart';
 import '../../../services/orders/order_details/order_details_page/order_details_page_screen.dart';
-import '../../../services/products/list_products/products_landscape_screen.dart';
+import '../../../services/products/list_products/list_products_screen.dart';
 import '../../main_tablet_screen.dart';
 
 class OrderPageTabletScreen extends StatelessWidget {
@@ -18,10 +18,11 @@ class OrderPageTabletScreen extends StatelessWidget {
         context.findAncestorStateOfType<MainTabletScreenState>();
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: BACKGROUND_COLOR,
       body: Row(
         children: [
           Expanded(
+            flex: 2,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -36,12 +37,15 @@ class OrderPageTabletScreen extends StatelessWidget {
                   child: CustomTextFieldSearch(),
                 ),
                 const Expanded(
-                  child: ProductsLandscapeScreen(),
+                  child: ListProductsScreen(),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 340, child: OrderDetailsPageScreen()),
+          const Flexible(
+            flex: 1,
+            child: OrderDetailsPageScreen(),
+          ),
         ],
       ),
     );

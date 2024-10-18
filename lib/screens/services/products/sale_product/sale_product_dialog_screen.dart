@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
 import '../../../../models/product_model.dart';
-import '../../../../utils/ui_util/app_colors.dart';
 import '../../../../widgets/common_widgets/custom_text_field.dart';
 
 class SaleProductDialogScreen extends StatefulWidget {
@@ -21,7 +22,6 @@ class SaleProductDialogScreen extends StatefulWidget {
 }
 
 class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
-  @override
   int quantity = 1;
 
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
       child: Container(
         width: 400,
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: WHITE_COLOR,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
@@ -39,12 +39,12 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
               width: double.infinity,
               height: 40,
               decoration: BoxDecoration(
-                color: AppColors.white,
+                color: WHITE_COLOR,
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(10)),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.grey_02,
+                    color: GREY_LIGHT_COLOR,
                     blurRadius: 1,
                     spreadRadius: 1,
                     offset: const Offset(0, 1),
@@ -53,11 +53,12 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
               ),
               child: Stack(
                 children: [
-                  const Center(
+                   Center(
                     child: Text(
                       'Details Menu',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                      style: AppTextStyle.semibold(
+                        MEDIUM_TEXT_SIZE,
+                        BLACK_TEXT_COLOR,
                       ),
                     ),
                   ),
@@ -70,7 +71,7 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
                       },
                       child: const Icon(
                         Iconsax.close_square,
-                        color: AppColors.primary,
+                        color: PRIMARY_COLOR,
                       ),
                     ),
                   ),
@@ -86,7 +87,7 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.asset(
-                        widget.product.image,
+                        widget.product.image!,
                         height: 200,
                         width: double.infinity,
                         fit: BoxFit.cover,
@@ -128,12 +129,12 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: AppColors.white,
+                color: WHITE_COLOR,
                 borderRadius:
-                    const BorderRadius.vertical(bottom: Radius.circular(10)),
+                    const BorderRadius.vertical(bottom: Radius.circular(DEFAULT_BORDER_RADIUS)),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.grey_02,
+                    color: GREY_LIGHT_COLOR,
                     blurRadius: 1,
                     spreadRadius: 1,
                     offset: const Offset(0, -1),
@@ -143,13 +144,13 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(DEFAULT_PADDING),
                     child: Container(
                       width: double.infinity,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: AppColors.grey_02,
-                        borderRadius: BorderRadius.circular(20),
+                        color: GREY_LIGHT_COLOR,
+                        borderRadius: BorderRadius.circular(MEDIUM_BORDER_RADIUS),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -167,7 +168,7 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
                           ),
                           Text(
                             '$quantity',
-                            style: const TextStyle(fontSize: 20),
+                            style: AppTextStyle.semibold(LARGE_TEXT_SIZE, BLACK_TEXT_COLOR),
                           ),
                           IconButton(
                             icon: const Icon(Iconsax.add_circle),
@@ -188,7 +189,7 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
+                        backgroundColor: PRIMARY_COLOR,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.vertical(
                               bottom: Radius.circular(10)),
@@ -196,10 +197,7 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
                       ),
                       child: Text(
                         'Add to Cart (\$${(widget.product.price * quantity).toStringAsFixed(2)})',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.white,
-                        ),
+                        style: AppTextStyle.semibold(LARGE_TEXT_SIZE, WHITE_COLOR),
                       ),
                     ),
                   ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class MenuSideItemHeader extends StatelessWidget {
-  const MenuSideItemHeader({super.key});
+class ActivityPageMobileScreen extends StatelessWidget {
+  const ActivityPageMobileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

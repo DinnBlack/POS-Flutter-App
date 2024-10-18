@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:pos_flutter_app/utils/ui_util/app_colors.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
 
 class CustomTextFieldSearch extends StatelessWidget {
   const CustomTextFieldSearch({super.key});
@@ -12,7 +11,7 @@ class CustomTextFieldSearch extends StatelessWidget {
       alignment: Alignment.center,
       padding: const EdgeInsets.only(right: 5, left: 20),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: WHITE_COLOR,
         borderRadius: BorderRadius.circular(30),
       ),
       child: Row(
@@ -30,18 +29,18 @@ class CustomTextFieldSearch extends StatelessWidget {
           ),
           Container(
             decoration: BoxDecoration(
-              color: AppColors.white,
+              color: WHITE_COLOR,
               borderRadius: BorderRadius.circular(30),
             ),
             child: Container(
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.04),
+                color: PRIMARY_COLOR.withOpacity(0.4),
                 shape: BoxShape.circle,
               ),
               child: IconButton(
                 icon: const Icon(
                   Icons.search_rounded,
-                  color: AppColors.primary,
+                  color: PRIMARY_COLOR,
                 ),
                 onPressed: () {},
               ),

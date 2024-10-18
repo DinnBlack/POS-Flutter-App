@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:pos_flutter_app/utils/ui_util/app_colors.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
 
 import '../../../../database/db_orders.dart';
 import '../../../../models/order_model.dart';
@@ -121,9 +125,9 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
     return Container(
       margin: const EdgeInsets.only(right: 10),
       decoration: const BoxDecoration(
-        color: AppColors.white,
+        color: WHITE_COLOR,
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(10),
+          top: Radius.circular(DEFAULT_BORDER_RADIUS),
         ),
       ),
       child: Column(
@@ -143,17 +147,17 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: DEFAULT_PADDING),
         decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(30),
+          color: WHITE_COLOR,
+          borderRadius: BorderRadius.circular(LARGE_BORDER_RADIUS),
           border: Border.all(
-            color: AppColors.grey.withOpacity(0.2),
+            color: GREY_COLOR.withOpacity(0.2),
           ),
         ),
         child: Row(
           children: [
-            const Icon(Iconsax.calendar_1_copy, color: AppColors.primary),
+            const Icon(Iconsax.calendar_1_copy, color: PRIMARY_COLOR),
             const SizedBox(width: 10),
             Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
           ],
@@ -166,17 +170,17 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: DEFAULT_PADDING),
         decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(30),
+          color: WHITE_COLOR,
+          borderRadius: BorderRadius.circular(LARGE_BORDER_RADIUS),
           border: Border.all(
-            color: AppColors.grey.withOpacity(0.2),
+            color: GREY_COLOR.withOpacity(0.2),
           ),
         ),
         child: Row(
           children: [
-            const Icon(Iconsax.clock_copy, color: AppColors.primary),
+            const Icon(Iconsax.clock_copy, color: PRIMARY_COLOR),
             const SizedBox(width: 10),
             Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
           ],
@@ -187,10 +191,10 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(DEFAULT_PADDING),
       decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+        color: WHITE_COLOR,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(DEFAULT_BORDER_RADIUS)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
@@ -210,7 +214,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
             onTap: () => _selectDate(context, true),
           ),
           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
             child: Text(
               '-',
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -229,7 +233,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
             onTap: () => _selectTime(context, true),
           ),
           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
             child: Text(
               '-',
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -242,13 +246,13 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
           const Spacer(),
           Container(
             decoration: BoxDecoration(
-              color: AppColors.grey.withOpacity(0.1),
+              color: GREY_COLOR.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
             child: IconButton(
               icon: const Icon(
                 Icons.search_rounded,
-                color: AppColors.grey,
+                color: GREY_COLOR,
               ),
               onPressed: () {
               },
@@ -259,17 +263,17 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
           ),
           Container(
             decoration: BoxDecoration(
-              color: AppColors.white,
+              color: WHITE_COLOR,
               shape: BoxShape.circle,
               border: Border.all(
                 width: 1,
-                color: AppColors.grey.withOpacity(0.2),
+                color: GREY_COLOR.withOpacity(0.2),
               ),
             ),
             child: IconButton(
               icon: const Icon(
                 Iconsax.filter_copy,
-                color: AppColors.grey,
+                color: GREY_COLOR,
               ),
               onPressed: () {},
             ),
@@ -281,7 +285,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
 
   Widget _buildTitleRow() {
     return const Padding(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(DEFAULT_PADDING),
       child: Row(
         children: [
           Expanded(
@@ -331,7 +335,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
 
   Widget _buildOrderList() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
       child: ListView.builder(
         itemCount: dbOrders.length,
         itemBuilder: (context, index) {
@@ -340,7 +344,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
             decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(color: AppColors.grey_02),
+                bottom: BorderSide(color: GREY_LIGHT_COLOR),
               ),
             ),
             child: Row(
@@ -381,12 +385,12 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                   child: Center(
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 10),
+                          vertical: 5, horizontal: DEFAULT_PADDING),
                       decoration: BoxDecoration(
                         color: order.paymentStatus
                             ? Colors.green.withOpacity(0.1)
                             : Colors.red.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(LARGE_BORDER_RADIUS),
                       ),
                       child: Text(
                         order.paymentStatus ? 'Paid' : 'Unpaid',
@@ -457,7 +461,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
 
   Widget _buildFooter() {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(DEFAULT_PADDING),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -498,8 +502,8 @@ class CustomTitle extends StatelessWidget {
       height: 40,
       margin: const EdgeInsets.symmetric(horizontal: 2),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: AppColors.grey_02,
+        borderRadius: BorderRadius.circular(MEDIUM_BORDER_RADIUS),
+        color: GREY_LIGHT_COLOR,
       ),
       alignment: Alignment.center,
       child: Text(

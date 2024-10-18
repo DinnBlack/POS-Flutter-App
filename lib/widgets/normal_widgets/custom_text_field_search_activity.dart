@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
-import '../../utils/ui_util/app_colors.dart';
 
 class CustomTextFieldSearchActivity extends StatelessWidget {
   const CustomTextFieldSearchActivity({super.key, this.onChanged});
@@ -13,18 +14,18 @@ class CustomTextFieldSearchActivity extends StatelessWidget {
       height: 60,
       margin: const EdgeInsets.only(bottom: 10),
       alignment: Alignment.center,
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(DEFAULT_PADDING),
       decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(10),
+        color: WHITE_COLOR,
+        borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: AppColors.grey_02,
-              borderRadius: BorderRadius.circular(30),
+              color: GREY_LIGHT_COLOR,
+              borderRadius: BorderRadius.circular(LARGE_BORDER_RADIUS),
             ),
             child: const Icon(
               Icons.search_rounded,
@@ -35,9 +36,9 @@ class CustomTextFieldSearchActivity extends StatelessWidget {
           ),
           Expanded(
             child: TextField(
-              decoration: const InputDecoration(
+              decoration:  InputDecoration(
                 hintText: 'Search',
-                hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                hintStyle: AppTextStyle.medium(MEDIUM_TEXT_SIZE, GREY_COLOR),
                 border: InputBorder.none,
                 isDense: true,
               ),

@@ -7,56 +7,12 @@ class ListCategoriesScreen extends StatefulWidget {
   const ListCategoriesScreen({super.key});
 
   @override
-  _ListCategoriesScreenState createState() =>
-      _ListCategoriesScreenState();
+  _ListCategoriesScreenState createState() => _ListCategoriesScreenState();
 }
 
-class _ListCategoriesScreenState
-    extends State<ListCategoriesScreen> {
+class _ListCategoriesScreenState extends State<ListCategoriesScreen> {
   CategoryModel? selectedCategory;
   final ScrollController _scrollController = ScrollController();
-  bool canScrollLeft = false;
-  bool canScrollRight = false;
-
-  final double categoryItemWidth = 120;
-  double availableWidth = 0;
-
-  void _scrollLeft() {
-    final scrollAmount = availableWidth;
-    _scrollController.animateTo(
-      _scrollController.offset - scrollAmount,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
-  }
-
-  void _scrollRight() {
-    final scrollAmount = availableWidth;
-    _scrollController.animateTo(
-      _scrollController.offset + scrollAmount,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(() {
-      setState(() {
-        canScrollLeft = _scrollController.offset > 0;
-        canScrollRight = _scrollController.offset <
-            _scrollController.position.maxScrollExtent;
-      });
-    });
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        availableWidth = MediaQuery.of(context).size.width - 80;
-        canScrollRight = _scrollController.position.maxScrollExtent > 0;
-      });
-    });
-  }
 
   @override
   void dispose() {
@@ -68,7 +24,6 @@ class _ListCategoriesScreenState
   Widget build(BuildContext context) {
     return Column(
       children: [
-
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           controller: _scrollController,
@@ -78,9 +33,7 @@ class _ListCategoriesScreenState
               return Padding(
                 padding: EdgeInsets.only(
                   left: 10,
-                  right: index == categories.length - 1
-                      ? 10
-                      : 0,
+                  right: index == categories.length - 1 ? 10 : 0,
                 ),
                 child: CustomListCategoriesItem(
                   category: category,

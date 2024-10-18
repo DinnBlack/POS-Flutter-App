@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../../utils/ui_util/app_colors.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
 import '../orders/track_orders/track_orders_screen.dart';
 
 class BillingQueueScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class _BillingQueueScreenState extends State<BillingQueueScreen> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
       ),
       margin: const EdgeInsets.only(right: 10),
       child: Column(
@@ -32,10 +32,10 @@ class _BillingQueueScreenState extends State<BillingQueueScreen> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(DEFAULT_PADDING),
       decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+        color: WHITE_COLOR,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(DEFAULT_BORDER_RADIUS)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
@@ -70,19 +70,19 @@ class _BillingQueueScreenState extends State<BillingQueueScreen> {
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: DEFAULT_PADDING),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
             border: Border.all(
               width: 1,
-              color: isSelected ? AppColors.primary : AppColors.grey_02,
+              color: isSelected ? PRIMARY_COLOR : GREY_LIGHT_COLOR,
             ),
-            color: isSelected ? Colors.white : AppColors.grey_02,
+            color: isSelected ? Colors.white : GREY_LIGHT_COLOR,
           ),
           child: AnimatedDefaultTextStyle(
             duration: const Duration(milliseconds: 300),
             style: TextStyle(
-              color: isSelected ? AppColors.primary : Colors.black,
+              color: isSelected ? PRIMARY_COLOR : Colors.black,
             ),
             child: Text(status),
           ),

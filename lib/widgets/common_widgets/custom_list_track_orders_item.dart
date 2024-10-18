@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:pos_flutter_app/models/order_model.dart';
 import 'package:pos_flutter_app/screens/services/orders/order_details/order_details_dialog/order_details_dialog_screen.dart';
-import 'package:pos_flutter_app/utils/ui_util/app_colors.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
 class CustomListTrackOrdersItem extends StatefulWidget {
   final OrderModel order;
@@ -39,7 +40,7 @@ class _CustomListTrackOrdersItemState extends State<CustomListTrackOrdersItem> {
         statusIcon = Iconsax.close_circle;
         break;
       default:
-        statusColor = AppColors.primary;
+        statusColor = PRIMARY_COLOR;
         statusIcon = Iconsax.info_circle;
         break;
     }
@@ -52,19 +53,19 @@ class _CustomListTrackOrdersItemState extends State<CustomListTrackOrdersItem> {
           height: 220,
           constraints: const BoxConstraints(maxWidth: 180),
           decoration: BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(10),
+            color: WHITE_COLOR,
+            borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
             border:
-                Border.all(width: 1, color: AppColors.grey.withOpacity(0.2)),
+                Border.all(width: 1, color: GREY_LIGHT_COLOR),
           ),
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(DEFAULT_PADDING),
           child: Column(
             children: [
               Row(
                 children: [
                   const Icon(
                     Iconsax.shopping_bag_copy,
-                    color: AppColors.primary,
+                    color: PRIMARY_COLOR,
                   ),
                   const SizedBox(width: 8),
                   Text('#${widget.order.orderId}'),
@@ -82,7 +83,7 @@ class _CustomListTrackOrdersItemState extends State<CustomListTrackOrdersItem> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: statusColor,
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MEDIUM_BORDER_RADIUS),
                 ),
                 alignment: Alignment.center,
                 padding: const EdgeInsets.only(left: 10, right: 5),
@@ -92,10 +93,10 @@ class _CustomListTrackOrdersItemState extends State<CustomListTrackOrdersItem> {
                     Text(
                       widget.order.status,
                       style: const TextStyle(
-                        color: AppColors.white,
+                        color: WHITE_COLOR,
                       ),
                     ),
-                    Icon(statusIcon, color: AppColors.white),
+                    Icon(statusIcon, color: WHITE_COLOR),
                   ],
                 ),
               )
@@ -139,9 +140,9 @@ class _CustomListTrackOrdersItemState extends State<CustomListTrackOrdersItem> {
                     padding: const EdgeInsets.symmetric(vertical: 5.0),
                     child: Text(
                       _showMore ? 'See less' : 'See more',
-                      style: const TextStyle(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.bold,
+                      style: AppTextStyle.semibold(
+                        SMALL_TEXT_SIZE,
+                        PRIMARY_COLOR
                       ),
                     ),
                   ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:pos_flutter_app/utils/ui_util/app_colors.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
 import '../../models/product_model.dart';
 
@@ -21,9 +22,9 @@ class CustomListOrderDetailsPageItem extends StatelessWidget {
       child: Row(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
             child: Image.asset(
-              product.image,
+              product.image!,
               height: 70,
               width: 70,
               fit: BoxFit.cover,
@@ -36,11 +37,11 @@ class CustomListOrderDetailsPageItem extends StatelessWidget {
               children: [
                 Text(
                   product.title,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: AppTextStyle.semibold(MEDIUM_TEXT_SIZE, BLACK_TEXT_COLOR),
                 ),
                 Text(
                   '${product.price}',
-                  style: const TextStyle(color: Colors.grey),
+                  style: AppTextStyle.medium(SMALL_TEXT_SIZE, GREY_COLOR),
                 ),
                 const Spacer(),
                 Row(
@@ -48,22 +49,22 @@ class CustomListOrderDetailsPageItem extends StatelessWidget {
                   children: [
                     const Icon(
                       Iconsax.edit,
-                      color: AppColors.primary,
+                      color: PRIMARY_COLOR,
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: AppColors.grey_02, width: 1),
+                        borderRadius: BorderRadius.circular(MEDIUM_BORDER_RADIUS),
+                        border: Border.all(color: GREY_LIGHT_COLOR, width: 1),
                       ),
                       child: const Row(
                         children: [
                           Icon(
                             Iconsax.minus_copy,
                           ),
-                          Text('', style: TextStyle(fontSize: 16)),
+                          Text('', style: TextStyle(fontSize: MEDIUM_TEXT_SIZE)),
                           Icon(
                             Iconsax.add_circle,
-                            color: AppColors.primary,
+                            color: PRIMARY_COLOR,
                           ),
                         ],
                       ),

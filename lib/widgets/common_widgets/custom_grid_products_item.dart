@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pos_flutter_app/screens/services/products/sale_product/sale_product_dialog_screen.dart';
-import 'package:pos_flutter_app/utils/ui_util/app_colors.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 import '../../models/product_model.dart';
 
 class CustomGridProductsItem extends StatefulWidget {
@@ -39,10 +40,10 @@ class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: AppColors.white,
+          borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+          color: WHITE_COLOR,
           border: Border.all(
-            color: quantity > 0 ? AppColors.primary : Colors.transparent,
+            color: quantity > 0 ? PRIMARY_COLOR : TRANSPATENT_COLOR,
             width: quantity > 0 ? 1 : 0,
           ),
         ),
@@ -50,11 +51,11 @@ class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(DEFAULT_PADDING),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
                 child: Image.asset(
-                  widget.product.image,
+                  widget.product.image!,
                   height: 160,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -62,18 +63,19 @@ class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(widget.product.title,
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
-                  Text(widget.product.unit,
-                      style: const TextStyle(color: Colors.grey)),
-                  Text(
-                    '\$${widget.product.price.toStringAsFixed(2)}',
-                    style: const TextStyle(color: Colors.green),
-                  ),
+                      style: AppTextStyle.medium(
+                          MEDIUM_TEXT_SIZE, BLACK_TEXT_COLOR)),
+                  Text(widget.product.unit!,
+                      style: AppTextStyle.light(
+                          SMALL_TEXT_SIZE, LIGHT_BLACK_TEXT_COLOR)),
+                  Text('${widget.product.price.toStringAsFixed(3)}đ',
+                      style:
+                          AppTextStyle.medium(MEDIUM_TEXT_SIZE, GREEN_COLOR)),
                 ],
               ),
             ),

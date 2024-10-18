@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
 import '../../../../../models/order_model.dart';
-import '../../../../../utils/ui_util/app_colors.dart';
 import '../../../../../widgets/normal_widgets/custom_list_order_details_dialog_item.dart';
 
 class OrderDetailsDialogScreen extends StatelessWidget {
@@ -16,8 +19,8 @@ class OrderDetailsDialogScreen extends StatelessWidget {
       child: Container(
         width: 400,
         decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(10),
+          color: WHITE_COLOR,
+          borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -27,12 +30,12 @@ class OrderDetailsDialogScreen extends StatelessWidget {
               width: double.infinity,
               height: 40,
               decoration: BoxDecoration(
-                color: AppColors.white,
+                color: WHITE_COLOR,
                 borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(10)),
+                    const BorderRadius.vertical(top: Radius.circular(DEFAULT_BORDER_RADIUS)),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.grey_02,
+                    color: GREY_LIGHT_COLOR,
                     blurRadius: 1,
                     spreadRadius: 1,
                     offset: const Offset(0, 1),
@@ -57,7 +60,7 @@ class OrderDetailsDialogScreen extends StatelessWidget {
                         },
                         child: const Icon(
                           Iconsax.close_square,
-                          color: AppColors.primary,
+                          color: PRIMARY_COLOR,
                         ),
                       ),
                     ),
@@ -68,11 +71,11 @@ class OrderDetailsDialogScreen extends StatelessWidget {
             const SizedBox(height: 10),
             SingleChildScrollView(
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
                 decoration: const BoxDecoration(
-                  color: AppColors.white,
+                  color: WHITE_COLOR,
                   borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(10),
+                    bottom: Radius.circular(DEFAULT_BORDER_RADIUS),
                   ),
                 ),
                 child: Column(
@@ -94,7 +97,7 @@ class OrderDetailsDialogScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     Text(
                       'Total Price: \$${order.totalPrice}',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: AppTextStyle.medium(MEDIUM_BORDER_RADIUS, BLACK_TEXT_COLOR)
                     ),
                   ],
                 ),

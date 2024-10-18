@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:pos_flutter_app/utils/ui_util/app_colors.dart';
+import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 import '../../../models/category_model.dart';
+import '../../utils/constants/constants.dart';
 
 class CustomListCategoriesItem extends StatefulWidget {
   const CustomListCategoriesItem({
@@ -20,8 +20,7 @@ class CustomListCategoriesItem extends StatefulWidget {
       _CustomListCategoriesItemState();
 }
 
-class _CustomListCategoriesItemState
-    extends State<CustomListCategoriesItem> {
+class _CustomListCategoriesItemState extends State<CustomListCategoriesItem> {
   bool isHovered = false;
 
   @override
@@ -39,15 +38,15 @@ class _CustomListCategoriesItemState
           duration: const Duration(milliseconds: 200),
           decoration: BoxDecoration(
             color: widget.isSelected
-                ? AppColors.primary
+                ? PRIMARY_COLOR
                 : (isHovered ? Colors.blue.shade100 : Colors.white),
             border: Border.all(
-              color: widget.isSelected ? AppColors.primary : AppColors.grey_02,
+              color: widget.isSelected ? PRIMARY_COLOR : GREY_LIGHT_COLOR,
               width: 1,
             ),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
           ),
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(DEFAULT_PADDING),
           child: ConstrainedBox(
             constraints: const BoxConstraints(
               minWidth: 100,
@@ -55,18 +54,18 @@ class _CustomListCategoriesItemState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 Text(
                   widget.category.title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: widget.isSelected ? Colors.white : Colors.black,
+                  style: AppTextStyle.semibold(
+                    MEDIUM_TEXT_SIZE,
+                    widget.isSelected ? WHITE_COLOR : BLACK_TEXT_COLOR,
                   ),
                 ),
                 Text(
                   '${widget.category.count} items',
-                  style: TextStyle(
-                    color: widget.isSelected ? Colors.white : AppColors.grey,
+                  style: AppTextStyle.medium(
+                    SMALL_TEXT_SIZE,
+                    widget.isSelected ? WHITE_COLOR : GREY_COLOR,
                   ),
                 ),
               ],

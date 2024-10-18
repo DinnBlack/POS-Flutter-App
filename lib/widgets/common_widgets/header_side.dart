@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 import '../../screens/services/time/time_display_screen.dart';
-import '../../utils/ui_util/app_colors.dart';
 import '../normal_widgets/custom_toggle_order_status.dart';
 
 class HeaderSide extends StatelessWidget {
@@ -22,7 +23,7 @@ class HeaderSide extends StatelessWidget {
         return Container(
           height: 80,
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -30,18 +31,18 @@ class HeaderSide extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(30),
+                  color: WHITE_COLOR,
+                  borderRadius: BorderRadius.circular(LARGE_BORDER_RADIUS),
                 ),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.04),
+                    color: PRIMARY_COLOR.withOpacity(0.04),
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
                     icon: const Icon(
                       Icons.menu_rounded,
-                      color: AppColors.primary,
+                      color: PRIMARY_COLOR,
                     ),
                     onPressed: () {
                       scaffoldKey.currentState?.openDrawer();
@@ -55,20 +56,20 @@ class HeaderSide extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    if (constraints.maxWidth < 800) const TimeDisplayScreen(),
+                    if (constraints.maxWidth < 800 && constraints.maxWidth > 600) const TimeDisplayScreen(),
                     if (constraints.maxWidth >= 800) ...[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
                             currentPageName,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                            style: AppTextStyle.semibold(LARGE_TEXT_SIZE, BLACK_TEXT_COLOR),
                           ),
                           if (subPageName != null) ...[
                             const SizedBox(height: 2),
                             Text(
                               ' / $subPageName',
-                              style: const TextStyle(color: Colors.grey, fontSize: 14),
+                              style: AppTextStyle.medium(MEDIUM_TEXT_SIZE, LIGHT_BLACK_TEXT_COLOR),
                             ),
                           ],
                         ],

@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pos_flutter_app/utils/ui_util/app_colors.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
 import '../../../../../database/db_products.dart';
 import '../../../../../widgets/normal_widgets/custom_list_order_details_item.dart';
@@ -12,9 +17,9 @@ class OrderDetailsPageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: WHITE_COLOR,
         border: Border(
-          left: BorderSide(width: 1, color: AppColors.grey_02),
+          left: BorderSide(width: 1, color: GREY_LIGHT_COLOR),
         ),
       ),
       child: Column(
@@ -22,31 +27,34 @@ class OrderDetailsPageScreen extends StatelessWidget {
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-              color: AppColors.white,
+              color: WHITE_COLOR,
               border: Border(
-                bottom: BorderSide(width: 1, color: AppColors.grey_02),
+                bottom: BorderSide(width: 1, color: GREY_LIGHT_COLOR),
               ),
             ),
-            padding: const EdgeInsets.all(10),
-            child: const Column(
+            padding: const EdgeInsets.all(DEFAULT_PADDING),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   'Order Details',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: AppTextStyle.medium(
+                      MEDIUM_TEXT_SIZE),
                 ),
                 Text(
                   'Order number #001',
+                  style: AppTextStyle.medium(
+                      MEDIUM_TEXT_SIZE),
                 ),
               ],
             ),
           ),
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(DEFAULT_PADDING),
             decoration: BoxDecoration(
-              color: AppColors.white,
+              color: WHITE_COLOR,
               border: Border(
-                bottom: BorderSide(width: 1, color: AppColors.grey_02),
+                bottom: BorderSide(width: 1, color: GREY_LIGHT_COLOR),
               ),
             ),
             child: DropdownButtonFormField<String>(
@@ -64,21 +72,17 @@ class OrderDetailsPageScreen extends StatelessWidget {
           ),
           Expanded(
             child: dbProducts.isEmpty
-                ? const Center(
-                    child: Text(
-                      'Không có sản phẩm được chọn',
-                      style: TextStyle(
-                        color: AppColors.grey,
-                        fontSize: 16,
-                      ),
-                    ),
+                ? Center(
+                    child: Text('Không có sản phẩm được chọn',
+                        style: AppTextStyle.medium(
+                            MEDIUM_TEXT_SIZE)),
                   )
                 : ListView.separated(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(DEFAULT_PADDING),
                     itemCount: dbProducts.length,
                     separatorBuilder: (context, index) => Text(
                       '----------------------------------------------------',
-                      style: TextStyle(color: AppColors.grey_02),
+                      style: TextStyle(color: GREY_LIGHT_COLOR),
                     ),
                     itemBuilder: (context, index) {
                       final product = dbProducts[index];
@@ -90,15 +94,15 @@ class OrderDetailsPageScreen extends StatelessWidget {
           ),
           Container(
             decoration: BoxDecoration(
-              color: AppColors.white,
+              color: WHITE_COLOR,
               border: Border(
-                top: BorderSide(width: 1, color: AppColors.grey_02),
+                top: BorderSide(width: 1, color: GREY_LIGHT_COLOR),
               ),
             ),
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
                   child: Column(
                     children: [
                       const SizedBox(height: 10),
@@ -109,33 +113,36 @@ class OrderDetailsPageScreen extends StatelessWidget {
                           Text('100.000đ'),
                         ],
                       ),
-                      const Row(
+                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             'Discount',
-                            style: TextStyle(color: Colors.green),
+                              style: AppTextStyle.medium(
+                                  MEDIUM_TEXT_SIZE, GREEN_COLOR)
                           ),
                           Text('-20.000đ'),
                         ],
                       ),
                       const Text(
                         '_______________________________',
-                        style: TextStyle(color: AppColors.grey),
+                        style: TextStyle(color: GREY_COLOR),
                       ),
                       const SizedBox(
                         height: 10,
                       ),
-                      const Row(
+                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             'TOTAL',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: AppTextStyle.medium(
+                                  MEDIUM_TEXT_SIZE)
                           ),
                           Text(
                             '80.000đ',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: AppTextStyle.medium(
+                                  MEDIUM_TEXT_SIZE)
                           ),
                         ],
                       ),
@@ -158,17 +165,15 @@ class OrderDetailsPageScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
+                      backgroundColor: PRIMARY_COLOR,
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.zero,
                       ),
                     ),
-                    child: const Text(
+                    child:  Text(
                       'Thanh toán',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.white,
-                      ),
+                        style: AppTextStyle.medium(
+                            MEDIUM_TEXT_SIZE, WHITE_COLOR)
                     ),
                   ),
                 ),

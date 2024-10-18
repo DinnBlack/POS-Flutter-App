@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../utils/ui_util/app_colors.dart';
+import '../../../../utils/constants/constants.dart';
 import '../../../../widgets/common_widgets/header_side.dart';
 import '../../main_tablet_screen.dart';
 
@@ -14,7 +14,7 @@ class StaffPageTabletScreen extends StatelessWidget {
         context.findAncestorStateOfType<MainTabletScreenState>();
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: BACKGROUND_COLOR,
       body: Row(
         children: [
           Expanded(
