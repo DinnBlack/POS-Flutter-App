@@ -37,7 +37,7 @@ class OrderPageTabletScreen extends StatelessWidget {
                   child: CustomTextFieldSearch(),
                 ),
                 const Expanded(
-                  child: ListProductsScreen(),
+                  child: ListProductsScreen(isGridView: true,),
                 ),
               ],
             ),

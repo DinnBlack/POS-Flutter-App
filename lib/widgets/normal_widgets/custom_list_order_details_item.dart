@@ -24,7 +24,7 @@ class CustomListOrderDetailsPageItem extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
             child: Image.asset(
-              product.image!,
+              product.image!.first,
               height: 70,
               width: 70,
               fit: BoxFit.cover,

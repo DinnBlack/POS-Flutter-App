@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pos_flutter_app/features/product/bloc/product_bloc.dart';
 import 'package:pos_flutter_app/features/store/bloc/store_bloc.dart';
 import 'package:pos_flutter_app/routes/app_routes.dart';
 import 'package:pos_flutter_app/screens/mobile/main_mobile_screen.dart';
@@ -10,6 +11,7 @@ import 'package:pos_flutter_app/screens/services/login/login_screen.dart';
 import 'package:pos_flutter_app/screens/tablet/main_tablet_screen.dart';
 import 'package:pos_flutter_app/services/firebase/auth_firebase.dart';
 import 'package:pos_flutter_app/services/firebase/firebase_options.dart';
+import 'package:pos_flutter_app/services/firebase/product_firebase.dart';
 import 'package:pos_flutter_app/services/firebase/store_firebase.dart';
 
 import 'features/auth/bloc/auth_bloc.dart';
@@ -48,6 +50,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<StoreBloc>(
           create: (context) => StoreBloc(StoreFirebase()),
+        ),
+        BlocProvider<ProductBloc>(
+          create: (context) => ProductBloc(ProductFirebase(context)),
         ),
       ],
       child: MaterialApp(

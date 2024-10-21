@@ -51,12 +51,20 @@ class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: const EdgeInsets.all(DEFAULT_PADDING),
+              padding: const EdgeInsets.all(SMALL_PADDING),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
-                child: Image.asset(
-                  widget.product.image!,
-                  height: 160,
+                child: widget.product.image != null &&
+                    widget.product.image!.isNotEmpty
+                    ? Image.network(
+                  widget.product.image!.first,
+                  height: 80,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                )
+                    : Image.asset(
+                  'assets/images/default_image.png',
+                  height: 80,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),

@@ -4,22 +4,30 @@ import 'package:pos_flutter_app/services/firebase/store_firebase.dart';
 import '../../../../models/store_model.dart';
 
 part 'store_event.dart';
-
 part 'store_state.dart';
 
 class StoreBloc extends Bloc<StoreEvent, StoreState> {
   final StoreFirebase _storeFirebase;
+  StoreModel? _selectedStore;
 
   StoreBloc(this._storeFirebase) : super(StoreInitial()) {
     on<StoreCreateStated>(_onCreateStore);
+    on<StoreFetchStated>(_onFetchStores);
     on<StoreSelectStated>(_onSelectStore);
   }
 
+  // Create a new store
   Future<void> _onCreateStore(
       StoreCreateStated event, Emitter<StoreState> emit) async {
     emit(StoreCreateInProgress());
     try {
+      if (event.storeName.isEmpty || event.businessType.isEmpty) {
+        emit(StoreCreateFailure(error: "Store name and business type are required."));
+        return;
+      }
+
       final newStore = StoreModel(
+        id: "",
         name: event.storeName,
         businessType: event.businessType,
         createdAt: DateTime.now(),
@@ -33,15 +41,29 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     }
   }
 
+  // Fetch all stores for the user
+  Future<void> _onFetchStores(
+      StoreFetchStated event, Emitter<StoreState> emit) async {
+    emit(StoreFetchInProgress());
+    try {
+      List<StoreModel> stores = await _storeFirebase.fetchUserStores();
+      emit(StoreFetchSuccess(stores: stores));
+    } catch (e) {
+      emit(StoreFetchFailure(error: e.toString()));
+    }
+  }
+
+  // Select a store for further operations
   Future<void> _onSelectStore(
       StoreSelectStated event, Emitter<StoreState> emit) async {
     emit(StoreSelectInProgress());
-    try {
-      // Fetch the list of stores for the user from Firebase
-      List<StoreModel> stores = await _storeFirebase.fetchUserStores();
-      emit(StoreSelectSuccess(stores: stores));
-    } catch (e) {
-      emit(StoreSelectFailure(error: e.toString()));
+    if (event.store != null) {
+      _selectedStore = event.store;
+      emit(StoreSelected(selectedStore: _selectedStore!));
+    } else {
+      emit(StoreSelectFailure(error: "No store selected."));
     }
   }
+
+  StoreModel? get selectedStore => _selectedStore;
 }

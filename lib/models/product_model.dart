@@ -1,7 +1,7 @@
 class ProductModel {
   final String title;
   final double price;
-  final String? image;
+  final List<String>? image;
   final String? unit;
   final String? request;
   final double? primeCost;
@@ -51,23 +51,13 @@ class ProductModel {
 
   @override
   String toString() {
-    return 'ProductModel{' +
-        ' title: $title,' +
-        ' price: $price,' +
-        ' image: $image,' +
-        ' unit: $unit,' +
-        ' request: $request,' +
-        ' primeCost: $primeCost,' +
-        ' promotionCost: $promotionCost,' +
-        ' description: $description,' +
-        ' category: $category,' +
-        '}';
+    return 'ProductModel{ title: $title, price: $price, image: $image, unit: $unit, request: $request, primeCost: $primeCost, promotionCost: $promotionCost, description: $description, category: $category,}';
   }
 
   ProductModel copyWith({
     String? title,
     double? price,
-    String? image,
+    List<String>? image,
     String? unit,
     String? request,
     double? primeCost,
@@ -105,16 +95,17 @@ class ProductModel {
   factory ProductModel.fromMap(Map<String, dynamic> map) {
     return ProductModel(
       title: map['title'] as String,
-      price: map['price'] as double,
-      image: map['image'] as String,
-      unit: map['unit'] as String,
-      request: map['request'] as String,
-      primeCost: map['primeCost'] as double,
-      promotionCost: map['promotionCost'] as double,
-      description: map['description'] as String,
-      category: map['category'] as String,
+      price: (map['price'] as num).toDouble(),
+      image: map['image'] != null ? List<String>.from(map['image']) : [],
+      unit: map['unit'] as String?,
+      request: map['request'] as String?,
+      primeCost: (map['primeCost'] as num?)?.toDouble(),
+      promotionCost: (map['promotionCost'] as num?)?.toDouble(),
+      description: map['description'] as String?,
+      category: map['category'] as String?,
     );
   }
+
 
 //</editor-fold>
 }

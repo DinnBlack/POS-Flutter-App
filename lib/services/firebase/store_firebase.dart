@@ -12,14 +12,16 @@ class StoreFirebase {
     if (user != null) {
       DatabaseReference userStoresRef = _database.ref('users/${user.uid}/stores');
 
-      StoreModel newStore = store.copyWith(createdAt: DateTime.now());
+      String storeId = userStoresRef.push().key!; // Generate a unique ID for the store
 
-      await userStoresRef.push().set(newStore.toMap());
+      // Create a new store with the generated ID and current date
+      StoreModel newStore = store.copyWith(id: storeId, createdAt: DateTime.now());
+
+      await userStoresRef.child(storeId).set(newStore.toMap());
     } else {
       throw Exception('No user is signed in.');
     }
   }
-
 
   Future<List<StoreModel>> fetchUserStores() async {
     final User? user = _firebaseAuth.currentUser;
@@ -33,7 +35,7 @@ class StoreFirebase {
       if (storesData != null) {
         List<StoreModel> stores = storesData.entries.map((entry) {
           final storeMap = entry.value as Map<dynamic, dynamic>;
-          return StoreModel.fromMap(Map<String, dynamic>.from(storeMap));
+          return StoreModel.fromMap(Map<String, dynamic>.from(storeMap), entry.key as String);
         }).toList();
 
         stores.sort((a, b) => a.createdAt.compareTo(b.createdAt));
@@ -44,6 +46,4 @@ class StoreFirebase {
     }
     return [];
   }
-
-
 }

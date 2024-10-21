@@ -29,16 +29,19 @@ const double PLUS_LARGE_TEXT_SIZE = 18.0;
 const double SUPER_LARGE_TEXT_SIZE = 24.0;
 
 // Border Radius
+const double SMALL_BORDER_RADIUS = 5.0;
 const double DEFAULT_BORDER_RADIUS = 10.0;
 const double MEDIUM_BORDER_RADIUS = 20.0;
 const double LARGE_BORDER_RADIUS = 30.0;
 
 // Padding
+const double SMALL_PADDING = 5.0;
 const double DEFAULT_PADDING = 10.0;
 const double MEDIUM_PADDING = 20.0;
 const double LARGE_PADDING = 30.0;
 
 // Margin
+const double SMALL_MARGIN = 5.0;
 const double DEFAULT_MARGIN = 10.0;
 const double MEDIUM_MARGIN = 20.0;
 const double LARGE_MARGIN = 30.0;

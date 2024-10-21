@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:pos_flutter_app/database/db_orders.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
-import 'package:pos_flutter_app/utils/constants/constants.dart';
 import 'package:pos_flutter_app/widgets/common_widgets/custom_list_track_orders_item.dart';
 
 

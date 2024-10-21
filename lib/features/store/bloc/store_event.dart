@@ -13,4 +13,10 @@ class StoreCreateStated extends StoreEvent {
   });
 }
 
-class StoreSelectStated extends StoreEvent {}
+class StoreFetchStated extends StoreEvent {}
+
+class StoreSelectStated extends StoreEvent {
+  final StoreModel? store;
+
+  StoreSelectStated({this.store});
+}

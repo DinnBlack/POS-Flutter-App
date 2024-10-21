@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
-import 'package:pos_flutter_app/utils/constants/constants.dart';
-import 'package:pos_flutter_app/utils/constants/constants.dart';
-import 'package:pos_flutter_app/utils/constants/constants.dart';
-import 'package:pos_flutter_app/utils/constants/constants.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
 import '../../../../../database/db_products.dart';

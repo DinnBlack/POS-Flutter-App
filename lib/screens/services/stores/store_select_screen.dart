@@ -23,7 +23,7 @@ class _StoreSelectScreenState extends State<StoreSelectScreen> {
   void initState() {
     super.initState();
     // Fetch the user's stores when the screen is initialized
-    context.read<StoreBloc>().add(StoreSelectStated());
+    context.read<StoreBloc>().add(StoreFetchStated());
   }
 
   @override
@@ -62,11 +62,11 @@ class _StoreSelectScreenState extends State<StoreSelectScreen> {
                   const SizedBox(height: SUPER_LARGE_MARGIN),
                   Container(
                     margin:
-                        const EdgeInsets.symmetric(horizontal: MEDIUM_MARGIN),
+                    const EdgeInsets.symmetric(horizontal: MEDIUM_MARGIN),
                     padding: const EdgeInsets.all(LARGE_PADDING),
                     decoration: BoxDecoration(
                       borderRadius:
-                          BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+                      BorderRadius.circular(DEFAULT_BORDER_RADIUS),
                       color: WHITE_COLOR,
                       boxShadow: [
                         BoxShadow(
@@ -83,16 +83,16 @@ class _StoreSelectScreenState extends State<StoreSelectScreen> {
                         Container(
                           decoration: BoxDecoration(
                             borderRadius:
-                                BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+                            BorderRadius.circular(DEFAULT_BORDER_RADIUS),
                             border:
-                                Border.all(width: 1, color: GREY_LIGHT_COLOR),
+                            Border.all(width: 1, color: GREY_LIGHT_COLOR),
                           ),
                           child: BlocBuilder<StoreBloc, StoreState>(
                             builder: (context, state) {
-                              if (state is StoreSelectInProgress) {
+                              if (state is StoreFetchInProgress) {
                                 return const Center(
                                     child: CircularProgressIndicator());
-                              } else if (state is StoreSelectSuccess) {
+                              } else if (state is StoreFetchSuccess) {
                                 final stores = state.stores;
                                 return ConstrainedBox(
                                   constraints: const BoxConstraints(
@@ -111,9 +111,10 @@ class _StoreSelectScreenState extends State<StoreSelectScreen> {
                                           title: store.name,
                                           subtitle: store.businessType,
                                           onTap: () {
+                                            context.read<StoreBloc>().add(StoreSelectStated(store: store));
                                             Navigator.of(context).pushReplacement(
                                               MaterialPageRoute(
-                                                builder: (context) => MainMobileScreen(store: store),
+                                                builder: (context) => MainMobileScreen(),
                                               ),
                                             );
                                           },
@@ -122,7 +123,7 @@ class _StoreSelectScreenState extends State<StoreSelectScreen> {
                                     },
                                   ),
                                 );
-                              } else if (state is StoreSelectFailure) {
+                              } else if (state is StoreFetchFailure) {
                                 return Center(
                                     child: Text('Error: ${state.error}'));
                               }

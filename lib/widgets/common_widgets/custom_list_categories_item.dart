@@ -49,7 +49,7 @@ class _CustomListCategoriesItemState extends State<CustomListCategoriesItem> {
           padding: const EdgeInsets.all(DEFAULT_PADDING),
           child: ConstrainedBox(
             constraints: const BoxConstraints(
-              minWidth: 100,
+              minWidth: 60,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

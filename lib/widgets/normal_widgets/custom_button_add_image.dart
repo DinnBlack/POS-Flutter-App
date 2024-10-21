@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 
-import '../../utils/ui_util/app_text_style.dart';
+import '../../utils/constants/constants.dart';
 
 class CustomButtonAddImage extends StatelessWidget {
-  final String? title;
   final bool isRequired;
+  final void Function(bool isCamera) onTap;
 
   const CustomButtonAddImage({
     super.key,
-    this.title,
     this.isRequired = false,
+    required this.onTap,
   });
 
   void _showImageDialog(BuildContext context) {
@@ -27,6 +27,7 @@ class CustomButtonAddImage extends StatelessWidget {
                 title: const Text('Tải ảnh lên'),
                 onTap: () {
                   Navigator.of(context).pop();
+                  onTap(false);
                 },
               ),
               ListTile(
@@ -34,6 +35,7 @@ class CustomButtonAddImage extends StatelessWidget {
                 title: const Text('Chụp ảnh'),
                 onTap: () {
                   Navigator.of(context).pop();
+                  onTap(true);
                 },
               ),
             ],
@@ -48,38 +50,30 @@ class CustomButtonAddImage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (title != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Row(
-              children: [
-                Text(
-                  title!,
-                  style: AppTextStyle.medium(MEDIUM_TEXT_SIZE, GREY_COLOR),
-                ),
-                if (isRequired)
-                  const Text(
-                    ' *',
-                    style: TextStyle(color: Colors.red),
-                  ),
-              ],
-            ),
-          ),
+
         GestureDetector(
           onTap: () => _showImageDialog(context),
           child: Container(
-            width: 80,
-            height: 80,
+            width: 100,
+            height: 100,
             decoration: BoxDecoration(
-              color: WHITE_COLOR,
               border: Border.all(color: GREY_LIGHT_COLOR),
               borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+              color: WHITE_COLOR,
             ),
-            child: const Center(
-              child: Icon(
-                Icons.add_rounded,
-                color: GREY_COLOR,
-              ),
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Iconsax.add_copy,
+                  color: GREY_COLOR,
+                ),
+                SizedBox(height: DEFAULT_MARGIN),
+                Text(
+                  'Chọn ảnh',
+                  style: TextStyle(color: GREY_COLOR),
+                ),
+              ],
             ),
           ),
         ),

@@ -53,7 +53,7 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
               ),
               child: Stack(
                 children: [
-                   Center(
+                  Center(
                     child: Text(
                       'Details Menu',
                       style: AppTextStyle.semibold(
@@ -86,14 +86,22 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.asset(
-                        widget.product.image!,
-                        height: 200,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
+                      child: widget.product.image != null &&
+                              widget.product.image!.isNotEmpty
+                          ? Image.network(
+                              widget.product.image!.first,
+                              height: 160,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              'assets/images/default_image.png',
+                              height: 160,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: DEFAULT_MARGIN),
                     Text(
                       widget.product.title,
                       style: const TextStyle(
@@ -101,12 +109,16 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
                         fontSize: 16,
                       ),
                     ),
-                    const SizedBox(height: 6),
-                    const Text(
-                      'Phở Bò không chỉ là món ăn còn là một trải nghiệm ẩm thực thú vị, khiến ai một lần thưởng thức đều nhớ mãi.',
-                      style: TextStyle(),
-                    ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: SMALL_MARGIN),
+                    widget.product.description != null &&
+                            widget.product.description!.isNotEmpty
+                        ? Column(
+                            children: [
+                              Text(widget.product.description!),
+                              const SizedBox(height: SMALL_MARGIN),
+                            ],
+                          )
+                        : const SizedBox.shrink(),
                     Text(
                       '\$${widget.product.price}',
                       style: const TextStyle(
@@ -114,14 +126,14 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
                         fontSize: 16,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: DEFAULT_MARGIN),
                     CustomTextField(
                       hintText: 'Add note to your order...',
                       maxLines: 5,
                       minLines: 1,
                       onChanged: (value) {},
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: DEFAULT_MARGIN),
                   ],
                 ),
               ),
@@ -130,8 +142,8 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: WHITE_COLOR,
-                borderRadius:
-                    const BorderRadius.vertical(bottom: Radius.circular(DEFAULT_BORDER_RADIUS)),
+                borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.circular(DEFAULT_BORDER_RADIUS)),
                 boxShadow: [
                   BoxShadow(
                     color: GREY_LIGHT_COLOR,
@@ -150,7 +162,8 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
                       height: 40,
                       decoration: BoxDecoration(
                         color: GREY_LIGHT_COLOR,
-                        borderRadius: BorderRadius.circular(MEDIUM_BORDER_RADIUS),
+                        borderRadius:
+                            BorderRadius.circular(MEDIUM_BORDER_RADIUS),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -168,7 +181,8 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
                           ),
                           Text(
                             '$quantity',
-                            style: AppTextStyle.semibold(LARGE_TEXT_SIZE, BLACK_TEXT_COLOR),
+                            style: AppTextStyle.semibold(
+                                LARGE_TEXT_SIZE, BLACK_TEXT_COLOR),
                           ),
                           IconButton(
                             icon: const Icon(Iconsax.add_circle),
@@ -192,12 +206,13 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
                         backgroundColor: PRIMARY_COLOR,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.vertical(
-                              bottom: Radius.circular(10)),
+                              bottom: Radius.circular(DEFAULT_BORDER_RADIUS)),
                         ),
                       ),
                       child: Text(
                         'Add to Cart (\$${(widget.product.price * quantity).toStringAsFixed(2)})',
-                        style: AppTextStyle.semibold(LARGE_TEXT_SIZE, WHITE_COLOR),
+                        style:
+                            AppTextStyle.semibold(LARGE_TEXT_SIZE, WHITE_COLOR),
                       ),
                     ),
                   ),

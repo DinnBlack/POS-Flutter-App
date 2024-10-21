@@ -20,7 +20,7 @@ class CustomListOrderDetailsDialogItem extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Image.asset(
-              product.image!,
+              product.image!.first,
               height: 50,
               width: 80,
               fit: BoxFit.cover,
