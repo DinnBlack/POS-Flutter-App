@@ -5,9 +5,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../features/store/bloc/store_bloc.dart';
-import '../../models/product_model.dart';
-import '../../models/store_model.dart';
+import '../../../models/category_model.dart';
+import '../../category/bloc/category_bloc.dart';
+import '../../store/bloc/store_bloc.dart';
+import '../../../models/product_model.dart';
+import '../../../models/store_model.dart';
 
 class ProductFirebase {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -82,6 +84,61 @@ class ProductFirebase {
       }
     } catch (e) {
       print('Failed to fetch products: $e');
+      throw e;
+    }
+  }
+
+  Future<int> getProductCount() async {
+    final User? user = _firebaseAuth.currentUser;
+    final StoreModel? store = context.read<StoreBloc>().selectedStore;
+
+    try {
+      DatabaseReference productsRef =
+          _database.ref('users/${user!.uid}/stores/${store!.id}/products');
+      DatabaseEvent event = await productsRef.once();
+
+      if (event.snapshot.value != null) {
+        Map<dynamic, dynamic> productsMap =
+            event.snapshot.value as Map<dynamic, dynamic>;
+
+        return productsMap.length;
+      } else {
+        return 0;
+      }
+    } catch (e) {
+      print('Failed to fetch product count: $e');
+      throw e;
+    }
+  }
+
+  Future<List<ProductModel>> fetchProductsByCategory(
+      CategoryModel selectedCategory) async {
+    final User? user = _firebaseAuth.currentUser;
+    final StoreModel? store = context.read<StoreBloc>().selectedStore;
+
+    try {
+      DatabaseReference productsRef =
+          _database.ref('users/${user!.uid}/stores/${store!.id}/products');
+      DatabaseEvent event = await productsRef.once();
+
+      if (event.snapshot.value != null) {
+        Map<dynamic, dynamic> productsMap =
+            event.snapshot.value as Map<dynamic, dynamic>;
+
+        List<ProductModel> products = productsMap.entries.map((entry) {
+          Map<String, dynamic> productData =
+              Map<String, dynamic>.from(entry.value);
+          return ProductModel.fromMap(productData);
+        }).toList();
+        return products
+            .where((product) =>
+                product.categories?.contains(selectedCategory.title) == true)
+            .toList();
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print('Failed to fetch products by category: $e');
       throw e;
     }
   }

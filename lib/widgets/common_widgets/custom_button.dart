@@ -6,24 +6,32 @@ class CustomButton extends StatelessWidget {
   final String text;
   final Color? color;
   final VoidCallback onPressed;
+  final bool isOutlineButton;
+  final double? height;
 
   const CustomButton({
     super.key,
     required this.text,
     required this.onPressed,
     this.color,
+    this.isOutlineButton = false,
+    this.height,
   });
 
   @override
   Widget build(BuildContext context) {
-    final Color buttonColor = color ?? PRIMARY_COLOR;
+    final double buttonHeight = height ?? DEFAULT_HEIGHT;
+    final Color buttonColor = isOutlineButton ? Colors.white : (color ?? PRIMARY_COLOR);
+    final Color textColor = isOutlineButton ? PRIMARY_COLOR : Colors.white;
+    final BorderSide borderSide = isOutlineButton ? const BorderSide(color: PRIMARY_COLOR) : BorderSide.none;
 
     return Container(
-      height: DEFAULT_HEIGHT,
+      height: buttonHeight,
       width: double.infinity,
       decoration: BoxDecoration(
         color: buttonColor,
         borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+        border: isOutlineButton ? Border.fromBorderSide(borderSide) : null,
       ),
       child: InkWell(
         onTap: onPressed,
@@ -33,7 +41,7 @@ class CustomButton extends StatelessWidget {
           child: Center(
             child: Text(
               text,
-              style: AppTextStyle.medium(LARGE_TEXT_SIZE, WHITE_COLOR),
+              style: AppTextStyle.medium(MEDIUM_TEXT_SIZE, textColor),
             ),
           ),
         ),

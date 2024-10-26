@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pos_flutter_app/screens/services/stores/store_create_screen.dart';
+import 'package:pos_flutter_app/screens/services/store/store_create_screen.dart';
 
 import '../../../features/store/bloc/store_bloc.dart';
 import '../../../utils/constants/constants.dart';

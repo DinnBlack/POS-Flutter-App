@@ -10,43 +10,43 @@ final List<OrderModel> dbOrders = [
         image: ['assets/images/product1.png'], // Changed to List<String>
         title: 'Coffee',
         unit: 'Cup',
-        price: 50.0,
+        price: 50,
         request: 'Size L,Ít đá, Không đường',
       ),
       const ProductModel(
         image: ['assets/images/product2.png'], // Changed to List<String>
         title: 'Croissant',
         unit: 'Piece',
-        price: 100.0,
+        price: 100,
       ),
       const ProductModel(
         image: ['assets/images/product3.png'], // Changed to List<String>
         title: 'Cake',
         unit: 'Piece',
-        price: 125.0,
+        price: 125,
         request: 'Size L,Ít đá, Không đường',
       ),
       const ProductModel(
         image: ['assets/images/product4.png'], // Changed to List<String>
         title: 'Juice',
         unit: 'Bottle',
-        price: 100.0,
+        price: 100,
       ),
       const ProductModel(
         image: ['assets/images/product1.png'], // Changed to List<String>
         title: 'Espresso',
         unit: 'Cup',
-        price: 75.0,
+        price: 75,
       ),
       const ProductModel(
         image: ['assets/images/product2.png'], // Changed to List<String>
         title: 'Bagel',
         unit: 'Piece',
-        price: 100.0,
+        price: 100,
         request: 'Size L,Ít đá, Không đường',
       ),
     ],
-    totalPrice: 150.0,
+    totalPrice: 150,
     customerName: 'John Doe',
     orderTime: DateTime.now().subtract(const Duration(hours: 1)),
     status: 'Pending',
@@ -59,23 +59,23 @@ final List<OrderModel> dbOrders = [
         image: ['assets/images/product1.png'], // Changed to List<String>
         title: 'Espresso',
         unit: 'Cup',
-        price: 75.0,
+        price: 75,
       ),
       const ProductModel(
         image: ['assets/images/product2.png'], // Changed to List<String>
         title: 'Bagel',
         unit: 'Piece',
-        price: 100.0,
+        price: 100,
         request: 'Size L,Ít đá, Không đường',
       ),
       const ProductModel(
         image: ['assets/images/product3.png'], // Changed to List<String>
         title: 'Juice',
         unit: 'Bottle',
-        price: 75.0,
+        price: 75,
       ),
     ],
-    totalPrice: 250.0,
+    totalPrice: 250,
     customerName: 'Jane Smith',
     orderTime: DateTime.now().subtract(const Duration(hours: 2)),
     status: 'Completed',

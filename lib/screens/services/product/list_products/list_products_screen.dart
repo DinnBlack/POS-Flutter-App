@@ -1,27 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pos_flutter_app/screens/services/products/product_create/product_create_screen.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 import 'package:pos_flutter_app/widgets/common_widgets/custom_grid_products_item.dart';
 import 'package:pos_flutter_app/widgets/common_widgets/custom_list_products_item.dart';
 
 import '../../../../features/product/bloc/product_bloc.dart';
+import '../../../../features/category/bloc/category_bloc.dart';
+import '../product_create/product_create_screen.dart';
 
 class ListProductsScreen extends StatefulWidget {
-  final bool isGridView; // Tham số để xác định chế độ hiển thị
+  final bool isGridView;
+  final bool? isOrderPage;
 
-  const ListProductsScreen({super.key, required this.isGridView});
+  const ListProductsScreen({
+    super.key,
+    required this.isGridView,
+    this.isOrderPage = false,
+  });
 
   @override
   State<ListProductsScreen> createState() => _ListProductsScreenState();
 }
 
 class _ListProductsScreenState extends State<ListProductsScreen> {
+  late final CategoryBloc _categoryBloc;
+
   @override
   void initState() {
     super.initState();
-    context.read<ProductBloc>().add(ProductFetchStarted());
+    _categoryBloc = context.read<CategoryBloc>();
+
+    _categoryBloc.stream.listen((state) {
+      context
+          .read<ProductBloc>()
+          .add(ProductFetchStarted(_categoryBloc.selectedCategory!));
+    });
   }
 
   void _addProduct() {
@@ -78,7 +92,6 @@ class _ListProductsScreenState extends State<ListProductsScreen> {
                         final product = products[index];
                         return CustomGridProductsItem(product: product);
                       } else {
-                        // Nút "Add Product"
                         return _buildAddProductButton();
                       }
                     },
@@ -92,7 +105,10 @@ class _ListProductsScreenState extends State<ListProductsScreen> {
                         final product = products[index];
                         return Column(
                           children: [
-                            CustomListProductsItem(product: product),
+                            CustomListProductsItem(
+                              product: product,
+                              isOrderPage: widget.isOrderPage!,
+                            ),
                             Divider(
                                 height: 1,
                                 thickness: 1,

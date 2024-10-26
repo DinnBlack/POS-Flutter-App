@@ -3,18 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pos_flutter_app/features/category/bloc/category_bloc.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
 import '../../../../features/product/bloc/product_bloc.dart';
 import '../../../../models/product_model.dart';
 import '../../../../utils/ui_util/app_text_style.dart';
+import '../../../../utils/ui_util/format_text.dart';
+import '../../../../widgets/common_widgets/custom_bottom_bar.dart';
 import '../../../../widgets/common_widgets/custom_text_field.dart';
 import '../../../../widgets/normal_widgets/custom_button_add_image.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../category/list_categories_add_product_screen.dart';
+
 class ProductCreateScreen extends StatefulWidget {
   static const route = 'ProductCreateScreen';
 
-  const ProductCreateScreen({super.key});
+  final bool isEditing;
+  final ProductModel? existingProduct;
+
+  const ProductCreateScreen({
+    super.key,
+    this.isEditing = false,
+    this.existingProduct,
+  });
 
   @override
   State<ProductCreateScreen> createState() => _ProductCreateScreenState();
@@ -30,6 +42,26 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
   final TextEditingController _descriptionController = TextEditingController();
 
   List<XFile>? _selectedImages = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.isEditing && widget.existingProduct != null) {
+      _titleController.text = widget.existingProduct!.title;
+      _sellingPriceController.text =
+          widget.existingProduct!.price.toStringAsFixed(3);
+      _costPriceController.text =
+          widget.existingProduct!.primeCost?.toStringAsFixed(3) ?? '';
+      _promotionPriceController.text =
+          widget.existingProduct!.promotionCost?.toStringAsFixed(3) ?? '';
+      _unitController.text = widget.existingProduct!.unit ?? '';
+      _descriptionController.text = widget.existingProduct!.description ?? '';
+      _selectedImages = widget.existingProduct!.image
+          ?.map((imagePath) => XFile(imagePath))
+          .toList();
+    }
+  }
 
   void _validateAllFields() {
     bool hasError = false;
@@ -50,16 +82,21 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
       hasError = true;
     }
 
+    print(context.read<CategoryBloc>().selectedCategoriesTitle);
+
     if (!hasError) {
       final product = ProductModel(
         title: _titleController.text,
-        price: double.tryParse(_sellingPriceController.text) ?? 0.0,
-        primeCost: double.tryParse(_costPriceController.text),
-        promotionCost: double.tryParse(_promotionPriceController.text),
+        price: FormatText.parseCurrency(_sellingPriceController.text),
+        primeCost: FormatText.parseCurrency(_costPriceController.text),
+        promotionCost: FormatText.parseCurrency(_promotionPriceController.text),
         unit: _unitController.text,
         description: _descriptionController.text,
+        categories: context.read<CategoryBloc>().selectedCategoriesTitle,
         image: _selectedImages?.map((image) => image.path).toList() ?? [],
       );
+
+      print(product);
 
       context.read<ProductBloc>().add(ProductCreateStarted(product: product));
     }
@@ -173,6 +210,7 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
               color: WHITE_COLOR,
             ),
             onPressed: () {
+              context.read<CategoryBloc>().add(CategoryClearSelectionStated());
               Navigator.pop(context);
             },
           ),
@@ -195,13 +233,12 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
                         padding: const EdgeInsets.only(bottom: 4),
                         child: Text(
                           'Ảnh sản phẩm',
-                          style: AppTextStyle.medium(
-                              MEDIUM_TEXT_SIZE, GREY_COLOR),
+                          style:
+                              AppTextStyle.medium(MEDIUM_TEXT_SIZE, GREY_COLOR),
                         ),
                       ),
                       Row(
                         children: [
-
                           CustomButtonAddImage(
                             onTap: _pickImages,
                           ),
@@ -285,6 +322,16 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
                         ],
                       ),
                       const SizedBox(height: DEFAULT_MARGIN),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4),
+                        child: Text(
+                          'Danh mục',
+                          style:
+                              AppTextStyle.medium(MEDIUM_TEXT_SIZE, GREY_COLOR),
+                        ),
+                      ),
+                      const ListCategoriesAddProductScreen(),
+                      const SizedBox(height: DEFAULT_MARGIN),
                       CustomTextField(
                         hintText: 'Mô tả',
                         title: 'Mô tả',
@@ -298,34 +345,16 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-          color: BACKGROUND_COLOR,
-          child: Padding(
-            padding: const EdgeInsets.all(DEFAULT_PADDING),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text('Cancel'),
-                  ),
-                ),
-                const SizedBox(width: DEFAULT_MARGIN),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _validateAllFields,
-                    child: const Text('Create Product'),
-                  ),
-                ),
-              ],
-            ),
-          ),
+        bottomNavigationBar: CustomBottomBar(
+          leftButtonText: 'Tạo thêm',
+          onLeftButtonPressed: () {
+            context.read<CategoryBloc>().add(CategoryClearSelectionStated());
+          },
+          rightButtonText: 'Hoàn tất',
+          onRightButtonPressed: () {
+            _validateAllFields();
+            context.read<CategoryBloc>().add(CategoryClearSelectionStated(isAddProductPage: true));
+          },
         ),
       ),
     );

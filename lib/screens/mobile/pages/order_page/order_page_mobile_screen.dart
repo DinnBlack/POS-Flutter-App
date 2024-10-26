@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:pos_flutter_app/screens/services/products/list_products/list_products_screen.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
 import '../../../../utils/constants/constants.dart';
 import '../../../../widgets/normal_widgets/custom_text_field_search_product.dart';
-import '../../../services/categories/list_categories_screen.dart';
+import '../../../services/category/list_categories_horizontal_screen.dart';
+import '../../../services/product/list_products/list_products_screen.dart';
 
 class OrderPageMobileScreen extends StatefulWidget {
   const OrderPageMobileScreen({super.key});
@@ -90,9 +90,9 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
           children: [
             const CustomTextFieldSearchProduct(),
             const SizedBox(height: DEFAULT_MARGIN),
-            const ListCategoriesScreen(),
+            const ListCategoriesHorizontalScreen(),
             Expanded(
-              child: ListProductsScreen(isGridView: isGridView),
+              child: ListProductsScreen(isGridView: isGridView, isOrderPage: true,),
             ),
           ],
         ),

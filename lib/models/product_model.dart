@@ -1,13 +1,17 @@
+import 'package:flutter/foundation.dart';
+
+import 'category_model.dart';
+
 class ProductModel {
   final String title;
-  final double price;
+  final int price;
   final List<String>? image;
   final String? unit;
   final String? request;
-  final double? primeCost;
-  final double? promotionCost;
+  final int? primeCost;
+  final int? promotionCost;
   final String? description;
-  final String? category;
+  final List<String>? categories;
 
 //<editor-fold desc="Data Methods">
   const ProductModel({
@@ -19,7 +23,7 @@ class ProductModel {
     this.primeCost,
     this.promotionCost,
     this.description,
-    this.category,
+    this.categories,
   });
 
   @override
@@ -35,7 +39,7 @@ class ProductModel {
           primeCost == other.primeCost &&
           promotionCost == other.promotionCost &&
           description == other.description &&
-          category == other.category);
+          categories == other.categories);
 
   @override
   int get hashCode =>
@@ -47,23 +51,23 @@ class ProductModel {
       primeCost.hashCode ^
       promotionCost.hashCode ^
       description.hashCode ^
-      category.hashCode;
+      categories.hashCode;
 
   @override
   String toString() {
-    return 'ProductModel{ title: $title, price: $price, image: $image, unit: $unit, request: $request, primeCost: $primeCost, promotionCost: $promotionCost, description: $description, category: $category,}';
+    return 'ProductModel{ title: $title, price: $price, image: $image, unit: $unit, request: $request, primeCost: $primeCost, promotionCost: $promotionCost, description: $description, categories: $categories,}';
   }
 
   ProductModel copyWith({
     String? title,
-    double? price,
+    int? price,
     List<String>? image,
     String? unit,
     String? request,
-    double? primeCost,
-    double? promotionCost,
+    int? primeCost,
+    int? promotionCost,
     String? description,
-    String? category,
+    List<String>? categories,
   }) {
     return ProductModel(
       title: title ?? this.title,
@@ -74,7 +78,7 @@ class ProductModel {
       primeCost: primeCost ?? this.primeCost,
       promotionCost: promotionCost ?? this.promotionCost,
       description: description ?? this.description,
-      category: category ?? this.category,
+      categories: categories ?? this.categories,
     );
   }
 
@@ -88,24 +92,24 @@ class ProductModel {
       'primeCost': this.primeCost,
       'promotionCost': this.promotionCost,
       'description': this.description,
-      'category': this.category,
+      'categories': this.categories,
     };
   }
 
   factory ProductModel.fromMap(Map<String, dynamic> map) {
     return ProductModel(
       title: map['title'] as String,
-      price: (map['price'] as num).toDouble(),
+      price: (map['price'] as num).toInt(),
       image: map['image'] != null ? List<String>.from(map['image']) : [],
       unit: map['unit'] as String?,
       request: map['request'] as String?,
-      primeCost: (map['primeCost'] as num?)?.toDouble(),
-      promotionCost: (map['promotionCost'] as num?)?.toDouble(),
+      primeCost: (map['primeCost'] as num?)?.toInt(),
+      promotionCost: (map['promotionCost'] as num?)?.toInt(),
       description: map['description'] as String?,
-      category: map['category'] as String?,
+      categories:
+          map['categories'] != null ? List<String>.from(map['categories']) : [],
     );
   }
-
 
 //</editor-fold>
 }

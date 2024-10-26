@@ -9,10 +9,12 @@ class CustomListCategoriesItem extends StatefulWidget {
     required this.category,
     required this.isSelected,
     required this.onTap,
+    this.isVertical = false, 
   });
 
   final CategoryModel category;
   final bool isSelected;
+  final bool isVertical;
   final VoidCallback onTap;
 
   @override
@@ -25,6 +27,65 @@ class _CustomListCategoriesItemState extends State<CustomListCategoriesItem> {
 
   @override
   Widget build(BuildContext context) {
+    return widget.isVertical ? _buildVerticalItem() : _buildHorizontalItem();
+  }
+
+  Widget _buildVerticalItem() {
+    return MouseRegion(
+      onEnter: (_) => setState(() {
+        isHovered = true;
+      }),
+      onExit: (_) => setState(() {
+        isHovered = false;
+      }),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          height: 80,
+          decoration: BoxDecoration(
+            color: WHITE_COLOR,
+            borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+          ),
+          padding: const EdgeInsets.all(DEFAULT_PADDING),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(right: DEFAULT_PADDING),
+                child: Icon(
+                  Icons.drag_indicator,
+                  color: GREY_COLOR,
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    widget.category.title,
+                    style: AppTextStyle.semibold(
+                      MEDIUM_TEXT_SIZE,
+                      BLACK_TEXT_COLOR,
+                    ),
+                  ),
+                  Text(
+                    '${widget.category.count} items',
+                    style: AppTextStyle.medium(
+                      SMALL_TEXT_SIZE,
+                      GREY_COLOR,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHorizontalItem() {
     return MouseRegion(
       onEnter: (_) => setState(() {
         isHovered = true;
@@ -39,7 +100,7 @@ class _CustomListCategoriesItemState extends State<CustomListCategoriesItem> {
           decoration: BoxDecoration(
             color: widget.isSelected
                 ? PRIMARY_COLOR
-                : (isHovered ? Colors.blue.shade100 : Colors.white),
+                : (isHovered ? Colors.blue.shade100 : WHITE_COLOR),
             border: Border.all(
               color: widget.isSelected ? PRIMARY_COLOR : GREY_LIGHT_COLOR,
               width: 1,
@@ -50,6 +111,7 @@ class _CustomListCategoriesItemState extends State<CustomListCategoriesItem> {
           child: ConstrainedBox(
             constraints: const BoxConstraints(
               minWidth: 60,
+              maxHeight: 40,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

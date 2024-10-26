@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pos_flutter_app/screens/services/billing_queue/billing_queue_screen.dart';
-import 'package:pos_flutter_app/screens/services/orders/order_history/order_history_screen.dart';
-import 'package:pos_flutter_app/screens/services/tables/tables_screen.dart';
 
 import '../../../../routes/page_routes.dart';
 import '../../../../utils/constants/constants.dart';
 import '../../../../widgets/common_widgets/header_side.dart';
 import '../../../../widgets/normal_widgets/menu_side_activity.dart';
+import '../../../services/order/order_history/order_history_screen.dart';
+import '../../../services/table/tables_screen.dart';
 import '../../main_tablet_screen.dart';
 
 class ActivityPageTabletScreen extends StatefulWidget {

@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
-import '../orders/track_orders/track_orders_screen.dart';
+
+import '../order/track_orders/track_orders_screen.dart';
 
 class BillingQueueScreen extends StatefulWidget {
   const BillingQueueScreen({super.key});

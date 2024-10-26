@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:pos_flutter_app/screens/mobile/main_mobile_screen.dart';
 import 'package:pos_flutter_app/screens/services/login/login_screen.dart';
 
-import '../models/store_model.dart';
-import '../screens/services/products/product_create/product_create_screen.dart';
+import '../screens/services/product/product_create/product_create_screen.dart';
 import '../screens/services/register/register_screen.dart';
-import '../screens/services/stores/store_create_screen.dart';
-import '../screens/services/stores/store_select_screen.dart';
+import '../screens/services/store/store_create_screen.dart';
+import '../screens/services/store/store_select_screen.dart';
 import '../screens/tablet/main_tablet_screen.dart';
 
 Route<dynamic?> appRoutes(RouteSettings settings) {

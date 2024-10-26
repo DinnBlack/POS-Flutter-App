@@ -5,12 +5,13 @@ const String APP_NAME = "POS Application";
 const String WELCOME_MESSAGE = "Chào mừng đến với ứng dụng POS của chúng tôi!";
 
 // Width and height
+const double SMALL_HEIGHT = 40.0;
 const double DEFAULT_HEIGHT = 56.0;
 
 // App Colors
 const Color PRIMARY_COLOR = Color(0xFF3772F0);
 const Color SECONDARY_COLOR = Color(0xFF85A6F5);
-const Color BACKGROUND_COLOR = Color(0xFFF9F9F9);
+const Color BACKGROUND_COLOR = Color(0xFFF2F1F2);
 Color BACKGROUND_LIGHT_COLOR = Color(0xFFF9F9F9).withOpacity(0.2);
 const Color WHITE_COLOR = Colors.white;
 const Color GREY_COLOR = Colors.grey;
@@ -20,6 +21,7 @@ const Color BLACK_TEXT_COLOR = Colors.black;
 const Color LIGHT_BLACK_TEXT_COLOR = Color(0xFF4F4F4F);
 const Color GREEN_COLOR = Colors.green;
 const Color RED_COLOR = Colors.red;
+const Color ORANGE_COLOR = Colors.orange;
 
 // Sizes
 const double SMALL_TEXT_SIZE = 12.0;

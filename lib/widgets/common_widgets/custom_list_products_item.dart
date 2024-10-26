@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:pos_flutter_app/screens/services/products/sale_product/sale_product_dialog_screen.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 import '../../models/product_model.dart';
+import '../../screens/services/product/product_create/product_create_screen.dart';
+import '../../screens/services/product/sale_product/sale_product_dialog_screen.dart';
 
 class CustomListProductsItem extends StatefulWidget {
-  const CustomListProductsItem({super.key, required this.product});
+  const CustomListProductsItem({
+    super.key,
+    required this.product,
+    this.isOrderPage = true,
+  });
 
   final ProductModel product;
+  final bool isOrderPage;
 
   @override
   State<CustomListProductsItem> createState() => _CustomListProductsItemState();
@@ -17,19 +23,31 @@ class _CustomListProductsItemState extends State<CustomListProductsItem> {
   int quantity = 0;
 
   void showProductDetailsDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return SaleProductDialogScreen(
-          product: widget.product,
-          onQuantityChanged: (newQuantity) {
-            setState(() {
-              quantity = newQuantity;
-            });
-          },
-        );
-      },
-    );
+    if (widget.isOrderPage) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SaleProductDialogScreen(
+            product: widget.product,
+            onQuantityChanged: (newQuantity) {
+              setState(() {
+                quantity = newQuantity;
+              });
+            },
+          );
+        },
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProductCreateScreen(
+            isEditing: true,
+            existingProduct: widget.product,
+          ),
+        ),
+      );
+    }
   }
 
   @override
@@ -47,24 +65,25 @@ class _CustomListProductsItemState extends State<CustomListProductsItem> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
                 child: widget.product.image != null &&
-                        widget.product.image!.isNotEmpty
+                    widget.product.image!.isNotEmpty
                     ? Image.network(
-                        widget.product.image!.first,
-                        height: 60,
-                        width: 60,
-                        fit: BoxFit.cover,
-                      )
+                  widget.product.image!.first,
+                  height: 60,
+                  width: 60,
+                  fit: BoxFit.cover,
+                )
                     : Image.asset(
-                        'assets/images/default_image.png',
-                        height: 60,
-                        width: 60,
-                        fit: BoxFit.cover,
-                      ),
+                  'assets/images/default_image.png',
+                  height: 60,
+                  width: 60,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: SMALL_PADDING, vertical: DEFAULT_PADDING),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: SMALL_PADDING, vertical: DEFAULT_PADDING),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -78,7 +97,7 @@ class _CustomListProductsItemState extends State<CustomListProductsItem> {
                     const Spacer(),
                     Text('${widget.product.price.toStringAsFixed(3)}đ',
                         style:
-                            AppTextStyle.medium(MEDIUM_TEXT_SIZE, GREEN_COLOR)),
+                        AppTextStyle.medium(MEDIUM_TEXT_SIZE, GREEN_COLOR)),
                   ],
                 ),
               ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pos_flutter_app/screens/services/products/sale_product/sale_product_dialog_screen.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
+import 'package:pos_flutter_app/utils/ui_util/format_text.dart';
 import '../../models/product_model.dart';
+import '../../screens/services/product/sale_product/sale_product_dialog_screen.dart';
 
 class CustomGridProductsItem extends StatefulWidget {
   const CustomGridProductsItem({super.key, required this.product});
@@ -77,11 +78,11 @@ class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
                 children: [
                   Text(widget.product.title,
                       style: AppTextStyle.medium(
-                          MEDIUM_TEXT_SIZE, BLACK_TEXT_COLOR)),
+                          MEDIUM_TEXT_SIZE, BLACK_TEXT_COLOR),maxLines: 1, overflow: TextOverflow.ellipsis,),
                   Text(widget.product.unit!,
                       style: AppTextStyle.light(
                           SMALL_TEXT_SIZE, LIGHT_BLACK_TEXT_COLOR)),
-                  Text('${widget.product.price.toStringAsFixed(3)}đ',
+                  Text(FormatText.formatCurrency(widget.product.price),
                       style:
                           AppTextStyle.medium(MEDIUM_TEXT_SIZE, GREEN_COLOR)),
                 ],

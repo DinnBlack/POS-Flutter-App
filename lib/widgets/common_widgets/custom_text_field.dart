@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
+import '../../utils/ui_util/format_text.dart';
+
 class CustomTextField extends StatefulWidget {
   final String hintText;
   final int? maxLines;
@@ -13,6 +15,7 @@ class CustomTextField extends StatefulWidget {
   final String? title;
   final bool isRequired;
   final TextEditingController? controller;
+  final bool autofocus;
 
   const CustomTextField({
     super.key,
@@ -25,6 +28,7 @@ class CustomTextField extends StatefulWidget {
     this.title,
     this.isRequired = false,
     this.controller,
+    this.autofocus = false,
   });
 
   @override
@@ -62,6 +66,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
         _validateInput(widget.controller?.text ?? '');
       }
     });
+    if (widget.autofocus) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        FocusScope.of(context).requestFocus(_focusNode);
+      });
+    }
   }
 
   @override
@@ -94,44 +103,53 @@ class _CustomTextFieldState extends State<CustomTextField> {
           ),
         Container(
           alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
+          padding: const EdgeInsets.symmetric(horizontal: DEFAULT_PADDING, vertical: DEFAULT_PADDING),
           decoration: BoxDecoration(
             border: Border.all(width: 1, color: GREY_LIGHT_COLOR),
             color: WHITE_COLOR,
             borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
           ),
-          child: Container(
-            height: DEFAULT_HEIGHT,
-            alignment: Alignment.center,
-            child: TextField(
-              controller: widget.controller,
-              focusNode: _focusNode,
-              maxLines: widget.maxLines ?? 1,
-              minLines: widget.minLines ?? 1,
-              obscureText: widget.isPassword ? _obscureText : false,
-              keyboardType: widget.isNumeric ? TextInputType.number : TextInputType.text,
-              inputFormatters: widget.isNumeric ? [FilteringTextInputFormatter.digitsOnly] : [],
-              decoration: InputDecoration(
-                hintText: widget.hintText,
-                hintStyle: AppTextStyle.regular(MEDIUM_TEXT_SIZE, GREY_COLOR),
-                border: InputBorder.none,
-                isDense: true,
-                errorText: _errorText,
-                suffixIcon: widget.isPassword
-                    ? IconButton(
-                  icon: Icon(
-                    _obscureText ? Icons.visibility : Icons.visibility_off,
-                    color: GREY_COLOR,
-                  ),
-                  onPressed: _togglePasswordVisibility,
-                )
-                    : null,
-              ),
-              onChanged: (value) {
-                widget.onChanged?.call(value);
-                _validateInput(value); // Validate input on change
-              },
+          child: TextField(
+            controller: widget.controller,
+            focusNode: _focusNode,
+            maxLines: widget.maxLines ?? 1,
+            minLines: widget.minLines ?? 1,
+            obscureText: widget.isPassword ? _obscureText : false,
+            keyboardType: widget.isNumeric ? TextInputType.number : TextInputType.text,
+            inputFormatters: widget.isNumeric ? [FilteringTextInputFormatter.digitsOnly] : [],
+            decoration: InputDecoration(
+              hintText: widget.hintText,
+              hintStyle: AppTextStyle.regular(MEDIUM_TEXT_SIZE, GREY_COLOR),
+              border: InputBorder.none,
+              isDense: true,
+              errorText: _errorText,
+              suffixIcon: widget.isPassword
+                  ? IconButton(
+                icon: Icon(
+                  _obscureText ? Icons.visibility : Icons.visibility_off,
+                  color: GREY_COLOR,
+                ),
+                onPressed: _togglePasswordVisibility,
+              )
+                  : null,
             ),
+            onChanged: (value) {
+              if (widget.isNumeric) {
+                String cleanedValue = value.replaceAll('.', '').replaceAll('đ', '').trim();
+                final intValue = int.tryParse(cleanedValue) ?? 0;
+                String formattedValue = FormatText.formatCurrency(intValue);
+
+                widget.controller!.text = formattedValue;
+
+                widget.controller!.selection = TextSelection.fromPosition(TextPosition(offset: formattedValue.length - 1));
+
+                widget.onChanged?.call(formattedValue);
+              } else {
+                widget.onChanged?.call(value);
+              }
+              _validateInput(value);
+            },
+            autofocus: widget.autofocus,
           ),
         ),
       ],

@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:pos_flutter_app/screens/services/products/product_create/product_create_screen.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
-import '../../../../widgets/normal_widgets/custom_text_field_search_product.dart';
-import '../../../services/categories/list_categories_screen.dart';
-import '../../../services/products/list_products/list_products_screen.dart';
+import '../../../../features/category/bloc/category_bloc.dart';
+import '../../../services/category/list_categories_horizontal_screen.dart';
+import '../../../services/category/list_categories_vertical_screen.dart';
+import '../../../services/product/list_products/list_products_screen.dart';
+import '../../../services/product/product_create/product_create_screen.dart';
+
 
 class InventoryPageMobileScreen extends StatefulWidget {
   const InventoryPageMobileScreen({super.key});
@@ -30,9 +33,9 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen> {
 
   void _onTitleTap(int index) {
     setState(() {
-      _selectedIndex = index; // Cập nhật chỉ số trang hiện tại
+      _selectedIndex = index;
     });
-    _pageController.jumpToPage(index); // Nhảy đến trang tương ứng
+    _pageController.jumpToPage(index);
   }
 
   @override
@@ -47,14 +50,19 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen> {
           child: SafeArea(
             child: Row(
               children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
+                BlocBuilder<CategoryBloc, CategoryState>(
+                  builder: (context, state) {
+                    return InkWell(
+                      onTap: () {
+                        context.read<CategoryBloc>().add(CategoryResetToDefaultStated());
+                        Navigator.pop(context);
+                      },
+                      child: const Icon(
+                        Iconsax.arrow_left_2_copy,
+                        color: BLACK_TEXT_COLOR,
+                      ),
+                    );
                   },
-                  child: const Icon(
-                    Iconsax.arrow_left_2_copy,
-                    color: BLACK_TEXT_COLOR,
-                  ),
                 ),
                 const SizedBox(
                   width: DEFAULT_MARGIN,
@@ -126,9 +134,7 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen> {
                       'Sản phẩm',
                       style: AppTextStyle.medium(
                         MEDIUM_TEXT_SIZE,
-                        _selectedIndex == 0
-                            ? PRIMARY_COLOR
-                            : BLACK_TEXT_COLOR,
+                        _selectedIndex == 0 ? PRIMARY_COLOR : BLACK_TEXT_COLOR,
                       ),
                     ),
                   ),
@@ -138,16 +144,13 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen> {
                       'Danh mục',
                       style: AppTextStyle.medium(
                         MEDIUM_TEXT_SIZE,
-                        _selectedIndex == 1
-                            ? PRIMARY_COLOR
-                            : BLACK_TEXT_COLOR,
+                        _selectedIndex == 1 ? PRIMARY_COLOR : BLACK_TEXT_COLOR,
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-
             const SizedBox(height: DEFAULT_MARGIN),
             Expanded(
               child: PageView(
@@ -160,17 +163,17 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen> {
                 children: [
                   Column(
                     children: [
-                      const ListCategoriesScreen(),
+                      const ListCategoriesHorizontalScreen(),
                       Expanded(
-                        child: ListProductsScreen(isGridView: isGridView),
+                        child: ListProductsScreen(
+                          isGridView: isGridView, isOrderPage: false,),
                       ),
                     ],
                   ),
-                  Column(
+                  const Column(
                     children: [
-
-                      const Expanded(
-                        child: ListCategoriesScreen(),
+                      Expanded(
+                        child: ListCategoriesVerticalScreen(),
                       ),
                     ],
                   ),

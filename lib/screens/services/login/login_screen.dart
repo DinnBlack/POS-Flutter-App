@@ -1,16 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:pos_flutter_app/screens/mobile/main_mobile_screen.dart';
 import 'package:pos_flutter_app/screens/services/register/register_screen.dart';
-import 'package:pos_flutter_app/screens/services/stores/store_create_screen.dart';
-import 'package:pos_flutter_app/screens/services/stores/store_select_screen.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 import '../../../features/auth/bloc/auth_bloc.dart';
 import '../../../widgets/common_widgets/custom_button.dart';
 import '../../../widgets/common_widgets/custom_text_field.dart';
+import '../store/store_create_screen.dart';
+import '../store/store_select_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   static const route = 'LoginScreen';

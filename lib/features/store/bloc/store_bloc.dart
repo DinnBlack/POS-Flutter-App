@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:pos_flutter_app/services/firebase/store_firebase.dart';
+import 'package:pos_flutter_app/features/store/data/store_firebase.dart';
 import '../../../../models/store_model.dart';
 
 part 'store_event.dart';

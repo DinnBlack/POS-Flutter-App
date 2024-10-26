@@ -8,4 +8,8 @@ class ProductCreateStarted extends ProductEvent {
   ProductCreateStarted({required this.product});
 }
 
-class ProductFetchStarted extends ProductEvent {}
+class ProductFetchStarted extends ProductEvent {
+  final CategoryModel category;
+
+  ProductFetchStarted(this.category);
+}

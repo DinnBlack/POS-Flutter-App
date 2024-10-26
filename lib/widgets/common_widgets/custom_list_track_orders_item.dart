@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:pos_flutter_app/models/order_model.dart';
-import 'package:pos_flutter_app/screens/services/orders/order_details/order_details_dialog/order_details_dialog_screen.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
+
+import '../../screens/services/order/order_details/order_details_dialog/order_details_dialog_screen.dart';
 
 class CustomListTrackOrdersItem extends StatefulWidget {
   final OrderModel order;
