@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:pos_flutter_app/features/product/bloc/product_bloc.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
 import '../../../../models/product_model.dart';
-import '../../../../widgets/common_widgets/custom_text_field.dart';
+import '../../../../utils/ui_util/format_text.dart';
 
 class SaleProductDialogScreen extends StatefulWidget {
   const SaleProductDialogScreen({
@@ -25,141 +27,149 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
   int quantity = 1;
 
   Widget build(BuildContext context) {
-    return Dialog(
-      child: Container(
-        width: 400,
-        decoration: BoxDecoration(
-          color: WHITE_COLOR,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: double.infinity,
-              height: 40,
-              decoration: BoxDecoration(
-                color: WHITE_COLOR,
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(10)),
-                boxShadow: [
-                  BoxShadow(
-                    color: GREY_LIGHT_COLOR,
-                    blurRadius: 1,
-                    spreadRadius: 1,
-                    offset: const Offset(0, 1),
-                  ),
-                ],
-              ),
-              child: Stack(
-                children: [
-                  Center(
-                    child: Text(
-                      'Details Menu',
-                      style: AppTextStyle.semibold(
-                        MEDIUM_TEXT_SIZE,
-                        BLACK_TEXT_COLOR,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: 8,
-                    top: 10,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Icon(
-                        Iconsax.close_square,
-                        color: PRIMARY_COLOR,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+    return Container(
+      width: 400,
+      decoration: BoxDecoration(
+        color: WHITE_COLOR,
+        borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: double.infinity,
+            height: 40,
+            decoration: const BoxDecoration(
+              color: WHITE_COLOR,
+              borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(DEFAULT_BORDER_RADIUS)),
             ),
-            Flexible(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
+              children: [
+                Center(
+                  child: Text(
+                    'Thêm vào giỏ',
+                    style: AppTextStyle.semibold(
+                      MEDIUM_TEXT_SIZE,
+                      BLACK_TEXT_COLOR,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  right: 8,
+                  top: 10,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Icon(
+                      Icons.close_rounded,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            height: 1,
+            width: double.infinity,
+            color: GREY_LIGHT_COLOR,
+          ),
+          const SizedBox(
+            height: DEFAULT_MARGIN,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
+                child: Row(
                   children: [
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius:
+                          BorderRadius.circular(DEFAULT_BORDER_RADIUS),
                       child: widget.product.image != null &&
                               widget.product.image!.isNotEmpty
                           ? Image.network(
                               widget.product.image!.first,
-                              height: 160,
-                              width: double.infinity,
+                              height: 80,
+                              width: 80,
                               fit: BoxFit.cover,
                             )
                           : Image.asset(
                               'assets/images/default_image.png',
-                              height: 160,
-                              width: double.infinity,
+                              height: 80,
+                              width: 80,
                               fit: BoxFit.cover,
                             ),
                     ),
-                    const SizedBox(height: DEFAULT_MARGIN),
-                    Text(
-                      widget.product.title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                    const SizedBox(
+                      width: DEFAULT_MARGIN,
                     ),
-                    const SizedBox(height: SMALL_MARGIN),
-                    widget.product.description != null &&
-                            widget.product.description!.isNotEmpty
-                        ? Column(
-                            children: [
-                              Text(widget.product.description!),
-                              const SizedBox(height: SMALL_MARGIN),
-                            ],
-                          )
-                        : const SizedBox.shrink(),
-                    Text(
-                      '\$${widget.product.price}',
-                      style: const TextStyle(
-                        color: Colors.green,
-                        fontSize: 16,
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.product.title,
+                          style: AppTextStyle.medium(LARGE_TEXT_SIZE),
+                        ),
+                        const SizedBox(height: SMALL_MARGIN),
+                        widget.product.description != null &&
+                                widget.product.description!.isNotEmpty
+                            ? Column(
+                                children: [
+                                  Text(widget.product.description!),
+                                  const SizedBox(height: SMALL_MARGIN),
+                                ],
+                              )
+                            : const SizedBox.shrink(),
+                        Text(
+                          FormatText.formatCurrency(widget.product.price),
+                          style:
+                              AppTextStyle.medium(LARGE_TEXT_SIZE, GREEN_COLOR),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: DEFAULT_MARGIN),
-                    CustomTextField(
-                      hintText: 'Add note to your order...',
-                      maxLines: 5,
-                      minLines: 1,
-                      onChanged: (value) {},
-                    ),
-                    const SizedBox(height: DEFAULT_MARGIN),
                   ],
                 ),
               ),
-            ),
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: WHITE_COLOR,
-                borderRadius: const BorderRadius.vertical(
-                    bottom: Radius.circular(DEFAULT_BORDER_RADIUS)),
-                boxShadow: [
-                  BoxShadow(
-                    color: GREY_LIGHT_COLOR,
-                    blurRadius: 1,
-                    spreadRadius: 1,
-                    offset: const Offset(0, -1),
-                  ),
-                ],
+              const SizedBox(height: DEFAULT_MARGIN),
+              Container(
+                height: 4,
+                width: double.infinity,
+                color: GREY_LIGHT_COLOR,
               ),
-              child: Column(
-                children: [
-                  Padding(
+              const SizedBox(height: DEFAULT_MARGIN),
+            ],
+          ),
+
+          const Spacer(),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: WHITE_COLOR,
+              borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.circular(DEFAULT_BORDER_RADIUS)),
+              boxShadow: [
+                BoxShadow(
+                  color: GREY_LIGHT_COLOR,
+                  blurRadius: 1,
+                  spreadRadius: 1,
+                  offset: const Offset(0, -1),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Flexible(
+                  flex: 2,
+                  child: Padding(
                     padding: const EdgeInsets.all(DEFAULT_PADDING),
                     child: Container(
-                      width: double.infinity,
                       height: 40,
+                      width: double.infinity,
                       decoration: BoxDecoration(
                         color: GREY_LIGHT_COLOR,
                         borderRadius:
@@ -197,30 +207,40 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: double.infinity,
+                ),
+                Flexible(
+                  flex: 3,
+                  child: SizedBox(
                     height: 60,
+                    width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        final updatedProduct =
+                            widget.product.copyWith(quantityOrder: quantity);
+
+                        context
+                            .read<ProductBloc>()
+                            .add(AddProductToOrderList(updatedProduct));
+                        Navigator.of(context).pop();
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PRIMARY_COLOR,
                         shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                              bottom: Radius.circular(DEFAULT_BORDER_RADIUS)),
+                          borderRadius: BorderRadius.zero,
                         ),
                       ),
                       child: Text(
-                        'Add to Cart (\$${(widget.product.price * quantity).toStringAsFixed(2)})',
+                        'Cập nhật giỏ',
                         style:
                             AppTextStyle.semibold(LARGE_TEXT_SIZE, WHITE_COLOR),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

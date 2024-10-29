@@ -44,46 +44,32 @@ class MainMobileScreenState extends State<MainMobileScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  width: SMALL_MARGIN,
-                ),
+                const SizedBox(width: SMALL_MARGIN),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       store!.name,
-                      style: AppTextStyle.semibold(
-                        LARGE_TEXT_SIZE,
-                        WHITE_COLOR,
-                      ),
+                      style:
+                          AppTextStyle.semibold(LARGE_TEXT_SIZE, WHITE_COLOR),
                     ),
                     Text(
                       'Thông tin cửa hàng >',
-                      style: AppTextStyle.medium(
-                        MEDIUM_TEXT_SIZE,
-                        WHITE_COLOR,
-                      ),
+                      style: AppTextStyle.medium(MEDIUM_TEXT_SIZE, WHITE_COLOR),
                     ),
                   ],
                 ),
                 const Spacer(),
                 InkWell(
                   onTap: () {},
-                  child: const Icon(
-                    Icons.search_rounded,
-                    color: WHITE_COLOR,
-                  ),
+                  child: const Icon(Icons.search_rounded, color: WHITE_COLOR),
                 ),
-                const SizedBox(
-                  width: DEFAULT_MARGIN,
-                ),
+                const SizedBox(width: DEFAULT_MARGIN),
                 InkWell(
                   onTap: () {},
-                  child: const Icon(
-                    Iconsax.message_notif_copy,
-                    color: WHITE_COLOR,
-                  ),
+                  child: const Icon(Iconsax.message_notif_copy,
+                      color: WHITE_COLOR),
                 ),
               ],
             ),
@@ -100,53 +86,205 @@ class MainMobileScreenState extends State<MainMobileScreen> {
               child: ClipPath(
                 clipper: BottomCurveClipper(),
                 child: Container(
-                  height: 100,
+                  height: 120,
                   color: PRIMARY_COLOR,
                 ),
               ),
             ),
-            Column(
-              children: [
-                const MiniDashBoard(),
-                MenuMobile(
-                  onItemSelected: (route) {
-                    switch (route) {
-                      case PageRoutes.activityPageMobile:
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const ActivityPageMobileScreen(),
-                          ),
-                        );
-                        break;
-                      case PageRoutes.inventoryPageMobile:
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const InventoryPageMobileScreen(),
-                          ),
-                        );
-                        break;
-                      case PageRoutes.orderPageMobile:
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const OrderPageMobileScreen(),
-                          ),
-                        );
-                        break;
-                    }
-                  },
-                ),
-                const SizedBox(height: DEFAULT_MARGIN,),
-                const ImageSlider(),
-              ],
+            // Make the main content scrollable
+            SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: [
+                  const MiniDashBoard(),
+                  MenuMobile(
+                    onItemSelected: (route) {
+                      switch (route) {
+                        case PageRoutes.activityPageMobile:
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const ActivityPageMobileScreen(),
+                            ),
+                          );
+                          break;
+                        case PageRoutes.inventoryPageMobile:
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const InventoryPageMobileScreen(),
+                            ),
+                          );
+                          break;
+                        case PageRoutes.orderPageMobile:
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const OrderPageMobileScreen(),
+                            ),
+                          );
+                          break;
+                      }
+                    },
+                  ),
+                  const SizedBox(height: DEFAULT_MARGIN),
+                  const ImageSlider(),
+                  const SizedBox(height: DEFAULT_MARGIN),
+                  const ContactBox(),
+                  const SizedBox(height: MEDIUM_MARGIN),
+                ],
+              ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ContactBox extends StatelessWidget {
+  const ContactBox({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 160,
+      width: double.infinity,
+      padding: const EdgeInsets.all(DEFAULT_MARGIN),
+      decoration: BoxDecoration(
+        color: WHITE_COLOR,
+        borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              SizedBox(
+                width: 50,
+                height: 50,
+                child: ClipOval(
+                  child: Image.asset(
+                    'assets/images/store.png',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(width: SMALL_MARGIN),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Bạn cần hỗ trợ?',
+                      style: AppTextStyle.semibold(LARGE_TEXT_SIZE),
+                    ),
+                    Text(
+                      'Hướng dẫn, giải đáp thắc mắc hoặc báo cáo sự cố',
+                      style: AppTextStyle.medium(SMALL_TEXT_SIZE),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const Spacer(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // Align evenly
+            children: [
+              Flexible(
+                flex: 1,
+                child: OutlinedButton.icon(
+                  onPressed: () {},
+                  icon: Icon(Icons.chat, color: Colors.blue),
+                  label: Text(
+                    'Chat ngay',
+                    style: AppTextStyle.medium(PLUS_SMALL_TEXT_SIZE),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.blue),
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+                    ),
+                  ),
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: OutlinedButton.icon(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.message,
+                    color: Colors.blue,
+                  ),
+                  label: Text(
+                    'Messenger',
+                    style: AppTextStyle.medium(PLUS_SMALL_TEXT_SIZE),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(
+                      color: Colors.blue,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+                    ),
+                  ),
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: OutlinedButton.icon(
+                  onPressed: () {},
+                  icon: Icon(Icons.phone, color: Colors.blue),
+                  label: Text(
+                    'ZaloOA',
+                    style: AppTextStyle.medium(PLUS_SMALL_TEXT_SIZE),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: Colors.blue),
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: SMALL_MARGIN),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(
+                horizontal: DEFAULT_PADDING, vertical: SMALL_PADDING),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.phone,
+                  color: Colors.white,
+                ),
+                SizedBox(width: 8),
+                Text(
+                  'Miễn phí tư vấn cửa hàng mẫu',
+                  style: AppTextStyle.medium(MEDIUM_TEXT_SIZE, WHITE_COLOR),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

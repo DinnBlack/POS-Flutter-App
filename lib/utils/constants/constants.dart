@@ -24,6 +24,7 @@ const Color RED_COLOR = Colors.red;
 const Color ORANGE_COLOR = Colors.orange;
 
 // Sizes
+const double PLUS_SMALL_TEXT_SIZE = 10.0;
 const double SMALL_TEXT_SIZE = 12.0;
 const double MEDIUM_TEXT_SIZE = 14.0;
 const double LARGE_TEXT_SIZE = 16.0;

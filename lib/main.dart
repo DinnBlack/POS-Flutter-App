@@ -3,6 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pos_flutter_app/features/order/bloc/order_bloc.dart';
+import 'package:pos_flutter_app/features/order/bloc/order_bloc.dart';
+import 'package:pos_flutter_app/features/order/data/order_firebase.dart';
 import 'package:pos_flutter_app/features/product/bloc/product_bloc.dart';
 import 'package:pos_flutter_app/features/store/bloc/store_bloc.dart';
 import 'package:pos_flutter_app/routes/app_routes.dart';
@@ -14,6 +17,7 @@ import 'package:pos_flutter_app/services/firebase/firebase_options.dart';
 import 'package:pos_flutter_app/features/product/data/product_firebase.dart';
 import 'package:pos_flutter_app/features/store/data/store_firebase.dart';
 
+import 'features/app/bloc/app_cubit.dart';
 import 'features/auth/bloc/auth_bloc.dart';
 import 'features/category/bloc/category_bloc.dart';
 
@@ -73,6 +77,12 @@ class MyApp extends StatelessWidget {
           create: (context) => CategoryBloc(
               CategoryFirebase(context), context.read<ProductBloc>()),
         ),
+        BlocProvider<OrderBloc>(
+          create: (context) => OrderBloc(OrderFirebase(context)),
+        ),
+        BlocProvider<AppCubit>(
+          create: (context) => AppCubit(),
+        ),
       ],
       child: MaterialApp(
         useInheritedMediaQuery: true,
@@ -83,7 +93,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
-          fontFamily: 'Quicksand',
+          // fontFamily: 'Quicksand',
         ),
         onGenerateRoute: appRoutes,
         initialRoute: LoginScreen.route,

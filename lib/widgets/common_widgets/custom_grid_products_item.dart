@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 import 'package:pos_flutter_app/utils/ui_util/format_text.dart';
+import '../../features/app/bloc/app_cubit.dart';
 import '../../models/product_model.dart';
 import '../../screens/services/product/sale_product/sale_product_dialog_screen.dart';
 
@@ -18,7 +20,10 @@ class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
   int quantity = 0;
 
   void showProductDetailsDialog() {
-    showDialog(
+    // final appCubit = BlocProvider.of<AppCubit>(context);
+    //
+    // BuildContext? orderPageContext = appCubit.getContext();
+    showBottomSheet(
       context: context,
       builder: (BuildContext context) {
         return SaleProductDialogScreen(

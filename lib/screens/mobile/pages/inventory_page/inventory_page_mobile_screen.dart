@@ -11,7 +11,6 @@ import '../../../services/category/list_categories_vertical_screen.dart';
 import '../../../services/product/list_products/list_products_screen.dart';
 import '../../../services/product/product_create/product_create_screen.dart';
 
-
 class InventoryPageMobileScreen extends StatefulWidget {
   const InventoryPageMobileScreen({super.key});
 
@@ -20,22 +19,21 @@ class InventoryPageMobileScreen extends StatefulWidget {
       _InventoryPageMobileScreenState();
 }
 
-class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen> {
+class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen>
+    with SingleTickerProviderStateMixin {
   bool isGridView = true;
-  PageController _pageController = PageController();
-  int _selectedIndex = 0; // Chỉ số trang hiện tại
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    _tabController.dispose();
     super.dispose();
-  }
-
-  void _onTitleTap(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    _pageController.jumpToPage(index);
   }
 
   @override
@@ -54,7 +52,9 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen> {
                   builder: (context, state) {
                     return InkWell(
                       onTap: () {
-                        context.read<CategoryBloc>().add(CategoryResetToDefaultStated());
+                        context
+                            .read<CategoryBloc>()
+                            .add(CategoryResetToDefaultStated());
                         Navigator.pop(context);
                       },
                       child: const Icon(
@@ -125,27 +125,42 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen> {
           children: [
             Container(
               color: WHITE_COLOR,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              child: Stack(
+                alignment: Alignment.center,
                 children: [
-                  TextButton(
-                    onPressed: () => _onTitleTap(0),
-                    child: Text(
-                      'Sản phẩm',
-                      style: AppTextStyle.medium(
-                        MEDIUM_TEXT_SIZE,
-                        _selectedIndex == 0 ? PRIMARY_COLOR : BLACK_TEXT_COLOR,
+                  TabBar(
+                    controller: _tabController,
+                    labelColor: PRIMARY_COLOR,
+                    unselectedLabelColor: GREY_COLOR,
+                    indicator: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: PRIMARY_COLOR,
+                          width: 2.0,
+                        ),
                       ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () => _onTitleTap(1),
-                    child: Text(
-                      'Danh mục',
-                      style: AppTextStyle.medium(
-                        MEDIUM_TEXT_SIZE,
-                        _selectedIndex == 1 ? PRIMARY_COLOR : BLACK_TEXT_COLOR,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    tabs: const [
+                      Tab(
+                        child: Text(
+                          'Sản phẩm',
+                          style: TextStyle(fontSize: LARGE_TEXT_SIZE),
+                        ),
                       ),
+                      Tab(
+                        child: Text(
+                          'Danh mục',
+                          style: TextStyle(fontSize: LARGE_TEXT_SIZE),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    child: Container(
+                      width: 1.0,
+                      height: 20.0,
+                      color: GREY_LIGHT_COLOR,
                     ),
                   ),
                 ],
@@ -153,30 +168,21 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen> {
             ),
             const SizedBox(height: DEFAULT_MARGIN),
             Expanded(
-              child: PageView(
-                controller: _pageController,
-                onPageChanged: (index) {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                },
+              child: TabBarView(
+                controller: _tabController,
                 children: [
                   Column(
                     children: [
                       const ListCategoriesHorizontalScreen(),
                       Expanded(
                         child: ListProductsScreen(
-                          isGridView: isGridView, isOrderPage: false,),
+                          isGridView: isGridView,
+                          isOrderPage: false,
+                        ),
                       ),
                     ],
                   ),
-                  const Column(
-                    children: [
-                      Expanded(
-                        child: ListCategoriesVerticalScreen(),
-                      ),
-                    ],
-                  ),
+                  const ListCategoriesVerticalScreen(),
                 ],
               ),
             ),

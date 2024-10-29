@@ -9,7 +9,7 @@ class CustomListCategoriesItem extends StatefulWidget {
     required this.category,
     required this.isSelected,
     required this.onTap,
-    this.isVertical = false, 
+    this.isVertical = false,
   });
 
   final CategoryModel category;
@@ -64,9 +64,8 @@ class _CustomListCategoriesItemState extends State<CustomListCategoriesItem> {
                 children: [
                   Text(
                     widget.category.title,
-                    style: AppTextStyle.semibold(
+                    style: AppTextStyle.medium(
                       MEDIUM_TEXT_SIZE,
-                      BLACK_TEXT_COLOR,
                     ),
                   ),
                   Text(
@@ -95,42 +94,27 @@ class _CustomListCategoriesItemState extends State<CustomListCategoriesItem> {
       }),
       child: GestureDetector(
         onTap: widget.onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          decoration: BoxDecoration(
-            color: widget.isSelected
-                ? PRIMARY_COLOR
-                : (isHovered ? Colors.blue.shade100 : WHITE_COLOR),
-            border: Border.all(
-              color: widget.isSelected ? PRIMARY_COLOR : GREY_LIGHT_COLOR,
-              width: 1,
-            ),
-            borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxHeight: 40,
           ),
-          padding: const EdgeInsets.all(DEFAULT_PADDING),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              minWidth: 60,
-              maxHeight: 40,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            decoration: BoxDecoration(
+              color: WHITE_COLOR,
+              border: Border.all(
+                color: widget.isSelected ? PRIMARY_COLOR : GREY_LIGHT_COLOR,
+                width: 1,
+              ),
+              borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.category.title,
-                  style: AppTextStyle.semibold(
-                    MEDIUM_TEXT_SIZE,
-                    widget.isSelected ? WHITE_COLOR : BLACK_TEXT_COLOR,
-                  ),
-                ),
-                Text(
-                  '${widget.category.count} items',
-                  style: AppTextStyle.medium(
-                    SMALL_TEXT_SIZE,
-                    widget.isSelected ? WHITE_COLOR : GREY_COLOR,
-                  ),
-                ),
-              ],
+            padding: const EdgeInsets.symmetric(vertical: DEFAULT_PADDING, horizontal: MEDIUM_PADDING),
+            child: Text(
+              widget.category.title,
+              style: AppTextStyle.medium(
+                MEDIUM_TEXT_SIZE,
+                widget.isSelected ? PRIMARY_COLOR : GREY_COLOR,
+              ),
             ),
           ),
         ),

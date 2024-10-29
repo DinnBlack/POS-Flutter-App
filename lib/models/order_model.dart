@@ -7,6 +7,7 @@ class OrderModel {
   final String customerName;
   final DateTime orderTime;
   final String status;
+  final String? executor;
   final bool paymentStatus;
 
 //<editor-fold desc="Data Methods">
@@ -17,6 +18,7 @@ class OrderModel {
     required this.customerName,
     required this.orderTime,
     required this.status,
+    this.executor,
     required this.paymentStatus,
   });
 
@@ -31,6 +33,7 @@ class OrderModel {
           customerName == other.customerName &&
           orderTime == other.orderTime &&
           status == other.status &&
+          executor == other.executor &&
           paymentStatus == other.paymentStatus);
 
   @override
@@ -41,11 +44,21 @@ class OrderModel {
       customerName.hashCode ^
       orderTime.hashCode ^
       status.hashCode ^
+      executor.hashCode ^
       paymentStatus.hashCode;
 
   @override
   String toString() {
-    return 'OrderModel{ orderId: $orderId, products: $products, totalPrice: $totalPrice, customerName: $customerName, orderTime: $orderTime, status: $status, paymentStatus: $paymentStatus,}';
+    return 'OrderModel{' +
+        ' orderId: $orderId,' +
+        ' products: $products,' +
+        ' totalPrice: $totalPrice,' +
+        ' customerName: $customerName,' +
+        ' orderTime: $orderTime,' +
+        ' status: $status,' +
+        ' executor: $executor,' +
+        ' paymentStatus: $paymentStatus,' +
+        '}';
   }
 
   OrderModel copyWith({
@@ -55,6 +68,7 @@ class OrderModel {
     String? customerName,
     DateTime? orderTime,
     String? status,
+    String? executor,
     bool? paymentStatus,
   }) {
     return OrderModel(
@@ -64,6 +78,7 @@ class OrderModel {
       customerName: customerName ?? this.customerName,
       orderTime: orderTime ?? this.orderTime,
       status: status ?? this.status,
+      executor: executor ?? this.executor,
       paymentStatus: paymentStatus ?? this.paymentStatus,
     );
   }
@@ -76,6 +91,7 @@ class OrderModel {
       'customerName': this.customerName,
       'orderTime': this.orderTime,
       'status': this.status,
+      'executor': this.executor,
       'paymentStatus': this.paymentStatus,
     };
   }
@@ -88,6 +104,7 @@ class OrderModel {
       customerName: map['customerName'] as String,
       orderTime: map['orderTime'] as DateTime,
       status: map['status'] as String,
+      executor: map['executor'] as String,
       paymentStatus: map['paymentStatus'] as bool,
     );
   }

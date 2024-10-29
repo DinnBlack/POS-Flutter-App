@@ -1,7 +1,12 @@
-part of 'product_bloc.dart';  // Correct file
+part of 'product_bloc.dart';
 
 @immutable
-abstract class ProductState {}
+abstract class ProductState extends Equatable {
+  const ProductState();
+
+  @override
+  List<Object?> get props => [];
+}
 
 class ProductInitial extends ProductState {}
 
@@ -29,4 +34,10 @@ class ProductFetchFailure extends ProductState {
   final String error;
 
   ProductFetchFailure({this.error = 'Failed to fetch products.'});
+}
+
+class ProductOrderListUpdated extends ProductState {
+  final List<ProductModel> orderProductList;
+
+  ProductOrderListUpdated(this.orderProductList);
 }

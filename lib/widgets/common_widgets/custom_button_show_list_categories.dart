@@ -33,8 +33,8 @@ class CustomButtonShowListCategories extends StatelessWidget {
     return GestureDetector(
       onTap: () => _showListCategoriesBottomSheet(context),
       child: Container(
-        height: isAddCategory! ? 40 : 60,
-        width: isAddCategory! ? 40 : 60,
+        height: 40,
+        width: 40,
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(

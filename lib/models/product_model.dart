@@ -12,6 +12,7 @@ class ProductModel {
   final int? promotionCost;
   final String? description;
   final List<String>? categories;
+  final int? quantityOrder;
 
 //<editor-fold desc="Data Methods">
   const ProductModel({
@@ -24,6 +25,7 @@ class ProductModel {
     this.promotionCost,
     this.description,
     this.categories,
+    this.quantityOrder,
   });
 
   @override
@@ -39,7 +41,8 @@ class ProductModel {
           primeCost == other.primeCost &&
           promotionCost == other.promotionCost &&
           description == other.description &&
-          categories == other.categories);
+          categories == other.categories &&
+          quantityOrder == other.quantityOrder);
 
   @override
   int get hashCode =>
@@ -51,11 +54,12 @@ class ProductModel {
       primeCost.hashCode ^
       promotionCost.hashCode ^
       description.hashCode ^
-      categories.hashCode;
+      categories.hashCode ^
+      quantityOrder.hashCode;
 
   @override
   String toString() {
-    return 'ProductModel{ title: $title, price: $price, image: $image, unit: $unit, request: $request, primeCost: $primeCost, promotionCost: $promotionCost, description: $description, categories: $categories,}';
+    return 'ProductModel{ title: $title, price: $price, image: $image, unit: $unit, request: $request, primeCost: $primeCost, promotionCost: $promotionCost, description: $description, categories: $categories, quantityOrder: $quantityOrder,}';
   }
 
   ProductModel copyWith({
@@ -68,6 +72,7 @@ class ProductModel {
     int? promotionCost,
     String? description,
     List<String>? categories,
+    int? quantityOrder,
   }) {
     return ProductModel(
       title: title ?? this.title,
@@ -79,6 +84,7 @@ class ProductModel {
       promotionCost: promotionCost ?? this.promotionCost,
       description: description ?? this.description,
       categories: categories ?? this.categories,
+      quantityOrder: quantityOrder ?? this.quantityOrder,
     );
   }
 
@@ -93,6 +99,7 @@ class ProductModel {
       'promotionCost': this.promotionCost,
       'description': this.description,
       'categories': this.categories,
+      'quantityOrder': this.quantityOrder,
     };
   }
 
@@ -108,6 +115,7 @@ class ProductModel {
       description: map['description'] as String?,
       categories:
           map['categories'] != null ? List<String>.from(map['categories']) : [],
+      quantityOrder: (map['quantityOrder'] as num?)?.toInt(),
     );
   }
 

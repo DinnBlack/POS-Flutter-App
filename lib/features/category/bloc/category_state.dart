@@ -25,7 +25,7 @@ class CategoryFetchSuccess extends CategoryState {
 
   @override
   List<Object?> get props =>
-      [categories, selectedCategory, selectedCategories]; // Update props
+      [categories, selectedCategory, selectedCategories];
 }
 
 class CategoryFetchFailure extends CategoryState {
