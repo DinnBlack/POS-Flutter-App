@@ -34,9 +34,10 @@ class _ListProductsScreenState extends State<ListProductsScreen> {
     _categoryBloc.stream.listen((state) {
       context
           .read<ProductBloc>()
-          .add(ProductFetchStarted(_categoryBloc.selectedCategory!));
-      print('dô đây rồi');
+          .add(ProductFilterChanged(_categoryBloc.selectedCategory!));
     });
+
+    context.read<ProductBloc>().add(ProductFetchStarted());
   }
 
   void _addProduct() {
@@ -60,12 +61,13 @@ class _ListProductsScreenState extends State<ListProductsScreen> {
           crossAxisCount = 2;
         }
 
-        double itemHeight = 140;
+        double itemHeight = 142;
         double itemWidth =
             (constraints.maxWidth - (crossAxisCount - 1) * 10) / crossAxisCount;
 
-        return Padding(
-          padding: const EdgeInsets.only(top: DEFAULT_PADDING),
+        return Container(
+          // color: PRIMARY_COLOR,
+          padding: const EdgeInsets.only(bottom: DEFAULT_PADDING),
           child: BlocBuilder<ProductBloc, ProductState>(
             builder: (context, state) {
               if (state is ProductFetchInProgress) {
@@ -78,9 +80,10 @@ class _ListProductsScreenState extends State<ListProductsScreen> {
                 if (widget.isGridView) {
                   return GridView.builder(
                     padding: const EdgeInsets.only(
-                        left: DEFAULT_PADDING,
-                        right: DEFAULT_PADDING,
-                        bottom: DEFAULT_PADDING),
+                      left: DEFAULT_PADDING,
+                      right: DEFAULT_PADDING,
+                      bottom: DEFAULT_PADDING,
+                    ),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: crossAxisCount,
                       crossAxisSpacing: 10,
@@ -93,13 +96,15 @@ class _ListProductsScreenState extends State<ListProductsScreen> {
                         final product = products[index];
                         return CustomGridProductsItem(product: product);
                       } else {
-                        return _buildAddProductButton();
+                        return _buildAddProductButton(widget.isGridView);
                       }
                     },
                   );
                 } else {
                   return ListView.builder(
-                    padding: const EdgeInsets.only(bottom: 10),
+                    padding: const EdgeInsets.only(
+                      bottom: DEFAULT_PADDING,
+                    ),
                     itemCount: itemCount,
                     itemBuilder: (context, index) {
                       if (index < products.length) {
@@ -111,21 +116,23 @@ class _ListProductsScreenState extends State<ListProductsScreen> {
                               isOrderPage: widget.isOrderPage!,
                             ),
                             Divider(
-                                height: 1,
-                                thickness: 1,
-                                color: GREY_LIGHT_COLOR.withOpacity(0.02)),
+                              height: 1,
+                              thickness: 1,
+                              color: GREY_LIGHT_COLOR.withOpacity(0.02),
+                            ),
                           ],
                         );
                       } else {
                         // Nút "Add Product"
-                        return _buildAddProductButton();
+                        return _buildAddProductButton(widget.isGridView);
                       }
                     },
                   );
                 }
               } else if (state is ProductFetchFailure) {
                 return Center(
-                    child: Text('Failed to fetch products: ${state.error}'));
+                  child: Text('Failed to fetch products: ${state.error}'),
+                );
               } else {
                 print(state);
                 return const Center(child: Text('No products found.'));
@@ -137,15 +144,16 @@ class _ListProductsScreenState extends State<ListProductsScreen> {
     );
   }
 
-  Widget _buildAddProductButton() {
+  Widget _buildAddProductButton(bool isGridView) {
     return GestureDetector(
       onTap: _addProduct,
       child: Container(
-        height: 60,
+        height: 80,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: WHITE_COLOR,
-          borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+          borderRadius: isGridView ? BorderRadius.circular(DEFAULT_BORDER_RADIUS) : BorderRadius.zero,
+          border: isGridView ? Border.all(color: GREY_COLOR.withOpacity(0.5), width: 1) : null,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

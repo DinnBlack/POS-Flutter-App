@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:path_drawing/path_drawing.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pos_flutter_app/utils/ui_util/format_text.dart';
 
+import '../../features/order/bloc/order_bloc.dart';
 import '../../models/product_model.dart';
 import '../../utils/constants/constants.dart';
 import '../../utils/ui_util/app_text_style.dart';
@@ -27,11 +28,10 @@ class _CustomListOrderProductItemState extends State<CustomListOrderProductItem>
   late TextEditingController _discountController;
   late TextEditingController _noteController;
 
-  // Tạo một danh sách FocusNode để quản lý tiêu điểm cho các trường văn bản
   final List<FocusNode> _focusNodes = [
-    FocusNode(), // FocusNode cho "Giá bán"
-    FocusNode(), // FocusNode cho "Giảm giá"
-    FocusNode(), // FocusNode cho "Ghi chú"
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
   ];
 
   void _toggleExpand() {
@@ -51,19 +51,32 @@ class _CustomListOrderProductItemState extends State<CustomListOrderProductItem>
   @override
   void initState() {
     super.initState();
-    // Khởi tạo các TextEditingController với giá trị ban đầu
-    _priceController = TextEditingController(text: FormatText.formatCurrency(widget.product.price));
-    _discountController = TextEditingController(text: "0"); // hoặc giá trị mặc định khác
+    _priceController = TextEditingController(
+        text: FormatText.formatCurrency(widget.product.price));
+    _discountController = TextEditingController(text: "0");
     _noteController = TextEditingController(text: "Thêm ghi chú...");
   }
 
   @override
   void dispose() {
-    // Giải phóng các TextEditingController khi không còn sử dụng
     _priceController.dispose();
     _discountController.dispose();
     _noteController.dispose();
     super.dispose();
+  }
+
+  void addProductToOrderList() {
+    setState(() {
+      BlocProvider.of<OrderBloc>(context)
+          .add(AddProductToOrderListStarted(widget.product));
+    });
+  }
+
+  void removeProductFromOrderList() {
+    setState(() {
+      BlocProvider.of<OrderBloc>(context)
+          .add(RemoveProductFromOrderListStarted(widget.product));
+    });
   }
 
   @override
@@ -83,26 +96,26 @@ class _CustomListOrderProductItemState extends State<CustomListOrderProductItem>
                       padding: const EdgeInsets.all(SMALL_PADDING),
                       child: ClipRRect(
                         borderRadius:
-                        BorderRadius.circular(SMALL_BORDER_RADIUS),
+                            BorderRadius.circular(SMALL_BORDER_RADIUS),
                         child: SizedBox(
                           height: 60,
                           width: 60,
                           child: (widget.product.image != null &&
-                              widget.product.image!.isNotEmpty)
+                                  widget.product.image!.isNotEmpty)
                               ? Image.network(
-                            widget.product.image!.first,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Image.asset(
-                                'assets/images/default_image.png',
-                                fit: BoxFit.cover,
-                              );
-                            },
-                          )
+                                  widget.product.image!.first,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      'assets/images/default_image.png',
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
+                                )
                               : Image.asset(
-                            'assets/images/default_image.png',
-                            fit: BoxFit.cover,
-                          ),
+                                  'assets/images/default_image.png',
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                       ),
                     ),
@@ -147,7 +160,8 @@ class _CustomListOrderProductItemState extends State<CustomListOrderProductItem>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            FormatText.formatCurrency(widget.product.price),
+                            FormatText.formatCurrency(widget.product.price *
+                                widget.product.quantityOrder!),
                             style: AppTextStyle.medium(
                                 MEDIUM_TEXT_SIZE, PRIMARY_COLOR),
                             maxLines: 2,
@@ -162,15 +176,17 @@ class _CustomListOrderProductItemState extends State<CustomListOrderProductItem>
                                 horizontal: SMALL_PADDING),
                             decoration: BoxDecoration(
                               border:
-                              Border.all(width: 1, color: GREY_LIGHT_COLOR),
+                                  Border.all(width: 1, color: GREY_LIGHT_COLOR),
                               borderRadius:
-                              BorderRadius.circular(SMALL_BORDER_RADIUS),
+                                  BorderRadius.circular(SMALL_BORDER_RADIUS),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    removeProductFromOrderList();
+                                  },
                                   child: const Icon(
                                     Icons.remove_rounded,
                                   ),
@@ -180,7 +196,9 @@ class _CustomListOrderProductItemState extends State<CustomListOrderProductItem>
                                   style: AppTextStyle.medium(MEDIUM_TEXT_SIZE),
                                 ),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    addProductToOrderList();
+                                  },
                                   child: const Icon(
                                     Icons.add_rounded,
                                     color: PRIMARY_COLOR,
@@ -203,29 +221,32 @@ class _CustomListOrderProductItemState extends State<CustomListOrderProductItem>
           curve: Curves.easeInOut,
           child: _isExpanded
               ? Column(
-            children: [
-              Padding(
-                padding:
-                const EdgeInsets.symmetric(vertical: SMALL_PADDING),
-                child: CustomPaint(
-                  size: const Size(double.infinity, 1),
-                  painter: DashedLinePainter(),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: SMALL_PADDING),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildEditableRow("Giá bán",
-                        FormatText.formatCurrency(widget.product.price), index: 0),
-                    _buildEditableRow("Giảm giá", "0", hasToggle: true, index: 1),
-                    _buildEditableRow("Ghi chú", "Thêm ghi chú...", index: 2),
+                    Padding(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: SMALL_PADDING),
+                      child: CustomPaint(
+                        size: const Size(double.infinity, 1),
+                        painter: DashedLinePainter(),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: SMALL_PADDING),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildEditableRow("Giá bán",
+                              FormatText.formatCurrency(widget.product.price),
+                              index: 0),
+                          _buildEditableRow("Giảm giá", "0",
+                              hasToggle: true, index: 1),
+                          _buildEditableRow("Ghi chú", "Thêm ghi chú...",
+                              index: 2),
+                        ],
+                      ),
+                    ),
                   ],
-                ),
-              ),
-            ],
-          )
+                )
               : const SizedBox.shrink(),
         ),
       ],
@@ -254,12 +275,12 @@ class _CustomListOrderProductItemState extends State<CustomListOrderProductItem>
                   children: const [
                     Padding(
                       padding:
-                      EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
+                          EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
                       child: Text('VND'),
                     ),
                     Padding(
                       padding:
-                      EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
+                          EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
                       child: Text('%'),
                     ),
                   ],
@@ -271,9 +292,11 @@ class _CustomListOrderProductItemState extends State<CustomListOrderProductItem>
               children: [
                 Expanded(
                   child: TextFormField(
-                    controller: index == 0 ? _priceController :
-                    index == 1 ? _discountController :
-                    _noteController,
+                    controller: index == 0
+                        ? _priceController
+                        : index == 1
+                            ? _discountController
+                            : _noteController,
                     keyboardType: (label == "Giá bán" || label == "Giảm giá")
                         ? TextInputType.number
                         : TextInputType.text,
@@ -284,20 +307,22 @@ class _CustomListOrderProductItemState extends State<CustomListOrderProductItem>
                       isDense: true,
                       border: InputBorder.none,
                       contentPadding:
-                      EdgeInsets.symmetric(vertical: SMALL_PADDING),
+                          EdgeInsets.symmetric(vertical: SMALL_PADDING),
                     ),
                     style:
-                    AppTextStyle.semibold(MEDIUM_TEXT_SIZE, PRIMARY_COLOR),
+                        AppTextStyle.semibold(MEDIUM_TEXT_SIZE, PRIMARY_COLOR),
                     maxLines: 1,
                     textAlign: TextAlign.right,
                     focusNode: index != null ? _focusNodes[index] : null,
                   ),
                 ),
-                const SizedBox(width: SMALL_MARGIN,),
+                const SizedBox(
+                  width: SMALL_MARGIN,
+                ),
                 InkWell(
-                  child: const Icon(Icons.edit_note_outlined, size: 16, color: PRIMARY_COLOR),
+                  child: const Icon(Icons.edit_note_outlined,
+                      size: 16, color: PRIMARY_COLOR),
                   onTap: () {
-                    // Yêu cầu tiêu điểm vào trường văn bản tương ứng
                     if (index != null) {
                       FocusScope.of(context).requestFocus(_focusNodes[index]);
                     }

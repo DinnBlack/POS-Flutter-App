@@ -12,10 +12,14 @@ part 'product_state.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final ProductFirebase _productFirebase;
+  List<ProductModel> allProducts = [];
+
+
 
   ProductBloc(this._productFirebase) : super(ProductInitial()) {
     on<ProductCreateStarted>(_onProductCreate);
     on<ProductFetchStarted>(_onProductFetch);
+    on<ProductFilterChanged>(_onProductFilterChanged);
   }
 
   Future<void> _onProductCreate(
@@ -33,16 +37,27 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       ProductFetchStarted event, Emitter<ProductState> emit) async {
     emit(ProductFetchInProgress());
     try {
-      List<ProductModel> products;
+      allProducts = await _productFirebase.fetchProducts();
+      emit(ProductFetchSuccess(allProducts));
+    } catch (e) {
+      emit(ProductFetchFailure(error: e.toString()));
+    }
+  }
 
-      if (event.category.title == "Tất cả") {
-        products = await _productFirebase.fetchProducts();
-      } else {
-        products =
-            await _productFirebase.fetchProductsByCategory(event.category);
-      }
+  void _onProductFilterChanged(
+      ProductFilterChanged event, Emitter<ProductState> emit) async {
+    emit(ProductFetchInProgress());
+    try {
+      allProducts = await _productFirebase.fetchProducts();
 
-      emit(ProductFetchSuccess(products));
+      final filteredProducts = event.category.title == "Tất cả"
+          ? allProducts
+          : allProducts
+              .where((product) =>
+                  product.categories?.contains(event.category.title) ?? false)
+              .toList();
+
+      emit(ProductFetchSuccess(filteredProducts));
     } catch (e) {
       emit(ProductFetchFailure(error: e.toString()));
     }

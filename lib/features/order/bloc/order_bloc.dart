@@ -12,6 +12,10 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   final OrderFirebase _orderFirebase;
   List<ProductModel> orderProductList = [];
 
+  int get totalProductCount => orderProductList.fold(0, (sum, product) => sum + (product.quantityOrder ?? 0));
+
+  int get totalPrice => orderProductList.fold(0, (sum, product) => sum + ((product.price * (product.quantityOrder ?? 0))));
+
   OrderBloc(this._orderFirebase) : super(OrderInitial()) {
     on<OrderCreateStarted>(_onOrderCreate);
     on<AddProductToOrderListStarted>(_onAddProductToOrderList);
@@ -34,9 +38,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   Future<void> _onAddProductToOrderList(
       AddProductToOrderListStarted event, Emitter<OrderState> emit) async {
     final index = orderProductList.indexWhere((product) =>
-    product.title == event.product.title &&
-        product.options == event.product.options &&
-        product.price == event.product.price);
+    product.title == event.product.title);
 
     if (index != -1) {
       if (orderProductList[index].quantityOrder != null) {
@@ -50,6 +52,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     emit(OrderProductListUpdated(orderProductList));
     print(orderProductList);
   }
+
 
   Future<void> _onRemoveProductFromOrderList(
       RemoveProductFromOrderListStarted event, Emitter<OrderState> emit) async {
@@ -66,9 +69,11 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
         orderProductList.removeAt(index);
       }
     }
+
     emit(OrderProductListUpdated(orderProductList));
     print(orderProductList);
   }
+
 
   Future<void> _onClearOrderProductList(
       ClearOrderProductListStarted event, Emitter<OrderState> emit) async {

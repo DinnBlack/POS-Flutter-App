@@ -13,11 +13,11 @@ const CategoryModel defaultCategory = CategoryModel(title: 'Tất cả', count: 
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final CategoryFirebase _categoryFirebase;
+  final ProductBloc _productBloc;
   List<CategoryModel> addProductCategories = [];
   List<CategoryModel> selectedCategories = [];
   List<CategoryModel> categories = [];
   CategoryModel? selectedCategory = defaultCategory;
-  final ProductBloc _productBloc;
 
   List<String> get selectedCategoriesTitle =>
       selectedCategories.map((category) => category.title).toList();
@@ -70,7 +70,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     print("Selected categories after removing: $selectedCategoriesTitle");
     emit(CategorySelectionState(selectedCategories));
     emit(CategoryFetchSuccess(
-        categories:  addProductCategories,
+        categories: addProductCategories,
         selectedCategory: selectedCategory,
         selectedCategories: selectedCategories));
   }
@@ -98,20 +98,27 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
         selectedCategories: selectedCategories));
   }
 
-  Future<void> _onCategorySelectFilter(
-      CategorySelectFilterStated event, Emitter<CategoryState> emit) async {
+  void _onCategorySelectFilter(
+      CategorySelectFilterStated event, Emitter<CategoryState> emit) {
     selectedCategory = event.selectedCategory;
-    print("Selected categories after adding: $selectedCategory");
     emit(CategoryFetchSuccess(
         categories: categories,
         selectedCategory: selectedCategory,
         selectedCategories: selectedCategories));
-    _productBloc.add(ProductFetchStarted(selectedCategory!));
+    _productBloc.add(ProductFilterChanged(selectedCategory!));
+    print('dang chon $selectedCategory');
   }
 
   Future<void> _onCategoryResetToDefault(
       CategoryResetToDefaultStated event, Emitter<CategoryState> emit) async {
     selectedCategory = defaultCategory;
-    emit(CategorySelectFilterState(selectedCategory!));
+    print('chon $selectedCategory');
+
+    emit(CategoryFetchSuccess(
+      categories: categories,
+      selectedCategory: selectedCategory,
+      selectedCategories: selectedCategories,
+    ));
   }
+
 }

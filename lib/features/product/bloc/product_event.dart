@@ -1,6 +1,12 @@
 part of 'product_bloc.dart';
 
-abstract class ProductEvent {}
+@immutable
+abstract class ProductEvent extends Equatable {
+  const ProductEvent();
+
+  @override
+  List<Object> get props => [];
+}
 
 class ProductCreateStarted extends ProductEvent {
   final ProductModel product;
@@ -8,8 +14,13 @@ class ProductCreateStarted extends ProductEvent {
   ProductCreateStarted({required this.product});
 }
 
-class ProductFetchStarted extends ProductEvent {
+class ProductFetchStarted extends ProductEvent {}
+
+class ProductFilterChanged extends ProductEvent {
   final CategoryModel category;
 
-  ProductFetchStarted(this.category);
+  ProductFilterChanged(this.category);
+
+  @override
+  List<Object> get props => [category];
 }

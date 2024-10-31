@@ -174,6 +174,7 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen>
                   Column(
                     children: [
                       const ListCategoriesHorizontalScreen(),
+                      SizedBox(height: DEFAULT_MARGIN),
                       Expanded(
                         child: ListProductsScreen(
                           isGridView: isGridView,

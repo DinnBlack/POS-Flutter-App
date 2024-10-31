@@ -5,9 +5,12 @@ import 'package:pos_flutter_app/screens/services/customer/dialog/chose_customer_
 import 'package:pos_flutter_app/widgets/common_widgets/custom_bottom_bar.dart';
 import 'package:pos_flutter_app/widgets/normal_widgets/custom_list_order_product_item.dart';
 
+import '../../../../features/category/bloc/category_bloc.dart';
 import '../../../../features/order/bloc/order_bloc.dart';
+import '../../../../features/product/bloc/product_bloc.dart';
 import '../../../../utils/constants/constants.dart';
 import '../../../../utils/ui_util/app_text_style.dart';
+import '../../../../utils/ui_util/format_text.dart';
 import '../../../../widgets/common_widgets/custom_outline_button.dart';
 import '../../../../widgets/common_widgets/dashed_line_painter.dart';
 
@@ -55,6 +58,9 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
                 InkWell(
                   onTap: () {
                     Navigator.pop(context);
+                    context
+                        .read<ProductBloc>()
+                        .add(ProductFilterChanged(context.read<CategoryBloc>().selectedCategory!));
                   },
                   child: const Icon(
                     Iconsax.arrow_left_2_copy,
@@ -93,7 +99,7 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
                           color: PRIMARY_COLOR, size: 18),
                       const SizedBox(width: DEFAULT_MARGIN),
                       Text(
-                        'Mang về', // Văn bản
+                        'Mang về',
                         style: AppTextStyle.medium(
                             MEDIUM_TEXT_SIZE, PRIMARY_COLOR),
                       ),
@@ -118,31 +124,39 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
                     CustomOutlineButton(
                       onPressed: () {
                         Navigator.pop(context);
+                        context
+                            .read<ProductBloc>()
+                            .add(ProductFilterChanged(context.read<CategoryBloc>().selectedCategory!));
                       },
                       text: 'Thêm sản phẩm',
                       icon: Icons.add_rounded,
                     ),
                     const SizedBox(height: DEFAULT_PADDING),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount:
-                          context.read<OrderBloc>().orderProductList.length,
-                      itemBuilder: (context, index) {
-                        final product =
-                            context.read<OrderBloc>().orderProductList[index];
+                    BlocBuilder<OrderBloc, OrderState>(
+                      builder: (context, state) {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount:
+                              context.read<OrderBloc>().orderProductList.length,
+                          itemBuilder: (context, index) {
+                            final product = context
+                                .read<OrderBloc>()
+                                .orderProductList[index];
 
-                        return Column(
-                          children: [
-                            CustomListOrderProductItem(product: product),
-                            if (index <
-                                context
-                                        .read<OrderBloc>()
-                                        .orderProductList
-                                        .length -
-                                    1)
-                              Divider(color: GREY_LIGHT_COLOR),
-                          ],
+                            return Column(
+                              children: [
+                                CustomListOrderProductItem(product: product),
+                                if (index <
+                                    context
+                                            .read<OrderBloc>()
+                                            .orderProductList
+                                            .length -
+                                        1)
+                                  Divider(color: GREY_LIGHT_COLOR),
+                              ],
+                            );
+                          },
                         );
                       },
                     ),
@@ -181,7 +195,6 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
                                 style: AppTextStyle.medium(
                                     LARGE_TEXT_SIZE, GREY_COLOR),
                               ),
-                              Spacer(),
                               const Icon(
                                 Icons.contacts_outlined,
                                 color: GREY_COLOR,
@@ -206,58 +219,65 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
               color: WHITE_COLOR,
               width: double.infinity,
               padding: const EdgeInsets.all(DEFAULT_PADDING),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: BlocBuilder<OrderBloc, OrderState>(
+                builder: (context, state) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Tổng 7 sản phẩm',
-                        style: AppTextStyle.medium(LARGE_TEXT_SIZE, GREY_COLOR),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Tổng ${BlocProvider.of<OrderBloc>(context).totalProductCount} sản phẩm',
+                            style: AppTextStyle.medium(
+                                LARGE_TEXT_SIZE, GREY_COLOR),
+                          ),
+                          Text(
+                            FormatText.formatCurrency(
+                                BlocProvider.of<OrderBloc>(context).totalPrice),
+                            style: AppTextStyle.semibold(LARGE_TEXT_SIZE),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '18.000đ',
-                        style: AppTextStyle.semibold(LARGE_TEXT_SIZE),
+                      const SizedBox(
+                        height: DEFAULT_MARGIN,
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.symmetric(vertical: SMALL_PADDING),
+                        child: CustomPaint(
+                          size: const Size(double.infinity, 1),
+                          painter: DashedLinePainter(),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Tổng cộng',
+                            style: AppTextStyle.semibold(LARGE_TEXT_SIZE),
+                          ),
+                          Text(
+                            FormatText.formatCurrency(
+                                BlocProvider.of<OrderBloc>(context).totalPrice),
+                            style: AppTextStyle.semibold(
+                                LARGE_TEXT_SIZE, RED_COLOR),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: DEFAULT_MARGIN,
+                      ),
+                      CustomOutlineButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        text: 'Thanh toán trước',
+                        icon: Icons.wallet_outlined,
                       ),
                     ],
-                  ),
-                  const SizedBox(
-                    height: DEFAULT_MARGIN,
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: SMALL_PADDING),
-                    child: CustomPaint(
-                      size: const Size(double.infinity, 1),
-                      painter: DashedLinePainter(),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Tổng cộng',
-                        style: AppTextStyle.semibold(LARGE_TEXT_SIZE),
-                      ),
-                      Text(
-                        '18.000đ',
-                        style:
-                            AppTextStyle.semibold(LARGE_TEXT_SIZE, RED_COLOR),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: DEFAULT_MARGIN,
-                  ),
-                  CustomOutlineButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    text: 'Thanh toán trước',
-                    icon: Icons.wallet_outlined,
-                  ),
-                ],
+                  );
+                },
               ),
             ),
             const SizedBox(
@@ -269,12 +289,8 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
       bottomNavigationBar: CustomBottomBar(
         leftButtonText: 'Lưu đơn',
         rightButtonText: 'Thanh toán',
-        onLeftButtonPressed: () {
-
-        },
-        onRightButtonPressed: () {
-
-        },
+        onLeftButtonPressed: () {},
+        onRightButtonPressed: () {},
       ),
     );
   }

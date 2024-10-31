@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:pos_flutter_app/features/category/bloc/category_bloc.dart';
 import 'package:pos_flutter_app/features/order/bloc/order_bloc.dart';
 import 'package:pos_flutter_app/screens/services/order/order_create/order_create_screen.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
@@ -10,6 +11,7 @@ import '../../../../features/app/bloc/app_cubit.dart';
 import '../../../../utils/constants/constants.dart';
 import '../../../../widgets/normal_widgets/custom_text_field_search_product.dart';
 import '../../../services/category/list_categories_horizontal_screen.dart';
+import '../../../services/category/list_categories_vertical_screen.dart';
 import '../../../services/product/list_products/list_products_screen.dart';
 
 class OrderPageMobileScreen extends StatefulWidget {
@@ -22,13 +24,15 @@ class OrderPageMobileScreen extends StatefulWidget {
 class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
   bool isGridView = true;
   int totalPrice = 0;
+  int layoutState = 0;
 
   @override
   Widget build(BuildContext context) {
+    Color backgroundColor = (layoutState == 2) ? WHITE_COLOR : BACKGROUND_COLOR;
     final appCubit = BlocProvider.of<AppCubit>(context);
     appCubit.saveContext(context);
     return Scaffold(
-      backgroundColor: BACKGROUND_COLOR,
+      backgroundColor: backgroundColor,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: Container(
@@ -88,6 +92,8 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
                                             ClearOrderProductListStarted());
                                         Navigator.pop(context);
                                         Navigator.pop(context);
+                                        context.read<CategoryBloc>().add(
+                                            CategoryResetToDefaultStated());
                                       },
                                       child: Text(
                                         'Xác nhận',
@@ -108,6 +114,9 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
                       );
                     } else {
                       Navigator.pop(context);
+                      context
+                          .read<CategoryBloc>()
+                          .add(CategoryResetToDefaultStated());
                     }
                   },
                   child: const Icon(
@@ -138,11 +147,15 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
                 InkWell(
                   onTap: () {
                     setState(() {
-                      isGridView = !isGridView;
+                      layoutState = (layoutState + 1) % 3;
                     });
                   },
                   child: Icon(
-                    isGridView ? Iconsax.grid_8_copy : Iconsax.menu_1_copy,
+                    layoutState == 0
+                        ? Iconsax.grid_8_copy
+                        : layoutState == 1
+                            ? Iconsax.menu_1_copy
+                            : Iconsax.grid_6_copy,
                     color: BLACK_TEXT_COLOR,
                   ),
                 ),
@@ -165,13 +178,53 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
         child: Column(
           children: [
             const CustomTextFieldSearchProduct(),
-            const SizedBox(height: DEFAULT_MARGIN),
-            const ListCategoriesHorizontalScreen(),
             Expanded(
-              child: ListProductsScreen(
-                isGridView: isGridView,
-                isOrderPage: true,
-              ),
+              child: layoutState == 0
+                  ? const Column(
+                      children: [
+                        SizedBox(height: DEFAULT_MARGIN),
+                        ListCategoriesHorizontalScreen(),
+                        SizedBox(height: DEFAULT_MARGIN),
+                        Expanded(
+                          child: ListProductsScreen(
+                            isGridView: true,
+                            isOrderPage: true,
+                          ),
+                        ),
+                      ],
+                    )
+                  : layoutState == 1
+                      ? const Column(
+                          children: [
+                            SizedBox(height: DEFAULT_MARGIN),
+                            ListCategoriesHorizontalScreen(),
+                            SizedBox(height: DEFAULT_MARGIN),
+                            Expanded(
+                              child: ListProductsScreen(
+                                isGridView: false,
+                                isOrderPage: true,
+                              ),
+                            ),
+                          ],
+                        )
+                      : const Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: ListCategoriesVerticalScreen(
+                                isOrderPage: true,
+                              ),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: ListProductsScreen(
+                                isGridView: true,
+                                isOrderPage: true,
+                              ),
+                            ),
+                          ],
+                        ),
             ),
           ],
         ),
@@ -187,7 +240,7 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
           return orderProductList.isNotEmpty
               ? Container(
                   padding: const EdgeInsets.all(DEFAULT_PADDING),
-                  decoration:  BoxDecoration(
+                  decoration: BoxDecoration(
                     color: WHITE_COLOR,
                     boxShadow: [
                       BoxShadow(

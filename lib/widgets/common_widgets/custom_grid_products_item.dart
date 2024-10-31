@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pos_flutter_app/features/order/bloc/order_bloc.dart';
 
+import '../../features/order/bloc/order_bloc.dart';
 import '../../models/product_model.dart';
 import '../../screens/services/product/sale_product/sale_product_dialog_screen.dart';
 import '../../utils/constants/constants.dart';
 import '../../utils/ui_util/app_text_style.dart';
 import '../../utils/ui_util/format_text.dart';
-import '../../features/product/bloc/product_bloc.dart';
 
 class CustomGridProductsItem extends StatefulWidget {
   const CustomGridProductsItem({super.key, required this.product});
@@ -21,6 +20,30 @@ class CustomGridProductsItem extends StatefulWidget {
 class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
   int quantity = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    _updateQuantityFromOrderBloc();
+  }
+
+  void _updateQuantityFromOrderBloc() {
+    final orderBloc = BlocProvider.of<OrderBloc>(context);
+    final selectedItem = orderBloc.orderProductList.firstWhere(
+      (item) => item.title == widget.product.title,
+      orElse: () => ProductModel(title: '', price: 0),
+    );
+
+    setState(() {
+      if (!mounted) return;
+      quantity = selectedItem?.quantityOrder ?? 0;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void showProductDetailsDialog() {
     showBottomSheet(
       context: context,
@@ -31,6 +54,11 @@ class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
             setState(() {
               quantity = newQuantity;
             });
+            if (newQuantity > 0) {
+              addProductToOrderList();
+            } else {
+              removeProductFromOrderList();
+            }
           },
         );
       },
@@ -38,11 +66,13 @@ class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
   }
 
   void addProductToOrderList() {
-    BlocProvider.of<OrderBloc>(context).add(AddProductToOrderListStarted(widget.product));
+    BlocProvider.of<OrderBloc>(context)
+        .add(AddProductToOrderListStarted(widget.product));
   }
 
   void removeProductFromOrderList() {
-    BlocProvider.of<OrderBloc>(context).add(RemoveProductFromOrderListStarted(widget.product));
+    BlocProvider.of<OrderBloc>(context)
+        .add(RemoveProductFromOrderListStarted(widget.product));
   }
 
   @override
@@ -65,8 +95,8 @@ class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
           borderRadius: BorderRadius.circular(SMALL_BORDER_RADIUS),
           color: WHITE_COLOR,
           border: Border.all(
-            color: quantity > 0 ? PRIMARY_COLOR : GREY_LIGHT_COLOR,
-            width: quantity > 0 ? 1 : 0,
+            color: quantity > 0 ? PRIMARY_COLOR : GREY_COLOR.withOpacity(0.5),
+            width: quantity > 0 ? 1 : 1,
           ),
         ),
         child: Stack(
@@ -80,30 +110,33 @@ class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
                       borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(SMALL_BORDER_RADIUS)),
                       child: widget.product.image != null &&
-                          widget.product.image!.isNotEmpty
+                              widget.product.image!.isNotEmpty
                           ? Image.network(
-                        widget.product.image!.first,
-                        height: 60,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      )
+                              widget.product.image!.first,
+                              height: 60,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            )
                           : Image.asset(
-                        'assets/images/default_image.png',
-                        height: 60,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
+                              'assets/images/default_image.png',
+                              height: 60,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                     if (quantity > 0)
                       Container(
                         alignment: Alignment.center,
                         height: 40,
                         margin: const EdgeInsets.symmetric(
-                            horizontal: DEFAULT_MARGIN, vertical: DEFAULT_MARGIN),
-                        padding: const EdgeInsets.symmetric(vertical: SMALL_PADDING),
+                            horizontal: DEFAULT_MARGIN,
+                            vertical: DEFAULT_MARGIN),
+                        padding:
+                            const EdgeInsets.symmetric(vertical: SMALL_PADDING),
                         decoration: BoxDecoration(
                           color: WHITE_COLOR.withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(SMALL_BORDER_RADIUS),
+                          borderRadius:
+                              BorderRadius.circular(SMALL_BORDER_RADIUS),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -115,7 +148,8 @@ class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
                                 });
                                 removeProductFromOrderList();
                               },
-                              child: const Icon(Icons.remove_rounded, color: PRIMARY_COLOR),
+                              child: const Icon(Icons.remove_rounded,
+                                  color: PRIMARY_COLOR),
                             ),
                             Text(
                               quantity.toString(),
@@ -128,7 +162,8 @@ class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
                                 });
                                 addProductToOrderList();
                               },
-                              child: const Icon(Icons.add_rounded, color: PRIMARY_COLOR),
+                              child: const Icon(Icons.add_rounded,
+                                  color: PRIMARY_COLOR),
                             ),
                           ],
                         ),

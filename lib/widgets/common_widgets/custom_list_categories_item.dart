@@ -10,12 +10,14 @@ class CustomListCategoriesItem extends StatefulWidget {
     required this.isSelected,
     required this.onTap,
     this.isVertical = false,
+    this.isOrderPage = false,
   });
 
   final CategoryModel category;
   final bool isSelected;
   final bool isVertical;
   final VoidCallback onTap;
+  final bool? isOrderPage;
 
   @override
   _CustomListCategoriesItemState createState() =>
@@ -31,6 +33,27 @@ class _CustomListCategoriesItemState extends State<CustomListCategoriesItem> {
   }
 
   Widget _buildVerticalItem() {
+    if (widget.isOrderPage == true) {
+      return GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.all(DEFAULT_PADDING),
+          width: double.infinity,
+          color: widget.isSelected ? WHITE_COLOR : GREY_LIGHT_COLOR,
+          child: Text(
+            widget.category.title,
+            style: AppTextStyle.medium(
+              MEDIUM_TEXT_SIZE,
+              widget.isSelected ? PRIMARY_COLOR : GREY_COLOR,
+            ),
+          ),
+        ),
+      );
+    }
+
+
+    // Otherwise, return the normal vertical item
     return MouseRegion(
       onEnter: (_) => setState(() {
         isHovered = true;
@@ -64,9 +87,7 @@ class _CustomListCategoriesItemState extends State<CustomListCategoriesItem> {
                 children: [
                   Text(
                     widget.category.title,
-                    style: AppTextStyle.medium(
-                      MEDIUM_TEXT_SIZE,
-                    ),
+                    style: AppTextStyle.medium(MEDIUM_TEXT_SIZE),
                   ),
                   Text(
                     '${widget.category.count} items',
@@ -85,6 +106,21 @@ class _CustomListCategoriesItemState extends State<CustomListCategoriesItem> {
   }
 
   Widget _buildHorizontalItem() {
+    // If it's the order page, return only text
+    if (widget.isOrderPage == true) {
+      return GestureDetector(
+        onTap: widget.onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: MEDIUM_PADDING),
+          child: Text(
+            widget.category.title,
+            style: AppTextStyle.medium(MEDIUM_TEXT_SIZE),
+          ),
+        ),
+      );
+    }
+
+    // Otherwise, return the normal horizontal item
     return MouseRegion(
       onEnter: (_) => setState(() {
         isHovered = true;
@@ -108,7 +144,10 @@ class _CustomListCategoriesItemState extends State<CustomListCategoriesItem> {
               ),
               borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
             ),
-            padding: const EdgeInsets.symmetric(vertical: DEFAULT_PADDING, horizontal: MEDIUM_PADDING),
+            padding: const EdgeInsets.symmetric(
+              vertical: DEFAULT_PADDING,
+              horizontal: MEDIUM_PADDING,
+            ),
             child: Text(
               widget.category.title,
               style: AppTextStyle.medium(
