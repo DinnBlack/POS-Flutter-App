@@ -13,17 +13,3 @@ class ProductFetchStarted extends ProductEvent {
 
   ProductFetchStarted(this.category);
 }
-
-class AddProductToOrderList extends ProductEvent {
-  final ProductModel product;
-
-  AddProductToOrderList(this.product);
-}
-
-class RemoveProductFromOrderList extends ProductEvent {
-  final ProductModel product;
-
-  RemoveProductFromOrderList(this.product);
-}
-
-class ClearOrderProductList extends ProductEvent {}

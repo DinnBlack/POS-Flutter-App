@@ -8,3 +8,17 @@ class OrderCreateStarted extends OrderEvent {
 
   OrderCreateStarted({required this.order});
 }
+
+class AddProductToOrderListStarted extends OrderEvent {
+  final ProductModel product;
+
+  AddProductToOrderListStarted(this.product);
+}
+
+class RemoveProductFromOrderListStarted extends OrderEvent {
+  final ProductModel product;
+
+  RemoveProductFromOrderListStarted(this.product);
+}
+
+class ClearOrderProductListStarted extends OrderEvent {}

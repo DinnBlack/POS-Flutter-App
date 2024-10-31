@@ -15,3 +15,9 @@ class OrderCreateFailure extends OrderState {
 
   OrderCreateFailure({this.error = 'Failed to create order.'});
 }
+
+class OrderProductListUpdated extends OrderState {
+  final List<ProductModel> orderProductList;
+
+  OrderProductListUpdated(this.orderProductList);
+}

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:pos_flutter_app/features/product/bloc/product_bloc.dart';
+import 'package:pos_flutter_app/features/order/bloc/order_bloc.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
@@ -219,8 +219,8 @@ class _SaleProductDialogScreenState extends State<SaleProductDialogScreen> {
                             widget.product.copyWith(quantityOrder: quantity);
 
                         context
-                            .read<ProductBloc>()
-                            .add(AddProductToOrderList(updatedProduct));
+                            .read<OrderBloc>()
+                            .add(AddProductToOrderListStarted(updatedProduct));
                         Navigator.of(context).pop();
                       },
                       style: ElevatedButton.styleFrom(

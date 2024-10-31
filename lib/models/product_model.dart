@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
-
-import 'category_model.dart';
+import 'option_model.dart';
 
 class ProductModel {
   final String title;
@@ -12,10 +10,11 @@ class ProductModel {
   final int? promotionCost;
   final String? description;
   final List<String>? categories;
-  final int? quantityOrder;
+  int? quantityOrder;
+  final List<OptionModel>? options;
 
-//<editor-fold desc="Data Methods">
-  const ProductModel({
+  //<editor-fold desc="Data Methods">
+  ProductModel({
     required this.title,
     required this.price,
     this.image,
@@ -25,24 +24,27 @@ class ProductModel {
     this.promotionCost,
     this.description,
     this.categories,
-    this.quantityOrder,
+    this.quantityOrder = 0,
+    this.options,
   });
 
+  // Override của `==` và `hashCode` cho phép so sánh ProductModel theo giá trị của các trường
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is ProductModel &&
-          runtimeType == other.runtimeType &&
-          title == other.title &&
-          price == other.price &&
-          image == other.image &&
-          unit == other.unit &&
-          request == other.request &&
-          primeCost == other.primeCost &&
-          promotionCost == other.promotionCost &&
-          description == other.description &&
-          categories == other.categories &&
-          quantityOrder == other.quantityOrder);
+          (other is ProductModel &&
+              runtimeType == other.runtimeType &&
+              title == other.title &&
+              price == other.price &&
+              image == other.image &&
+              unit == other.unit &&
+              request == other.request &&
+              primeCost == other.primeCost &&
+              promotionCost == other.promotionCost &&
+              description == other.description &&
+              categories == other.categories &&
+              quantityOrder == other.quantityOrder &&
+              options == other.options);
 
   @override
   int get hashCode =>
@@ -55,11 +57,12 @@ class ProductModel {
       promotionCost.hashCode ^
       description.hashCode ^
       categories.hashCode ^
-      quantityOrder.hashCode;
+      quantityOrder.hashCode ^
+      options.hashCode;
 
   @override
   String toString() {
-    return 'ProductModel{ title: $title, price: $price, image: $image, unit: $unit, request: $request, primeCost: $primeCost, promotionCost: $promotionCost, description: $description, categories: $categories, quantityOrder: $quantityOrder,}';
+    return 'ProductModel{ title: $title, price: $price, image: $image, unit: $unit, request: $request, primeCost: $primeCost, promotionCost: $promotionCost, description: $description, categories: $categories, quantityOrder: $quantityOrder, options: $options}';
   }
 
   ProductModel copyWith({
@@ -73,6 +76,7 @@ class ProductModel {
     String? description,
     List<String>? categories,
     int? quantityOrder,
+    List<OptionModel>? options,
   }) {
     return ProductModel(
       title: title ?? this.title,
@@ -85,6 +89,7 @@ class ProductModel {
       description: description ?? this.description,
       categories: categories ?? this.categories,
       quantityOrder: quantityOrder ?? this.quantityOrder,
+      options: options ?? this.options,
     );
   }
 
@@ -100,6 +105,7 @@ class ProductModel {
       'description': this.description,
       'categories': this.categories,
       'quantityOrder': this.quantityOrder,
+      'options': this.options,
     };
   }
 
@@ -114,8 +120,9 @@ class ProductModel {
       promotionCost: (map['promotionCost'] as num?)?.toInt(),
       description: map['description'] as String?,
       categories:
-          map['categories'] != null ? List<String>.from(map['categories']) : [],
-      quantityOrder: (map['quantityOrder'] as num?)?.toInt(),
+      map['categories'] != null ? List<String>.from(map['categories']) : [],
+      quantityOrder: (map['quantityOrder'] as num?)?.toInt() ?? 0, // Giá trị mặc định
+      options: map['options'] != null ? List<OptionModel>.from(map['options']) : [],
     );
   }
 

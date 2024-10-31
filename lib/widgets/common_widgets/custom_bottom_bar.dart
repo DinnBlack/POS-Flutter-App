@@ -24,7 +24,7 @@ class CustomBottomBar extends StatelessWidget {
         color: WHITE_COLOR,
         boxShadow: [
           BoxShadow(
-            color: GREY_COLOR.withOpacity(0.1),
+            color: GREY_COLOR.withOpacity(0.3),
             spreadRadius: 1,
             blurRadius: 5,
             offset: const Offset(0, -1),

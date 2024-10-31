@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pos_flutter_app/screens/mobile/main_mobile_screen.dart';
 import 'package:pos_flutter_app/screens/services/login/login_screen.dart';
 
+import '../screens/services/order/order_create/order_create_screen.dart';
 import '../screens/services/product/product_create/product_create_screen.dart';
 import '../screens/services/register/register_screen.dart';
 import '../screens/services/store/store_create_screen.dart';
@@ -25,6 +26,8 @@ Route<dynamic?> appRoutes(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const MainMobileScreen());
     case MainTabletScreen.route:
       return MaterialPageRoute(builder: (context) => const MainTabletScreen());
+    case OrderCreateScreen.route:
+      return MaterialPageRoute(builder: (context) => const OrderCreateScreen());
     default:
       return MaterialPageRoute(builder: (context) => const MainTabletScreen());
   }

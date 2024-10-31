@@ -35,6 +35,7 @@ class _ListProductsScreenState extends State<ListProductsScreen> {
       context
           .read<ProductBloc>()
           .add(ProductFetchStarted(_categoryBloc.selectedCategory!));
+      print('dô đây rồi');
     });
   }
 
@@ -59,7 +60,7 @@ class _ListProductsScreenState extends State<ListProductsScreen> {
           crossAxisCount = 2;
         }
 
-        double itemHeight = 160;
+        double itemHeight = 140;
         double itemWidth =
             (constraints.maxWidth - (crossAxisCount - 1) * 10) / crossAxisCount;
 
@@ -126,6 +127,7 @@ class _ListProductsScreenState extends State<ListProductsScreen> {
                 return Center(
                     child: Text('Failed to fetch products: ${state.error}'));
               } else {
+                print(state);
                 return const Center(child: Text('No products found.'));
               }
             },

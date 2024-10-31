@@ -12,14 +12,10 @@ part 'product_state.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final ProductFirebase _productFirebase;
-  List<ProductModel> orderProductList = [];
 
   ProductBloc(this._productFirebase) : super(ProductInitial()) {
     on<ProductCreateStarted>(_onProductCreate);
     on<ProductFetchStarted>(_onProductFetch);
-    on<AddProductToOrderList>(_onAddProductToOrderList);
-    on<RemoveProductFromOrderList>(_onRemoveProductFromOrderList);
-    on<ClearOrderProductList>(_onClearOrderProductList);
   }
 
   Future<void> _onProductCreate(
@@ -47,30 +43,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       }
 
       emit(ProductFetchSuccess(products));
-      print('fetch rồi');
     } catch (e) {
       emit(ProductFetchFailure(error: e.toString()));
     }
-  }
-
-  Future<void> _onAddProductToOrderList(
-      AddProductToOrderList event, Emitter<ProductState> emit) async {
-    print("Vừa thêm order: ${event.product}");
-    orderProductList.add(event.product);
-    print("List: $orderProductList");
-    emit(ProductOrderListUpdated(orderProductList));
-  }
-
-  Future<void> _onRemoveProductFromOrderList(
-      RemoveProductFromOrderList event, Emitter<ProductState> emit) async {
-    orderProductList.remove(event.product);
-    emit(ProductOrderListUpdated(orderProductList));
-  }
-
-  Future<void> _onClearOrderProductList(
-      ClearOrderProductList event, Emitter<ProductState> emit) async {
-    orderProductList.clear();
-    print("List: $orderProductList");
-    emit(ProductOrderListUpdated(orderProductList));
   }
 }

@@ -35,9 +35,3 @@ class ProductFetchFailure extends ProductState {
 
   ProductFetchFailure({this.error = 'Failed to fetch products.'});
 }
-
-class ProductOrderListUpdated extends ProductState {
-  final List<ProductModel> orderProductList;
-
-  ProductOrderListUpdated(this.orderProductList);
-}

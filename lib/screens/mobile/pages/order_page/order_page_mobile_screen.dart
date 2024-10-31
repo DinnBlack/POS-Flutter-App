@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:pos_flutter_app/features/product/bloc/product_bloc.dart';
+import 'package:pos_flutter_app/features/order/bloc/order_bloc.dart';
+import 'package:pos_flutter_app/screens/services/order/order_create/order_create_screen.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
+import 'package:pos_flutter_app/utils/ui_util/format_text.dart';
 
 import '../../../../features/app/bloc/app_cubit.dart';
 import '../../../../utils/constants/constants.dart';
@@ -19,7 +21,7 @@ class OrderPageMobileScreen extends StatefulWidget {
 
 class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
   bool isGridView = true;
-  double totalPrice = 200000;
+  int totalPrice = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +39,7 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    if (context
-                        .read<ProductBloc>()
-                        .orderProductList
-                        .isNotEmpty) {
+                    if (context.read<OrderBloc>().orderProductList.isNotEmpty) {
                       showModalBottomSheet(
                         context: context,
                         builder: (BuildContext context) {
@@ -85,9 +84,8 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
                                     const SizedBox(width: MEDIUM_MARGIN),
                                     GestureDetector(
                                       onTap: () {
-                                        context
-                                            .read<ProductBloc>()
-                                            .add(ClearOrderProductList());
+                                        context.read<OrderBloc>().add(
+                                            ClearOrderProductListStarted());
                                         Navigator.pop(context);
                                         Navigator.pop(context);
                                       },
@@ -178,50 +176,65 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
           ],
         ),
       ),
-      // bottomNavigationBar: BottomAppBar(
-      //   color: Colors.white,
-      //   child: Padding(
-      //     padding: const EdgeInsets.all(DEFAULT_PADDING),
-      //     child: Row(
-      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //       children: [
-      //         Row(
-      //           children: [
-      //             IconButton(
-      //               icon: const Icon(
-      //                 Iconsax.shopping_bag,
-      //                 color: PRIMARY_COLOR,
-      //               ),
-      //               onPressed: () {
-      //                 // Xử lý hiển thị giỏ hàng
-      //               },
-      //             ),
-      //             const SizedBox(width: SMALL_MARGIN),
-      //             Text(
-      //               '${totalPrice.toStringAsFixed(0)}đ',
-      //               style:
-      //                   AppTextStyle.bold(PLUS_LARGE_TEXT_SIZE, PRIMARY_COLOR),
-      //             ),
-      //           ],
-      //         ),
-      //         ElevatedButton.icon(
-      //           onPressed: () {},
-      //           icon: const Icon(
-      //             Iconsax.arrow_right_3,
-      //             color: WHITE_COLOR,
-      //           ),
-      //           label: Text(
-      //             'Tiếp tục',
-      //             style: AppTextStyle.medium(MEDIUM_TEXT_SIZE, WHITE_COLOR),
-      //           ),
-      //           style: ElevatedButton.styleFrom(
-      //             backgroundColor: PRIMARY_COLOR,
-      //           ),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
+      bottomNavigationBar: BlocBuilder<OrderBloc, OrderState>(
+        builder: (context, state) {
+          final orderProductList = context.read<OrderBloc>().orderProductList;
+
+          int totalPrice = orderProductList.fold(0, (sum, item) {
+            return sum + (item.price * (item.quantityOrder ?? 1));
+          });
+
+          return orderProductList.isNotEmpty
+              ? Container(
+                  padding: const EdgeInsets.all(DEFAULT_PADDING),
+                  decoration:  BoxDecoration(
+                    color: WHITE_COLOR,
+                    boxShadow: [
+                      BoxShadow(
+                        color: GREY_LIGHT_COLOR,
+                        offset: const Offset(0, -1),
+                        blurRadius: 4,
+                        spreadRadius: 4,
+                      ),
+                    ],
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, OrderCreateScreen.route);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(DEFAULT_PADDING),
+                      decoration: BoxDecoration(
+                        color: PRIMARY_COLOR,
+                        borderRadius:
+                            BorderRadius.circular(SMALL_BORDER_RADIUS),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Iconsax.shopping_bag,
+                            color: WHITE_COLOR,
+                          ),
+                          const SizedBox(width: SMALL_MARGIN),
+                          Text(
+                            FormatText.formatCurrency(totalPrice),
+                            style:
+                                AppTextStyle.bold(LARGE_TEXT_SIZE, WHITE_COLOR),
+                          ),
+                          Spacer(),
+                          Text(
+                            'Tiếp tục',
+                            style:
+                                AppTextStyle.bold(LARGE_TEXT_SIZE, WHITE_COLOR),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              : SizedBox();
+        },
+      ),
     );
   }
 }

@@ -30,7 +30,7 @@ class CustomButton extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         color: buttonColor,
-        borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+        borderRadius: BorderRadius.circular(SMALL_BORDER_RADIUS),
         border: isOutlineButton ? Border.fromBorderSide(borderSide) : null,
       ),
       child: InkWell(

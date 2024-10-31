@@ -36,7 +36,7 @@ class ProductFirebase {
           String fileName = imageFile.uri.pathSegments.last;
 
           Reference storageRef =
-              _storage.ref('${user.uid}/${store.id}/$productId/$fileName');
+              _storage.ref('users/${user.uid}/stores/${store.id}/products/$productId/$fileName');
           UploadTask uploadTask = storageRef.putFile(imageFile);
 
           TaskSnapshot snapshot = await uploadTask;
