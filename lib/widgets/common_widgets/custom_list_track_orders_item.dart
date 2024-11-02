@@ -71,7 +71,7 @@ class _CustomListTrackOrdersItemState extends State<CustomListTrackOrdersItem> {
                   const SizedBox(width: 8),
                   Text('#${widget.order.orderId}'),
                   const Spacer(),
-                  Text('${widget.order.products.length} items'),
+                  Text('${widget.order.products?.length} items'),
                 ],
               ),
               const SizedBox(height: 10),
@@ -92,7 +92,7 @@ class _CustomListTrackOrdersItemState extends State<CustomListTrackOrdersItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      widget.order.status,
+                      widget.order.status!,
                       style: const TextStyle(
                         color: WHITE_COLOR,
                       ),
@@ -109,24 +109,24 @@ class _CustomListTrackOrdersItemState extends State<CustomListTrackOrdersItem> {
   }
 
   Widget _buildProductList() {
-    int itemsToShow = _showMore
-        ? widget.order.products.length
-        : (widget.order.products.length < 3 ? widget.order.products.length : 3);
+    int? itemsToShow = _showMore
+        ? widget.order.products?.length
+        : (widget.order.products!.length < 3 ? widget.order.products?.length : 3);
 
-    bool showMoreButton = widget.order.products.length > 3;
+    bool showMoreButton = widget.order.products!.length > 3;
 
     return Column(
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: itemsToShow + (showMoreButton ? 1 : 0),
+            itemCount: itemsToShow! + (showMoreButton ? 1 : 0),
             itemBuilder: (context, index) {
-              if (index < itemsToShow) {
-                final product = widget.order.products[index];
+              if (index < itemsToShow!) {
+                final product = widget.order.products?[index];
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5.0),
                   child: Text(
-                    '1x ${product.title}',
+                    '1x ${product?.title}',
                     style: const TextStyle(fontSize: 14),
                   ),
                 );

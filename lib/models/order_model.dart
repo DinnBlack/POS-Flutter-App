@@ -1,25 +1,29 @@
 import 'package:pos_flutter_app/models/product_model.dart';
 
 class OrderModel {
-  final String orderId;
-  final List<ProductModel> products;
-  final double totalPrice;
-  final String customerName;
-  final DateTime orderTime;
-  final String status;
+  final String? orderId;
+  final List<ProductModel>? products;
+  final int? totalPrice;
+  final String? customerName;
+  final DateTime? orderTime;
+  final String? status;
   final String? executor;
-  final bool paymentStatus;
+  final bool? paymentStatus;
+  final String? note;
+  final String? paymentMethod;
 
 //<editor-fold desc="Data Methods">
   const OrderModel({
-    required this.orderId,
-    required this.products,
-    required this.totalPrice,
-    required this.customerName,
-    required this.orderTime,
-    required this.status,
+    this.orderId,
+    this.products,
+    this.totalPrice,
+    this.customerName,
+    this.orderTime,
+    this.status,
     this.executor,
-    required this.paymentStatus,
+    this.paymentStatus,
+    this.note,
+    this.paymentMethod,
   });
 
   @override
@@ -34,7 +38,9 @@ class OrderModel {
           orderTime == other.orderTime &&
           status == other.status &&
           executor == other.executor &&
-          paymentStatus == other.paymentStatus);
+          paymentStatus == other.paymentStatus &&
+          note == other.note &&
+          paymentMethod == other.paymentMethod);
 
   @override
   int get hashCode =>
@@ -45,7 +51,9 @@ class OrderModel {
       orderTime.hashCode ^
       status.hashCode ^
       executor.hashCode ^
-      paymentStatus.hashCode;
+      paymentStatus.hashCode ^
+      note.hashCode ^
+      paymentMethod.hashCode;
 
   @override
   String toString() {
@@ -58,18 +66,22 @@ class OrderModel {
         ' status: $status,' +
         ' executor: $executor,' +
         ' paymentStatus: $paymentStatus,' +
-        '}';
+        ' note: $note,' +
+        ' paymentMethod: $paymentMethod,'
+            '}';
   }
 
   OrderModel copyWith({
     String? orderId,
     List<ProductModel>? products,
-    double? totalPrice,
+    int? totalPrice,
     String? customerName,
     DateTime? orderTime,
     String? status,
     String? executor,
     bool? paymentStatus,
+    String? note,
+    String? paymentMethod,
   }) {
     return OrderModel(
       orderId: orderId ?? this.orderId,
@@ -80,32 +92,40 @@ class OrderModel {
       status: status ?? this.status,
       executor: executor ?? this.executor,
       paymentStatus: paymentStatus ?? this.paymentStatus,
+      note: note ?? this.note,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'orderId': this.orderId,
-      'products': this.products,
+      'products': products?.map((product) => product.toMap()).toList(),
       'totalPrice': this.totalPrice,
       'customerName': this.customerName,
-      'orderTime': this.orderTime,
+      'orderTime': orderTime?.toIso8601String(),
       'status': this.status,
       'executor': this.executor,
       'paymentStatus': this.paymentStatus,
+      'note': this.note,
+      'paymentMethod': this.paymentMethod,
     };
   }
 
   factory OrderModel.fromMap(Map<String, dynamic> map) {
     return OrderModel(
       orderId: map['orderId'] as String,
-      products: map['products'] as List<ProductModel>,
-      totalPrice: map['totalPrice'] as double,
+      products: (map['products'] as List)
+          .map((productMap) => ProductModel.fromMap(productMap))
+          .toList(),
+      totalPrice: map['totalPrice'] as int,
       customerName: map['customerName'] as String,
-      orderTime: map['orderTime'] as DateTime,
+      orderTime: DateTime.parse(map['orderTime']),
       status: map['status'] as String,
       executor: map['executor'] as String,
       paymentStatus: map['paymentStatus'] as bool,
+      note: map['note'] as String,
+      paymentMethod: map['paymentMethod'] as String,
     );
   }
 

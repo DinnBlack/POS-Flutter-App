@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../features/category/bloc/category_bloc.dart';
-import '../../../widgets/common_widgets/custom_button_show_list_categories.dart';
-import '../../../widgets/common_widgets/custom_list_categories_item.dart';
+import '../../../../features/category/bloc/category_bloc.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
 
-class ListCategoriesHorizontalScreen extends StatefulWidget {
-  const ListCategoriesHorizontalScreen({super.key});
+import '../../../../widgets/common_widgets/custom_button_show_list_categories.dart';
+import '../../../../widgets/common_widgets/custom_list_categories_item.dart';
+
+class CategoriesListHorizontalScreen extends StatefulWidget {
+  const CategoriesListHorizontalScreen({super.key});
 
   @override
-  _ListCategoriesHorizontalScreenState createState() =>
-      _ListCategoriesHorizontalScreenState();
+  _CategoriesListHorizontalScreenState createState() =>
+      _CategoriesListHorizontalScreenState();
 }
 
-class _ListCategoriesHorizontalScreenState
-    extends State<ListCategoriesHorizontalScreen> {
+class _CategoriesListHorizontalScreenState
+    extends State<CategoriesListHorizontalScreen> {
   final ScrollController _scrollController = ScrollController();
 
   @override

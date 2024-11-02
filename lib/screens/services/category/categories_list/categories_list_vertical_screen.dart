@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../features/category/bloc/category_bloc.dart';
-import '../../../widgets/common_widgets/custom_list_categories_item.dart';
-import '../../../models/category_model.dart';
+import '../../../../features/category/bloc/category_bloc.dart';
+import '../../../../widgets/common_widgets/custom_list_categories_item.dart';
+import '../../../../models/category_model.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
 
-class ListCategoriesVerticalScreen extends StatefulWidget {
+class CategoriesListVerticalScreen extends StatefulWidget {
   final bool? isOrderPage;
 
-  const ListCategoriesVerticalScreen({super.key, this.isOrderPage});
+  const CategoriesListVerticalScreen({super.key, this.isOrderPage});
 
   @override
-  _ListCategoriesVerticalScreenState createState() =>
-      _ListCategoriesVerticalScreenState();
+  _CategoriesListVerticalScreenState createState() =>
+      _CategoriesListVerticalScreenState();
 }
 
-class _ListCategoriesVerticalScreenState
-    extends State<ListCategoriesVerticalScreen> {
+class _CategoriesListVerticalScreenState
+    extends State<CategoriesListVerticalScreen> {
   CategoryModel? selectedCategory;
   final ScrollController _scrollController = ScrollController();
 

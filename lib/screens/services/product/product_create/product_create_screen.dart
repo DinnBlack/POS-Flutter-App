@@ -14,7 +14,7 @@ import '../../../../widgets/common_widgets/custom_text_field.dart';
 import '../../../../widgets/normal_widgets/custom_button_add_image.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../category/list_categories_add_product_screen.dart';
+import '../../category/categories_list/categories_list_add_product_screen.dart';
 
 class ProductCreateScreen extends StatefulWidget {
   static const route = 'ProductCreateScreen';
@@ -330,7 +330,7 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
                               AppTextStyle.medium(MEDIUM_TEXT_SIZE, GREY_COLOR),
                         ),
                       ),
-                      const ListCategoriesAddProductScreen(),
+                      const CategoriesListAddProductScreen(),
                       const SizedBox(height: DEFAULT_MARGIN),
                       CustomTextField(
                         hintText: 'Mô tả',

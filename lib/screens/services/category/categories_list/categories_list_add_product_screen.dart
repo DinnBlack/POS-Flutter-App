@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pos_flutter_app/widgets/normal_widgets/custom_button_add_category.dart';
-import '../../../features/category/bloc/category_bloc.dart';
-import '../../../models/category_model.dart';
-import '../../../widgets/common_widgets/custom_button_show_list_categories.dart';
-import '../../../widgets/normal_widgets/custom_list_categories_add_product_item.dart';
-import '../../../utils/constants/constants.dart';
+import '../../../../features/category/bloc/category_bloc.dart';
+import '../../../../models/category_model.dart';
+import '../../../../widgets/common_widgets/custom_button_show_list_categories.dart';
+import '../../../../widgets/normal_widgets/custom_list_categories_add_product_item.dart';
+import '../../../../utils/constants/constants.dart';
 
-class ListCategoriesAddProductScreen extends StatefulWidget {
-  const ListCategoriesAddProductScreen({super.key});
+class CategoriesListAddProductScreen extends StatefulWidget {
+  const CategoriesListAddProductScreen({super.key});
 
   @override
-  _ListCategoriesAddProductScreenState createState() =>
-      _ListCategoriesAddProductScreenState();
+  _CategoriesListAddProductScreenState createState() =>
+      _CategoriesListAddProductScreenState();
 }
 
-class _ListCategoriesAddProductScreenState
-    extends State<ListCategoriesAddProductScreen> {
+class _CategoriesListAddProductScreenState
+    extends State<CategoriesListAddProductScreen> {
   final ScrollController _scrollController = ScrollController();
 
   @override

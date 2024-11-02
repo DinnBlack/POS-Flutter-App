@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import '../../utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
 
 class DashedLinePainter extends CustomPainter {
+  final Color? color;
+
+  DashedLinePainter({this.color});
+
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = GREY_LIGHT_COLOR
+      ..color = color ?? GREY_LIGHT_COLOR
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
 

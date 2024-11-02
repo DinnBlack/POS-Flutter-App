@@ -348,32 +348,32 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                 Expanded(
                   flex: 1,
                   child: CustomContent(
-                    text: order.orderId,
+                    text: order.orderId!,
                   ),
                 ),
                 Expanded(
                   flex: 2,
                   child: CustomContent(
                     text: DateFormat('dd/MM/yyyy hh:mm a')
-                        .format(order.orderTime),
+                        .format(order.orderTime!),
                   ),
                 ),
                 Expanded(
                   flex: 2,
                   child: CustomContent(
-                    text: order.customerName,
+                    text: order.customerName!,
                   ),
                 ),
                 Expanded(
                   flex: 2,
                   child: CustomContent(
-                    text: order.status,
+                    text: order.status!,
                   ),
                 ),
                 Expanded(
                   flex: 2,
                   child: CustomContent(
-                    text: '\$${order.totalPrice.toStringAsFixed(2)}',
+                    text: '\$${order.totalPrice?.toStringAsFixed(2)}',
                   ),
                 ),
                 Expanded(
@@ -383,16 +383,16 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: DEFAULT_PADDING),
                       decoration: BoxDecoration(
-                        color: order.paymentStatus
+                        color: order.paymentStatus!
                             ? Colors.green.withOpacity(0.1)
                             : Colors.red.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(LARGE_BORDER_RADIUS),
                       ),
                       child: Text(
-                        order.paymentStatus ? 'Paid' : 'Unpaid',
+                        order.paymentStatus! ? 'Paid' : 'Unpaid',
                         style: TextStyle(
                           color:
-                              order.paymentStatus ? Colors.green : Colors.red,
+                              order.paymentStatus! ? Colors.green : Colors.red,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -434,12 +434,12 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ...order.products.map((product) => ListTile(
+              ...?order.products?.map((product) => ListTile(
                     title: Text(product.title),
                     trailing: Text('\$${product.price.toStringAsFixed(2)}'),
                   )),
               const Divider(),
-              Text('Total Payment: \$${order.totalPrice.toStringAsFixed(2)}'),
+              Text('Total Payment: \$${order.totalPrice?.toStringAsFixed(2)}'),
             ],
           ),
           actions: [

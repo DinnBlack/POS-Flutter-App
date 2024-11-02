@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
-import 'package:pos_flutter_app/utils/constants/constants.dart';
-import 'package:pos_flutter_app/utils/constants/constants.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
 import '../../../../../models/order_model.dart';
@@ -82,16 +80,16 @@ class OrderDetailsDialogScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Customer: ${order.customerName}'),
-                    Text('Total Items: ${order.products.length}'),
+                    Text('Total Items: ${order.products?.length}'),
                     const SizedBox(height: 10),
                     ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: order.products.length,
+                      itemCount: order.products?.length,
                       itemBuilder: (context, index) {
-                        final product = order.products[index];
+                        final product = order.products?[index];
                         return CustomListOrderDetailsDialogItem(
-                            product: product);
+                            product: product!);
                       },
                     ),
                     const SizedBox(height: 10),

@@ -10,11 +10,12 @@ import 'package:pos_flutter_app/utils/ui_util/format_text.dart';
 import '../../../../features/app/bloc/app_cubit.dart';
 import '../../../../utils/constants/constants.dart';
 import '../../../../widgets/normal_widgets/custom_text_field_search_product.dart';
-import '../../../services/category/list_categories_horizontal_screen.dart';
-import '../../../services/category/list_categories_vertical_screen.dart';
-import '../../../services/product/list_products/list_products_screen.dart';
+import '../../../services/category/categories_list/categories_list_horizontal_screen.dart';
+import '../../../services/category/categories_list/categories_list_vertical_screen.dart';
+import '../../../services/product/products_list/list_products_screen.dart';
 
 class OrderPageMobileScreen extends StatefulWidget {
+  static const route = "OrderPageMobileScreen";
   const OrderPageMobileScreen({super.key});
 
   @override
@@ -183,10 +184,10 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
                   ? const Column(
                       children: [
                         SizedBox(height: DEFAULT_MARGIN),
-                        ListCategoriesHorizontalScreen(),
+                        CategoriesListHorizontalScreen(),
                         SizedBox(height: DEFAULT_MARGIN),
                         Expanded(
-                          child: ListProductsScreen(
+                          child: ProductsListScreen(
                             isGridView: true,
                             isOrderPage: true,
                           ),
@@ -197,10 +198,10 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
                       ? const Column(
                           children: [
                             SizedBox(height: DEFAULT_MARGIN),
-                            ListCategoriesHorizontalScreen(),
+                            CategoriesListHorizontalScreen(),
                             SizedBox(height: DEFAULT_MARGIN),
                             Expanded(
-                              child: ListProductsScreen(
+                              child: ProductsListScreen(
                                 isGridView: false,
                                 isOrderPage: true,
                               ),
@@ -212,13 +213,13 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
                           children: [
                             Expanded(
                               flex: 1,
-                              child: ListCategoriesVerticalScreen(
+                              child: CategoriesListVerticalScreen(
                                 isOrderPage: true,
                               ),
                             ),
                             Expanded(
                               flex: 3,
-                              child: ListProductsScreen(
+                              child: ProductsListScreen(
                                 isGridView: true,
                                 isOrderPage: true,
                               ),
@@ -232,11 +233,6 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
       bottomNavigationBar: BlocBuilder<OrderBloc, OrderState>(
         builder: (context, state) {
           final orderProductList = context.read<OrderBloc>().orderProductList;
-
-          int totalPrice = orderProductList.fold(0, (sum, item) {
-            return sum + (item.price * (item.quantityOrder ?? 1));
-          });
-
           return orderProductList.isNotEmpty
               ? Container(
                   padding: const EdgeInsets.all(DEFAULT_PADDING),
@@ -270,7 +266,7 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
                           ),
                           const SizedBox(width: SMALL_MARGIN),
                           Text(
-                            FormatText.formatCurrency(totalPrice),
+                            FormatText.formatCurrency(context.read<OrderBloc>().totalPrice),
                             style:
                                 AppTextStyle.bold(LARGE_TEXT_SIZE, WHITE_COLOR),
                           ),

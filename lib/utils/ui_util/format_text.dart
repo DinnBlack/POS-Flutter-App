@@ -8,4 +8,13 @@ class FormatText {
             formattedValue.replaceAll('đ', '').replaceAll('.', '').trim()) ??
         0;
   }
+
+
+  static String formatPercentage(int percentage) {
+    return '${percentage.toString()}%';
+  }
+
+  static int parsePercentage(String formattedValue) {
+    return int.tryParse(formattedValue.replaceAll('%', '').trim()) ?? 0;
+  }
 }

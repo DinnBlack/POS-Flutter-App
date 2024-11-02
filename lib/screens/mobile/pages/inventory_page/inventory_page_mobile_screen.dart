@@ -6,10 +6,10 @@ import 'package:pos_flutter_app/utils/constants/constants.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
 import '../../../../features/category/bloc/category_bloc.dart';
-import '../../../services/category/list_categories_horizontal_screen.dart';
-import '../../../services/category/list_categories_vertical_screen.dart';
-import '../../../services/product/list_products/list_products_screen.dart';
+import '../../../services/category/categories_list/categories_list_horizontal_screen.dart';
+import '../../../services/category/categories_list/categories_list_vertical_screen.dart';
 import '../../../services/product/product_create/product_create_screen.dart';
+import '../../../services/product/products_list/list_products_screen.dart';
 
 class InventoryPageMobileScreen extends StatefulWidget {
   const InventoryPageMobileScreen({super.key});
@@ -173,17 +173,17 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen>
                 children: [
                   Column(
                     children: [
-                      const ListCategoriesHorizontalScreen(),
-                      SizedBox(height: DEFAULT_MARGIN),
+                      const CategoriesListHorizontalScreen(),
+                      const SizedBox(height: DEFAULT_MARGIN),
                       Expanded(
-                        child: ListProductsScreen(
+                        child: ProductsListScreen(
                           isGridView: isGridView,
                           isOrderPage: false,
                         ),
                       ),
                     ],
                   ),
-                  const ListCategoriesVerticalScreen(),
+                  const CategoriesListVerticalScreen(),
                 ],
               ),
             ),

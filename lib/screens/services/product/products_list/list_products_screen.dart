@@ -9,21 +9,21 @@ import '../../../../features/product/bloc/product_bloc.dart';
 import '../../../../features/category/bloc/category_bloc.dart';
 import '../product_create/product_create_screen.dart';
 
-class ListProductsScreen extends StatefulWidget {
+class ProductsListScreen extends StatefulWidget {
   final bool isGridView;
   final bool? isOrderPage;
 
-  const ListProductsScreen({
+  const ProductsListScreen({
     super.key,
     required this.isGridView,
     this.isOrderPage = false,
   });
 
   @override
-  State<ListProductsScreen> createState() => _ListProductsScreenState();
+  State<ProductsListScreen> createState() => _ProductsListScreenState();
 }
 
-class _ListProductsScreenState extends State<ListProductsScreen> {
+class _ProductsListScreenState extends State<ProductsListScreen> {
   late final CategoryBloc _categoryBloc;
 
   @override

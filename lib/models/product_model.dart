@@ -12,6 +12,9 @@ class ProductModel {
   final List<String>? categories;
   int? quantityOrder;
   final List<OptionModel>? options;
+  final String? note;
+  final int? discount;
+  final int? totalPride;
 
   //<editor-fold desc="Data Methods">
   ProductModel({
@@ -26,25 +29,30 @@ class ProductModel {
     this.categories,
     this.quantityOrder = 0,
     this.options,
+    this.note,
+    this.discount = 0,
+    this.totalPride,
   });
 
-  // Override của `==` và `hashCode` cho phép so sánh ProductModel theo giá trị của các trường
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          (other is ProductModel &&
-              runtimeType == other.runtimeType &&
-              title == other.title &&
-              price == other.price &&
-              image == other.image &&
-              unit == other.unit &&
-              request == other.request &&
-              primeCost == other.primeCost &&
-              promotionCost == other.promotionCost &&
-              description == other.description &&
-              categories == other.categories &&
-              quantityOrder == other.quantityOrder &&
-              options == other.options);
+      (other is ProductModel &&
+          runtimeType == other.runtimeType &&
+          title == other.title &&
+          price == other.price &&
+          image == other.image &&
+          unit == other.unit &&
+          request == other.request &&
+          primeCost == other.primeCost &&
+          promotionCost == other.promotionCost &&
+          description == other.description &&
+          categories == other.categories &&
+          quantityOrder == other.quantityOrder &&
+          options == other.options &&
+          note == other.note &&
+          discount == other.discount &&
+          totalPride == other.totalPride);
 
   @override
   int get hashCode =>
@@ -58,11 +66,14 @@ class ProductModel {
       description.hashCode ^
       categories.hashCode ^
       quantityOrder.hashCode ^
-      options.hashCode;
+      options.hashCode ^
+      note.hashCode ^
+      discount.hashCode ^
+      totalPride.hashCode;
 
   @override
   String toString() {
-    return 'ProductModel{ title: $title, price: $price, image: $image, unit: $unit, request: $request, primeCost: $primeCost, promotionCost: $promotionCost, description: $description, categories: $categories, quantityOrder: $quantityOrder, options: $options}';
+    return 'ProductModel{ title: $title, price: $price, image: $image, unit: $unit, request: $request, primeCost: $primeCost, promotionCost: $promotionCost, description: $description, categories: $categories, quantityOrder: $quantityOrder, options: $options}, note: $note}';
   }
 
   ProductModel copyWith({
@@ -77,6 +88,9 @@ class ProductModel {
     List<String>? categories,
     int? quantityOrder,
     List<OptionModel>? options,
+    String? note,
+    int? discount,
+    int? totalPride,
   }) {
     return ProductModel(
       title: title ?? this.title,
@@ -90,6 +104,9 @@ class ProductModel {
       categories: categories ?? this.categories,
       quantityOrder: quantityOrder ?? this.quantityOrder,
       options: options ?? this.options,
+      note: note ?? this.note,
+      discount: discount ?? this.discount,
+      totalPride: totalPride ?? this.totalPride,
     );
   }
 
@@ -106,6 +123,9 @@ class ProductModel {
       'categories': this.categories,
       'quantityOrder': this.quantityOrder,
       'options': this.options,
+      'note': this.note,
+      'discount': this.discount,
+      'totalPride': this.totalPride,
     };
   }
 
@@ -120,9 +140,13 @@ class ProductModel {
       promotionCost: (map['promotionCost'] as num?)?.toInt(),
       description: map['description'] as String?,
       categories:
-      map['categories'] != null ? List<String>.from(map['categories']) : [],
-      quantityOrder: (map['quantityOrder'] as num?)?.toInt() ?? 0, // Giá trị mặc định
-      options: map['options'] != null ? List<OptionModel>.from(map['options']) : [],
+          map['categories'] != null ? List<String>.from(map['categories']) : [],
+      quantityOrder: (map['quantityOrder'] as num?)?.toInt() ?? 0,
+      options:
+          map['options'] != null ? List<OptionModel>.from(map['options']) : [],
+      note: map['note'] as String?,
+      discount: (map['discount'] as num?)?.toInt() ?? 0,
+      totalPride: (map['totalPride'] as num?)?.toInt() ?? 0,
     );
   }
 

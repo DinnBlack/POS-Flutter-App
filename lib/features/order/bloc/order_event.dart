@@ -4,9 +4,6 @@ part of 'order_bloc.dart';
 sealed class OrderEvent {}
 
 class OrderCreateStarted extends OrderEvent {
-  final OrderModel order;
-
-  OrderCreateStarted({required this.order});
 }
 
 class AddProductToOrderListStarted extends OrderEvent {
@@ -17,8 +14,45 @@ class AddProductToOrderListStarted extends OrderEvent {
 
 class RemoveProductFromOrderListStarted extends OrderEvent {
   final ProductModel product;
+  final bool isRemoved;
 
-  RemoveProductFromOrderListStarted(this.product);
+  RemoveProductFromOrderListStarted(this.product, {this.isRemoved = false});
 }
 
 class ClearOrderProductListStarted extends OrderEvent {}
+
+class UpdateProductDetailsStarted extends OrderEvent {
+  final ProductModel product;
+  final int? newPrice;
+  final String? newNote;
+  final int? newDiscount;
+
+  UpdateProductDetailsStarted({
+    required this.product,
+    this.newPrice,
+    this.newNote,
+    this.newDiscount,
+  });
+}
+
+class UpdateOrderDetailsStarted extends OrderEvent {
+  final int? newTotalPrice;
+  final String? newCustomerName;
+  final DateTime? newOrderTime;
+  final String? newStatus;
+  final String? newExecutor;
+  final bool? newPaymentStatus;
+  final String? newNote;
+  final String? newPaymentMethod;
+
+  UpdateOrderDetailsStarted({
+    this.newTotalPrice,
+    this.newCustomerName,
+    this.newOrderTime,
+    this.newStatus,
+    this.newExecutor,
+    this.newPaymentStatus,
+    this.newNote,
+    this.newPaymentMethod,
+  });
+}

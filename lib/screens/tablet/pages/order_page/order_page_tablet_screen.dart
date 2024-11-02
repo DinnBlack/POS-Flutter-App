@@ -3,9 +3,9 @@ import 'package:pos_flutter_app/widgets/common_widgets/custom_text_field_search.
 
 import '../../../../utils/constants/constants.dart';
 import '../../../../widgets/common_widgets/header_side.dart';
-import '../../../services/category/list_categories_horizontal_screen.dart';
+import '../../../services/category/categories_list/categories_list_horizontal_screen.dart';
 import '../../../services/order/order_details/order_details_page/order_details_page_screen.dart';
-import '../../../services/product/list_products/list_products_screen.dart';
+import '../../../services/product/products_list/list_products_screen.dart';
 import '../../main_tablet_screen.dart';
 
 class OrderPageTabletScreen extends StatelessWidget {
@@ -30,14 +30,14 @@ class OrderPageTabletScreen extends StatelessWidget {
                   scaffoldKey: mainScreenState!.scaffoldKey,
                   currentPageName: pageName,
                 ),
-                const ListCategoriesHorizontalScreen(),
+                const CategoriesListHorizontalScreen(),
                 const SizedBox(height: 10),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: CustomTextFieldSearch(),
                 ),
                 const Expanded(
-                  child: ListProductsScreen(isGridView: true,),
+                  child: ProductsListScreen(isGridView: true,),
                 ),
               ],
             ),

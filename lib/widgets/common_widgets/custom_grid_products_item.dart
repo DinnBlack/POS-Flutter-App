@@ -191,7 +191,12 @@ class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
                       ),
                       Center(
                         child: Text(
-                          FormatText.formatCurrency(widget.product.price),
+                          FormatText.formatCurrency(
+                              (widget.product.promotionCost != null &&
+                                          widget.product.promotionCost! > 0
+                                      ? widget.product.promotionCost!
+                                      : widget.product.price) -
+                                  widget.product.discount!),
                           style: AppTextStyle.semibold(MEDIUM_TEXT_SIZE),
                         ),
                       ),

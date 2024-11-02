@@ -21,3 +21,9 @@ class OrderProductListUpdated extends OrderState {
 
   OrderProductListUpdated(this.orderProductList);
 }
+
+class OrderUpdated extends OrderState {
+  final OrderModel updatedOrder;
+
+  OrderUpdated(this.updatedOrder);
+}
