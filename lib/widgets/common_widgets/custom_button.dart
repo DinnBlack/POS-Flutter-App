@@ -8,6 +8,7 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
   final bool isOutlineButton;
   final double? height;
+  final double? textSize; // New parameter for text size
 
   const CustomButton({
     super.key,
@@ -16,6 +17,7 @@ class CustomButton extends StatelessWidget {
     this.color,
     this.isOutlineButton = false,
     this.height,
+    this.textSize, // Initialize the new parameter
   });
 
   @override
@@ -37,11 +39,11 @@ class CustomButton extends StatelessWidget {
         onTap: onPressed,
         borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
         child: Padding(
-          padding: const EdgeInsets.all(DEFAULT_PADDING),
+          padding: const EdgeInsets.symmetric(horizontal:  DEFAULT_PADDING),
           child: Center(
             child: Text(
               text,
-              style: AppTextStyle.medium(MEDIUM_TEXT_SIZE, textColor),
+              style: AppTextStyle.medium(textSize ?? MEDIUM_TEXT_SIZE, textColor), // Use the provided text size or the default
             ),
           ),
         ),

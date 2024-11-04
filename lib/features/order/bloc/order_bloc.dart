@@ -29,6 +29,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
   OrderBloc(this._orderFirebase) : super(OrderInitial()) {
     on<OrderCreateStarted>(_onOrderCreate);
+    on<OrderFetchStarted>(_onOrderFetch);
     on<AddProductToOrderListStarted>(_onAddProductToOrderList);
     on<RemoveProductFromOrderListStarted>(_onRemoveProductFromOrderList);
     on<ClearOrderProductListStarted>(_onClearOrderProductList);
@@ -71,6 +72,18 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     }
   }
 
+  Future<void> _onOrderFetch(OrderFetchStarted event, Emitter<OrderState> emit) async {
+    emit(OrderFetchInProgress());
+    try {
+      final fetchedOrders = await _orderFirebase.fetchOrders();
+      emit(OrderFetchSuccess(orders: fetchedOrders));
+      print('Fetched Orders: $fetchedOrders');
+    } catch (e) {
+      emit(OrderFetchFailure(error: e.toString()));
+      print('Failed to fetch orders: $e');
+    }
+  }
+
   Future<void> _onAddProductToOrderList(
       AddProductToOrderListStarted event, Emitter<OrderState> emit) async {
     final index = orderProductList
@@ -93,7 +106,6 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       RemoveProductFromOrderListStarted event, Emitter<OrderState> emit) async {
     final index = orderProductList.indexWhere((product) =>
         product.title == event.product.title &&
-        product.options == event.product.options &&
         product.price == event.product.price);
 
     if (event.isRemoved!) {

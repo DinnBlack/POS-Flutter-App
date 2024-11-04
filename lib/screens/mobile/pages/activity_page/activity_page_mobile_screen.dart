@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:pos_flutter_app/screens/services/order/orders_list/orders_list_screen.dart';
 
 import '../../../../utils/constants/constants.dart';
 import '../../../../utils/ui_util/app_text_style.dart';
@@ -27,7 +28,11 @@ class _ActivityPageMobileScreenState extends State<ActivityPageMobileScreen>
 
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
-        _pageController.jumpToPage(_tabController.index);
+        _pageController.animateToPage(
+          _tabController.index,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
       }
     });
   }
@@ -42,8 +47,9 @@ class _ActivityPageMobileScreenState extends State<ActivityPageMobileScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: BACKGROUND_COLOR,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
+        preferredSize: const Size.fromHeight(94),
         child: Column(
           children: [
             Container(
@@ -114,12 +120,20 @@ class _ActivityPageMobileScreenState extends State<ActivityPageMobileScreen>
         },
         itemCount: _tabs.length,
         itemBuilder: (context, index) {
-          return Center(
-            child: Text(
-              'Nội dung cho tab ${_tabs[index]}',
-              style: const TextStyle(fontSize: 24),
-            ),
-          );
+          switch (index) {
+            case 0:
+              return OrdersListScreen();
+            case 1:
+             return Expanded(child: OrdersListScreen());
+            case 2:
+             return Expanded(child: OrdersListScreen());
+            case 3:
+             return Expanded(child: OrdersListScreen());
+            case 4:
+             return Expanded(child: OrdersListScreen());
+            default:
+              return Center(child: Text("Unknown tab"));
+          }
         },
       ),
     );

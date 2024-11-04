@@ -84,7 +84,8 @@ class OrderFirebase {
     final StoreModel? store = context.read<StoreBloc>().selectedStore;
 
     if (user == null || store == null) {
-      throw Exception('User or Store not found');
+      print('User or Store is not available');
+      return [];
     }
 
     try {
@@ -96,19 +97,29 @@ class OrderFirebase {
         Map<dynamic, dynamic> ordersMap =
             event.snapshot.value as Map<dynamic, dynamic>;
 
-        List<OrderModel> orders = ordersMap.entries.map((entry) {
-          Map<String, dynamic> orderData =
-              Map<String, dynamic>.from(entry.value);
-          return OrderModel.fromMap(orderData);
-        }).toList();
+        List<OrderModel> orders = ordersMap.entries
+            .map((entry) {
+              if (entry.value is Map) {
+                Map<String, dynamic> orderData = Map<String, dynamic>.from(
+                    entry.value as Map<dynamic, dynamic>);
+                return OrderModel.fromMap(orderData);
+              } else {
+                print(
+                    'Invalid order data for entry: ${entry.key} -> ${entry.value}');
+                return null;
+              }
+            })
+            .whereType<OrderModel>()
+            .toList();
 
         return orders;
       } else {
+        print('No orders found for this user/store');
         return [];
       }
     } catch (e) {
       print('Failed to fetch orders: $e');
-      throw e;
+      throw Exception('Failed to fetch orders: $e');
     }
   }
 }

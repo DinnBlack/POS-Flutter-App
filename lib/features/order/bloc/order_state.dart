@@ -27,3 +27,20 @@ class OrderUpdated extends OrderState {
 
   OrderUpdated(this.updatedOrder);
 }
+
+class OrderFetchInProgress extends OrderState {}
+
+class OrderFetchSuccess extends OrderState {
+  final List<OrderModel> orders;
+
+  OrderFetchSuccess({required this.orders});
+
+  @override
+  List<Object?> get props => [orders];
+}
+
+class OrderFetchFailure extends OrderState {
+  final String error;
+
+  OrderFetchFailure({this.error = 'Failed to fetch orders.'});
+}

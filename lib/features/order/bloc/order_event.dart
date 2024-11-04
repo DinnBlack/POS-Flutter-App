@@ -3,8 +3,9 @@ part of 'order_bloc.dart';
 @immutable
 sealed class OrderEvent {}
 
-class OrderCreateStarted extends OrderEvent {
-}
+class OrderCreateStarted extends OrderEvent {}
+
+class OrderFetchStarted extends OrderEvent {}
 
 class AddProductToOrderListStarted extends OrderEvent {
   final ProductModel product;
