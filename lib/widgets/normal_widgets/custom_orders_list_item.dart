@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:pos_flutter_app/features/order/bloc/order_bloc.dart';
 import 'package:pos_flutter_app/utils/constants/constants.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 import 'package:pos_flutter_app/utils/ui_util/format_text.dart';
+import 'package:pos_flutter_app/widgets/common_widgets/custom_outline_button.dart';
 import '../../models/order_model.dart';
 import '../../screens/services/order/order_details/order_details_screen.dart';
+import '../common_widgets/custom_button.dart';
 import '../common_widgets/dashed_line_painter.dart';
 
 class CustomOrdersListItem extends StatelessWidget {
@@ -49,9 +53,7 @@ class CustomOrdersListItem extends StatelessWidget {
                         order.customerName!,
                         style: AppTextStyle.semibold(LARGE_TEXT_SIZE),
                       ),
-                      const SizedBox(
-                        height: SMALL_MARGIN,
-                      ),
+                      const SizedBox(height: SMALL_MARGIN),
                       Text(
                         '${DateFormat('HH:mm dd/MM').format(order.orderTime!)} - ${order.orderId!}',
                         style: AppTextStyle.medium(MEDIUM_TEXT_SIZE, GREY_COLOR),
@@ -63,9 +65,7 @@ class CustomOrdersListItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: DEFAULT_PADDING,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
                       decoration: BoxDecoration(
                         color: order.status == 'Đang xử lý'
                             ? Colors.orange.withOpacity(0.2)
@@ -86,15 +86,13 @@ class CustomOrdersListItem extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: SMALL_MARGIN,
-                    ),
+                    const SizedBox(height: SMALL_MARGIN),
                     Text(
                       'Tạo bởi ${order.executor!}',
                       style: AppTextStyle.medium(LARGE_TEXT_SIZE, GREY_COLOR),
                     ),
                   ],
-                )
+                ),
               ],
             ),
             Padding(
@@ -119,9 +117,7 @@ class CustomOrdersListItem extends StatelessWidget {
                       FormatText.formatCurrency(order.totalPrice!),
                       style: AppTextStyle.semibold(LARGE_TEXT_SIZE),
                     ),
-                    const SizedBox(
-                      height: SMALL_MARGIN,
-                    ),
+                    const SizedBox(height: SMALL_MARGIN),
                     Text(
                       order.paymentStatus == true
                           ? 'Đã thanh toán'
@@ -132,9 +128,34 @@ class CustomOrdersListItem extends StatelessWidget {
                       ),
                     ),
                   ],
-                )
+                ),
               ],
-            )
+            ),
+            if (order.status == 'Đang xử lý') ...[
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomOutlineButton(
+                      onPressed: () {
+                        context.read<OrderBloc>().add(UpdateOrderDetailsStarted(orderId: order.orderId!,newStatus: 'Hủy'));
+                      },
+                      text: 'Hủy bỏ',
+                      height: 30,
+                    ),
+                  ),
+                  const SizedBox(width: DEFAULT_MARGIN),
+                  Expanded(
+                    child: CustomButton(
+                      onPressed: () {
+                        context.read<OrderBloc>().add(UpdateOrderDetailsStarted(orderId: order.orderId!,newStatus: 'Hoàn tất'));
+                      },
+                      text: 'Đã giao',
+                      height: 30,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ],
         ),
       ),

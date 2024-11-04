@@ -6,13 +6,18 @@ import '../../utils/ui_util/app_text_style.dart';
 class CustomOutlineButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
-  final IconData icon;
+  final IconData? icon;
+  final double? height;
+  final double textSize; // Thêm tham số textSize
 
-  const CustomOutlineButton(
-      {super.key,
-      required this.onPressed,
-      required this.text,
-      required this.icon});
+  const CustomOutlineButton({
+    super.key,
+    required this.onPressed,
+    required this.text,
+    this.icon,
+    this.height,
+    this.textSize = MEDIUM_TEXT_SIZE, // Gán giá trị mặc định cho textSize
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +25,7 @@ class CustomOutlineButton extends StatelessWidget {
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
         side: const BorderSide(color: PRIMARY_COLOR),
-        minimumSize: const Size(double.infinity, 40),
+        minimumSize: Size(double.infinity, height ?? 40),
         padding: const EdgeInsets.symmetric(horizontal: MEDIUM_PADDING),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(SMALL_BORDER_RADIUS),
@@ -29,11 +34,13 @@ class CustomOutlineButton extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: PRIMARY_COLOR, size: 18),
-          const SizedBox(width: DEFAULT_MARGIN),
+          if (icon != null) ...[
+            Icon(icon, color: PRIMARY_COLOR, size: 18),
+            const SizedBox(width: DEFAULT_MARGIN),
+          ],
           Text(
             text,
-            style: AppTextStyle.medium(LARGE_TEXT_SIZE, PRIMARY_COLOR),
+            style: AppTextStyle.medium(textSize, PRIMARY_COLOR), // Sử dụng textSize
           ),
         ],
       ),

@@ -3,10 +3,10 @@ import 'package:pos_flutter_app/models/product_model.dart';
 class OrderModel {
   final String? orderId;
   final List<ProductModel>? products;
-  final int? discount;  // Discount in currency
-  final int? shipping;   // Shipping cost
-  final int? surcharge;  // Additional charges
-  final int? totalPrice; // Final total price after calculations
+  final int? discount;
+  final int? shipping;
+  final int? surcharge;
+  final int? totalPrice;
   final String? customerName;
   final DateTime? orderTime;
   final String? status;
@@ -15,7 +15,6 @@ class OrderModel {
   final String? note;
   final String? paymentMethod;
 
-  // Total price after applying discount, adding shipping and surcharge
   int get finalTotalPrice {
     int basePrice = totalPrice ?? 0;
     return basePrice - (discount ?? 0) + (shipping ?? 0) + (surcharge ?? 0);

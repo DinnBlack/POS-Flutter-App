@@ -12,7 +12,7 @@ class MenuMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(  // Use a Container instead of Scaffold
+    return Container(
       color: BACKGROUND_COLOR,
       padding: const EdgeInsets.all(DEFAULT_PADDING),
       child: GridView.count(
@@ -20,7 +20,7 @@ class MenuMobile extends StatelessWidget {
         mainAxisSpacing: DEFAULT_PADDING,
         crossAxisSpacing: DEFAULT_PADDING,
         physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,  // Allow the GridView to wrap its height
+        shrinkWrap: true,
         children: [
           _buildMenuItem(
             context,
@@ -48,7 +48,7 @@ class MenuMobile extends StatelessWidget {
             'Khách hàng',
             Iconsax.profile_2user,
             Colors.blue,
-            PageRoutes.orderPageMobile,
+            PageRoutes.customerPageMobile,
           ),
           _buildMenuItem(
             context,

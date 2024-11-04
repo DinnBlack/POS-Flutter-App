@@ -44,3 +44,9 @@ class OrderFetchFailure extends OrderState {
 
   OrderFetchFailure({this.error = 'Failed to fetch orders.'});
 }
+
+class OrderUpdateFailure extends OrderState { // Added to handle failure case
+  final String error;
+
+  OrderUpdateFailure({this.error = 'Failed to update order.'});
+}

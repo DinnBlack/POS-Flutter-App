@@ -79,7 +79,8 @@ class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (widget.product.request!.isNotEmpty) {
+        if (widget.product.request != null &&
+            widget.product.request!.isNotEmpty) {
           showProductDetailsDialog();
         } else {
           setState(() {

@@ -122,4 +122,61 @@ class OrderFirebase {
       throw Exception('Failed to fetch orders: $e');
     }
   }
+
+  Future<void> updateOrder(String orderId, Map<String, dynamic> updates) async {
+    final User? user = _firebaseAuth.currentUser;
+    final StoreModel? store = context.read<StoreBloc>().selectedStore;
+
+    // Validate that the user and store are not null
+    if (user == null) {
+      throw Exception('User not found');
+    }
+
+    if (store == null) {
+      throw Exception('Store not found');
+    }
+
+    try {
+      // Create a reference to the order in the database
+      DatabaseReference orderRef = _database
+          .ref('users/${user.uid}/stores/${store.id}/orders')
+          .child(orderId);
+
+      // Update the order with the provided updates
+      await orderRef.update(updates);
+      print('Order updated successfully: $orderId');
+    } catch (e) {
+      // Log the error and throw it for further handling
+      print('Failed to update order: $e');
+      throw Exception('Failed to update order: $e');
+    }
+  }
+
+  Future<OrderModel?> fetchOrderById(String orderId) async {
+    final User? user = _firebaseAuth.currentUser;
+    final StoreModel? store = context.read<StoreBloc>().selectedStore;
+
+    if (user == null || store == null) {
+      print('User or Store is not available');
+      return null;
+    }
+
+    try {
+      DatabaseReference orderRef =
+          _database.ref('users/${user.uid}/stores/${store.id}/orders/$orderId');
+      DatabaseEvent event = await orderRef.once();
+
+      if (event.snapshot.value != null) {
+        Map<String, dynamic> orderData = Map<String, dynamic>.from(
+            event.snapshot.value as Map<dynamic, dynamic>);
+        return OrderModel.fromMap(orderData); // Convert Map to OrderModel
+      } else {
+        print('Order not found');
+        return null;
+      }
+    } catch (e) {
+      print('Failed to fetch order by ID: $e');
+      throw Exception('Failed to fetch order by ID: $e');
+    }
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../screens/mobile/pages/activity_page/activity_page_mobile_screen.dart';
+import '../screens/mobile/pages/customer_page/customer_page_mobile_screen.dart';
 import '../screens/mobile/pages/inventory_page/inventory_page_mobile_screen.dart';
 import '../screens/mobile/pages/order_page/order_page_mobile_screen.dart';
 import '../screens/services/billing_queue/billing_queue_screen.dart';
@@ -33,12 +34,14 @@ class PageRoutes {
   static const String activityPageMobile = 'ActivityPageMobileScreen';
   static const String orderPageMobile = 'OrderPageMobileScreen';
   static const String inventoryPageMobile = 'InventoryPageMobileScreen';
+  static const String customerPageMobile = 'CustomerPageMobileScreen';
 
   static Map<String, WidgetBuilder> getMobileRoutes() {
     return {
       activityPageMobile: (context) => const ActivityPageMobileScreen(),
       orderPageMobile: (context) => const OrderPageMobileScreen(),
       inventoryPageMobile: (context) => const InventoryPageMobileScreen(),
+      customerPageMobile: (context) => const CustomerPageMobileScreen(),
     };
   }
 }

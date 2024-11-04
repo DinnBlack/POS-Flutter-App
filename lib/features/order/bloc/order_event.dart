@@ -5,7 +5,12 @@ sealed class OrderEvent {}
 
 class OrderCreateStarted extends OrderEvent {}
 
-class OrderFetchStarted extends OrderEvent {}
+class OrderFetchStarted extends OrderEvent {
+  final String? status;
+  final String? sortBy;
+
+  OrderFetchStarted({this.status, this.sortBy});
+}
 
 class AddProductToOrderListStarted extends OrderEvent {
   final ProductModel product;
@@ -37,6 +42,7 @@ class UpdateProductDetailsStarted extends OrderEvent {
 }
 
 class UpdateOrderDetailsStarted extends OrderEvent {
+  final String? orderId;
   final int? newTotalPrice;
   final String? newCustomerName;
   final DateTime? newOrderTime;
@@ -47,6 +53,7 @@ class UpdateOrderDetailsStarted extends OrderEvent {
   final String? newPaymentMethod;
 
   UpdateOrderDetailsStarted({
+    this.orderId,
     this.newTotalPrice,
     this.newCustomerName,
     this.newOrderTime,

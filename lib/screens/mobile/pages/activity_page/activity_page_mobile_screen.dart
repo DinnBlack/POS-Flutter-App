@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:pos_flutter_app/screens/mobile/pages/order_page/order_page_mobile_screen.dart';
 import 'package:pos_flutter_app/screens/services/order/orders_list/orders_list_screen.dart';
 
 import '../../../../utils/constants/constants.dart';
@@ -18,7 +19,13 @@ class _ActivityPageMobileScreenState extends State<ActivityPageMobileScreen>
   late TabController _tabController;
   late PageController _pageController;
 
-  final List<String> _tabs = ['Tất cả', 'Chờ xác nhận', 'Đang xử lý', 'Hoàn thành', 'Hủy'];
+  final List<String> _tabs = [
+    'Tất cả',
+    'Chờ xác nhận',
+    'Đang xử lý',
+    'Hoàn thành',
+    'Hủy'
+  ];
 
   @override
   void initState() {
@@ -124,17 +131,32 @@ class _ActivityPageMobileScreenState extends State<ActivityPageMobileScreen>
             case 0:
               return OrdersListScreen();
             case 1:
-             return Expanded(child: OrdersListScreen());
+              return OrdersListScreen(status: 'Chờ xác nhận');
             case 2:
-             return Expanded(child: OrdersListScreen());
+              return OrdersListScreen(status: 'Đang xử lý');
             case 3:
-             return Expanded(child: OrdersListScreen());
+              return OrdersListScreen(status: 'Hoàn tất');
             case 4:
-             return Expanded(child: OrdersListScreen());
+              return OrdersListScreen(status: 'Hủy');
             default:
               return Center(child: Text("Unknown tab"));
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.pushNamed(context, OrderPageMobileScreen.route);
+        },
+        label: Text(
+          'Tạo Đơn Hàng',
+          style: AppTextStyle.semibold(MEDIUM_TEXT_SIZE, WHITE_COLOR),
+        ),
+        icon: const Icon(Icons.add, color: Colors.white),
+        backgroundColor: PRIMARY_COLOR,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+          side: const BorderSide(width: 2, color: WHITE_COLOR),
+        ),
       ),
     );
   }

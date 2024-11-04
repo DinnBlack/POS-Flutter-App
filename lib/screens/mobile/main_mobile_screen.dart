@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:pos_flutter_app/screens/mobile/pages/activity_page/activity_page_mobile_screen.dart';
+import 'package:pos_flutter_app/screens/mobile/pages/customer_page/customer_page_mobile_screen.dart';
 import 'package:pos_flutter_app/screens/mobile/pages/inventory_page/inventory_page_mobile_screen.dart';
 import 'package:pos_flutter_app/screens/mobile/pages/order_page/order_page_mobile_screen.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
@@ -126,6 +127,14 @@ class MainMobileScreenState extends State<MainMobileScreen> {
                                   const OrderPageMobileScreen(),
                             ),
                           );
+                        case PageRoutes.customerPageMobile:
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                              const CustomerPageMobileScreen(),
+                            ),
+                          );
                           break;
                       }
                     },
@@ -220,7 +229,7 @@ class ContactBox extends StatelessWidget {
                 flex: 1,
                 child: OutlinedButton.icon(
                   onPressed: () {},
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.message,
                     color: Colors.blue,
                   ),
