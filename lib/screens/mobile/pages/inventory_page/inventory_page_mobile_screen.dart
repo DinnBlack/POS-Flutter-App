@@ -190,14 +190,7 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen>
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, ProductCreateScreen.route);
-        },
-        backgroundColor: PRIMARY_COLOR,
-        child: const Icon(Iconsax.add_copy, color: WHITE_COLOR),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      
     );
   }
 }

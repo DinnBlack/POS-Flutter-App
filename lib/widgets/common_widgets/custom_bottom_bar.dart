@@ -7,7 +7,7 @@ class CustomBottomBar extends StatelessWidget {
   final String? rightButtonText;
   final VoidCallback? onLeftButtonPressed;
   final VoidCallback? onRightButtonPressed;
-  final bool hasShadow; // New parameter
+  final bool hasShadow;
 
   const CustomBottomBar({
     Key? key,
@@ -15,7 +15,7 @@ class CustomBottomBar extends StatelessWidget {
     this.rightButtonText,
     this.onLeftButtonPressed,
     this.onRightButtonPressed,
-    this.hasShadow = true, // Default value is true
+    this.hasShadow = true,
   }) : super(key: key);
 
   @override

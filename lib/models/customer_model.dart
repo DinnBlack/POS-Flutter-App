@@ -2,12 +2,16 @@ class CustomerModel {
   final String name;
   final int phoneNumber;
   final DateTime createdAt;
+  final int? purchaseCount;
+  final String? imageUrl;
 
 //<editor-fold desc="Data Methods">
   const CustomerModel({
     required this.name,
     required this.phoneNumber,
     required this.createdAt,
+    this.purchaseCount,
+    this.imageUrl,
   });
 
   @override
@@ -17,10 +21,17 @@ class CustomerModel {
           runtimeType == other.runtimeType &&
           name == other.name &&
           phoneNumber == other.phoneNumber &&
-          createdAt == other.createdAt);
+          createdAt == other.createdAt &&
+          purchaseCount == other.purchaseCount &&
+          imageUrl == other.imageUrl);
 
   @override
-  int get hashCode => name.hashCode ^ phoneNumber.hashCode ^ createdAt.hashCode;
+  int get hashCode =>
+      name.hashCode ^
+      phoneNumber.hashCode ^
+      createdAt.hashCode ^
+      purchaseCount.hashCode ^
+      imageUrl.hashCode;
 
   @override
   String toString() {
@@ -28,6 +39,8 @@ class CustomerModel {
         ' name: $name,' +
         ' phoneNumber: $phoneNumber,' +
         ' createdAt: $createdAt,' +
+        ' purchaseCount: $purchaseCount,' +
+        ' imageUrl: $imageUrl,' +
         '}';
   }
 
@@ -35,11 +48,15 @@ class CustomerModel {
     String? name,
     int? phoneNumber,
     DateTime? createdAt,
+    int? purchaseCount,
+    String? imageUrl,
   }) {
     return CustomerModel(
       name: name ?? this.name,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       createdAt: createdAt ?? this.createdAt,
+      purchaseCount: purchaseCount ?? this.purchaseCount,
+      imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 
@@ -48,6 +65,8 @@ class CustomerModel {
       'name': this.name,
       'phoneNumber': this.phoneNumber,
       'createdAt': this.createdAt,
+      'purchaseCount': this.purchaseCount,
+      'imageUrl': this.imageUrl,
     };
   }
 
@@ -56,6 +75,8 @@ class CustomerModel {
       name: map['name'] as String,
       phoneNumber: map['phoneNumber'] as int,
       createdAt: map['createdAt'] as DateTime,
+      purchaseCount: map['purchaseCount'] as int,
+      imageUrl: map['imageUrl'] as String,
     );
   }
 

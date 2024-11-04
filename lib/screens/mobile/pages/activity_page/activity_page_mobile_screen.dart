@@ -5,6 +5,7 @@ import 'package:pos_flutter_app/screens/services/order/orders_list/orders_list_s
 
 import '../../../../utils/constants/constants.dart';
 import '../../../../utils/ui_util/app_text_style.dart';
+import '../../../../widgets/common_widgets/custom_floating_button.dart';
 
 class ActivityPageMobileScreen extends StatefulWidget {
   const ActivityPageMobileScreen({super.key});
@@ -143,20 +144,12 @@ class _ActivityPageMobileScreenState extends State<ActivityPageMobileScreen>
           }
         },
       ),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: CustomFloatingButton(
+        text: 'Tạo Đơn Hàng',
         onPressed: () {
           Navigator.pushNamed(context, OrderPageMobileScreen.route);
         },
-        label: Text(
-          'Tạo Đơn Hàng',
-          style: AppTextStyle.semibold(MEDIUM_TEXT_SIZE, WHITE_COLOR),
-        ),
         icon: const Icon(Icons.add, color: Colors.white),
-        backgroundColor: PRIMARY_COLOR,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-          side: const BorderSide(width: 2, color: WHITE_COLOR),
-        ),
       ),
     );
   }

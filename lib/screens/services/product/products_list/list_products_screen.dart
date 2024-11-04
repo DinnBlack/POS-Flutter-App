@@ -7,6 +7,7 @@ import 'package:pos_flutter_app/widgets/common_widgets/custom_list_products_item
 
 import '../../../../features/product/bloc/product_bloc.dart';
 import '../../../../features/category/bloc/category_bloc.dart';
+import '../../../../widgets/common_widgets/custom_floating_button.dart';
 import '../product_create/product_create_screen.dart';
 
 class ProductsListScreen extends StatefulWidget {
@@ -46,101 +47,110 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        int crossAxisCount;
-        if (constraints.maxWidth >= 1350) {
-          crossAxisCount = 6;
-        } else if (constraints.maxWidth >= 1100) {
-          crossAxisCount = 5;
-        } else if (constraints.maxWidth >= 850) {
-          crossAxisCount = 4;
-        } else if (constraints.maxWidth >= 320) {
-          crossAxisCount = 3;
-        } else {
-          crossAxisCount = 2;
-        }
-
-        double itemHeight = 142;
-        double itemWidth =
-            (constraints.maxWidth - (crossAxisCount - 1) * 10) / crossAxisCount;
-
-        return Container(
-          // color: PRIMARY_COLOR,
-          padding: const EdgeInsets.only(bottom: DEFAULT_PADDING),
-          child: BlocBuilder<ProductBloc, ProductState>(
-            builder: (context, state) {
-              if (state is ProductFetchInProgress) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is ProductFetchSuccess) {
-                final products = state.products;
-
-                final itemCount = products.length + 1;
-
-                if (widget.isGridView) {
-                  return GridView.builder(
-                    padding: const EdgeInsets.only(
-                      left: DEFAULT_PADDING,
-                      right: DEFAULT_PADDING,
-                      bottom: DEFAULT_PADDING,
-                    ),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: crossAxisCount,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: itemWidth / itemHeight,
-                    ),
-                    itemCount: itemCount,
-                    itemBuilder: (context, index) {
-                      if (index < products.length) {
-                        final product = products[index];
-                        return CustomGridProductsItem(product: product);
-                      } else {
-                        return _buildAddProductButton(widget.isGridView);
-                      }
-                    },
+    return Scaffold(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          int crossAxisCount;
+          if (constraints.maxWidth >= 1350) {
+            crossAxisCount = 6;
+          } else if (constraints.maxWidth >= 1100) {
+            crossAxisCount = 5;
+          } else if (constraints.maxWidth >= 850) {
+            crossAxisCount = 4;
+          } else if (constraints.maxWidth >= 320) {
+            crossAxisCount = 3;
+          } else {
+            crossAxisCount = 2;
+          }
+      
+          double itemHeight = 142;
+          double itemWidth =
+              (constraints.maxWidth - (crossAxisCount - 1) * 10) / crossAxisCount;
+      
+          return Container(
+            // color: PRIMARY_COLOR,
+            padding: const EdgeInsets.only(bottom: DEFAULT_PADDING),
+            child: BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                if (state is ProductFetchInProgress) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is ProductFetchSuccess) {
+                  final products = state.products;
+      
+                  final itemCount = products.length + 1;
+      
+                  if (widget.isGridView) {
+                    return GridView.builder(
+                      padding: const EdgeInsets.only(
+                        left: DEFAULT_PADDING,
+                        right: DEFAULT_PADDING,
+                        bottom: DEFAULT_PADDING,
+                      ),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: crossAxisCount,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: itemWidth / itemHeight,
+                      ),
+                      itemCount: itemCount,
+                      itemBuilder: (context, index) {
+                        if (index < products.length) {
+                          final product = products[index];
+                          return CustomGridProductsItem(product: product);
+                        } else {
+                          return _buildAddProductButton(widget.isGridView);
+                        }
+                      },
+                    );
+                  } else {
+                    return ListView.builder(
+                      padding: const EdgeInsets.only(
+                        bottom: DEFAULT_PADDING,
+                      ),
+                      itemCount: itemCount,
+                      itemBuilder: (context, index) {
+                        if (index < products.length) {
+                          final product = products[index];
+                          return Column(
+                            children: [
+                              CustomListProductsItem(
+                                product: product,
+                                isOrderPage: widget.isOrderPage!,
+                              ),
+                              Divider(
+                                height: 1,
+                                thickness: 1,
+                                color: GREY_LIGHT_COLOR.withOpacity(0.02),
+                              ),
+                            ],
+                          );
+                        } else {
+                          // Nút "Add Product"
+                          return _buildAddProductButton(widget.isGridView);
+                        }
+                      },
+                    );
+                  }
+                } else if (state is ProductFetchFailure) {
+                  return Center(
+                    child: Text('Failed to fetch products: ${state.error}'),
                   );
                 } else {
-                  return ListView.builder(
-                    padding: const EdgeInsets.only(
-                      bottom: DEFAULT_PADDING,
-                    ),
-                    itemCount: itemCount,
-                    itemBuilder: (context, index) {
-                      if (index < products.length) {
-                        final product = products[index];
-                        return Column(
-                          children: [
-                            CustomListProductsItem(
-                              product: product,
-                              isOrderPage: widget.isOrderPage!,
-                            ),
-                            Divider(
-                              height: 1,
-                              thickness: 1,
-                              color: GREY_LIGHT_COLOR.withOpacity(0.02),
-                            ),
-                          ],
-                        );
-                      } else {
-                        // Nút "Add Product"
-                        return _buildAddProductButton(widget.isGridView);
-                      }
-                    },
-                  );
+                  print(state);
+                  return const Center(child: Text('No products found.'));
                 }
-              } else if (state is ProductFetchFailure) {
-                return Center(
-                  child: Text('Failed to fetch products: ${state.error}'),
-                );
-              } else {
-                print(state);
-                return const Center(child: Text('No products found.'));
-              }
-            },
-          ),
-        );
-      },
+              },
+            ),
+          );
+        },
+      ),
+      floatingActionButton: CustomFloatingButton(
+        text: 'Tạo Sản Phẩm',
+        onPressed: () {
+          Navigator.pushNamed(context, ProductCreateScreen.route);
+        },
+        icon: const Icon(Icons.add, color: Colors.white),
+      ),
     );
   }
 

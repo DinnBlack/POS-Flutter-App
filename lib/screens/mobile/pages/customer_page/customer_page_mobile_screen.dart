@@ -3,6 +3,8 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 import '../../../../utils/constants/constants.dart';
 import '../../../../utils/ui_util/app_text_style.dart';
+import '../../../../widgets/common_widgets/custom_floating_button.dart';
+import '../../../services/customer/customer_create/customer_create_screen.dart';
 
 class CustomerPageMobileScreen extends StatelessWidget {
   static const route = 'CustomerPageMobileScreen';
@@ -61,6 +63,36 @@ class CustomerPageMobileScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+      floatingActionButton: CustomFloatingButton(
+        text: 'Thêm Khách hàng',
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            builder: (BuildContext context) {
+              return Container(
+                margin: const EdgeInsets.only(top: LARGE_MARGIN),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(DEFAULT_BORDER_RADIUS),
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: DEFAULT_PADDING,
+                    right: DEFAULT_PADDING,
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ),
+                  child: const CustomerCreateScreen(),
+                ),
+              );
+            },
+          );
+        },
+        icon: const Icon(Iconsax.user_add_copy, color: Colors.white),
       ),
     );
   }
