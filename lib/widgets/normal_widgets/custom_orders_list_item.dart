@@ -6,10 +6,12 @@ import 'package:pos_flutter_app/utils/constants/constants.dart';
 import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 import 'package:pos_flutter_app/utils/ui_util/format_text.dart';
 import 'package:pos_flutter_app/widgets/common_widgets/custom_outline_button.dart';
+import 'package:toastification/toastification.dart';
 import '../../models/order_model.dart';
 import '../../screens/services/order/order_details/order_details_screen.dart';
 import '../common_widgets/custom_button.dart';
 import '../common_widgets/dashed_line_painter.dart';
+import '../common_widgets/toast_helper.dart';
 
 class CustomOrdersListItem extends StatelessWidget {
   final OrderModel order;
@@ -138,6 +140,12 @@ class CustomOrdersListItem extends StatelessWidget {
                     child: CustomOutlineButton(
                       onPressed: () {
                         context.read<OrderBloc>().add(UpdateOrderDetailsStarted(orderId: order.orderId!,newStatus: 'Hủy'));
+                        ToastHelper.showToast(
+                          context,
+                          'Đơn hàng đã hủy!',
+                          'Thông tin đơn hàng của bạn đã được lưu.',
+                          ToastificationType.error,
+                        );
                       },
                       text: 'Hủy bỏ',
                       height: 30,
@@ -148,6 +156,12 @@ class CustomOrdersListItem extends StatelessWidget {
                     child: CustomButton(
                       onPressed: () {
                         context.read<OrderBloc>().add(UpdateOrderDetailsStarted(orderId: order.orderId!,newStatus: 'Hoàn tất'));
+                        ToastHelper.showToast(
+                          context,
+                          'Đơn hàng đã hoàn tất!',
+                          'Thông tin đơn hàng của bạn đã được lưu.',
+                          ToastificationType.success,
+                        );
                       },
                       text: 'Đã giao',
                       height: 30,
