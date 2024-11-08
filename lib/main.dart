@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pos_flutter_app/features/customer/bloc/customer_bloc.dart';
 import 'package:pos_flutter_app/features/order/bloc/order_bloc.dart';
 import 'package:pos_flutter_app/features/order/bloc/order_bloc.dart';
 import 'package:pos_flutter_app/features/order/data/order_firebase.dart';
@@ -20,6 +21,7 @@ import 'package:pos_flutter_app/features/store/data/store_firebase.dart';
 import 'features/app/bloc/app_cubit.dart';
 import 'features/auth/bloc/auth_bloc.dart';
 import 'features/category/bloc/category_bloc.dart';
+import 'features/customer/data/customer_firebase.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -82,6 +84,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<AppCubit>(
           create: (context) => AppCubit(),
+        ),
+        BlocProvider<CustomerBloc>(
+          create: (context) => CustomerBloc(CustomerFirebase(context)),
         ),
       ],
       child: MaterialApp(

@@ -20,11 +20,17 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     try {
       await _customerFirebase.createCustomer(event.customer);
       emit(CustomerCreateSuccess());
+      add(CustomerFetchStated());
     } catch (error) {
-      emit(CustomerCreateFailed(error: error.toString()));
+      if (error.toString().contains('Customer with this phone number already exists')) {
+        emit(CustomerCreateFailed(error: 'Số điện thoại đã tồn tại'));
+      } else {
+        emit(CustomerCreateFailed(error: error.toString()));
+      }
       print('Customer creation failed: $error');
     }
   }
+
 
   Future<void> _customerFetch(CustomerFetchStated event, Emitter<CustomerState> emit) async {
     emit(CustomerFetchInProgress());

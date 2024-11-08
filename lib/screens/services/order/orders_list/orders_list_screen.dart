@@ -28,7 +28,7 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
 
   @override
   void dispose() {
-    _scrollController.dispose(); // Dispose of the controller when done
+    _scrollController.dispose();
     super.dispose();
   }
 

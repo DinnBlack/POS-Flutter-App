@@ -1,7 +1,7 @@
 class CustomerModel {
   final String name;
-  final int phoneNumber;
-  final DateTime createdAt;
+  final String phoneNumber;
+  final DateTime? createdAt;
   final int? purchaseCount;
   final String? imageUrl;
 
@@ -46,7 +46,7 @@ class CustomerModel {
 
   CustomerModel copyWith({
     String? name,
-    int? phoneNumber,
+    String? phoneNumber,
     DateTime? createdAt,
     int? purchaseCount,
     String? imageUrl,
@@ -64,7 +64,7 @@ class CustomerModel {
     return {
       'name': this.name,
       'phoneNumber': this.phoneNumber,
-      'createdAt': this.createdAt,
+      'createdAt': createdAt?.toIso8601String(),
       'purchaseCount': this.purchaseCount,
       'imageUrl': this.imageUrl,
     };
@@ -72,11 +72,11 @@ class CustomerModel {
 
   factory CustomerModel.fromMap(Map<String, dynamic> map) {
     return CustomerModel(
-      name: map['name'] as String,
-      phoneNumber: map['phoneNumber'] as int,
-      createdAt: map['createdAt'] as DateTime,
-      purchaseCount: map['purchaseCount'] as int,
-      imageUrl: map['imageUrl'] as String,
+      name: map['name'] as String? ?? 'Unknown Name',
+      phoneNumber: map['phoneNumber'] as String? ?? 'Unknown Phone',
+      createdAt: map['createdAt'] != null ? DateTime.tryParse(map['createdAt']) : null,
+      purchaseCount: map['purchaseCount'] != null ? map['purchaseCount'] as int : 0,
+      imageUrl: map['imageUrl'] as String?,
     );
   }
 

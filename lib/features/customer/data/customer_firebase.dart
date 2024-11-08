@@ -26,14 +26,23 @@ class CustomerFirebase {
       DatabaseReference customerRef = _database
           .ref('users/${user.uid}/stores/${store.id}/customers')
           .child(customer.phoneNumber.toString());
-      await customerRef.set(customer.toMap());
 
+      final snapshot = await customerRef.get();
+
+      if (snapshot.exists) {
+        // Customer with this phone number already exists
+        throw Exception('Customer with this phone number already exists');
+      }
+
+      // Proceed to create the customer if phone number is unique
+      await customerRef.set(customer.toMap());
       print('Customer created successfully: ${customer.name}');
     } catch (e) {
       print('Failed to create customer: $e');
       throw e;
     }
   }
+
 
   Future<List<CustomerModel>> fetchCustomers() async {
     final User? user = _firebaseAuth.currentUser;

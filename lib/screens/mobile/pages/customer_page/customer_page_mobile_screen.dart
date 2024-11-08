@@ -4,12 +4,14 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import '../../../../utils/constants/constants.dart';
 import '../../../../utils/ui_util/app_text_style.dart';
 import '../../../../widgets/common_widgets/custom_floating_button.dart';
+import '../../../../widgets/normal_widgets/custom_text_field_search_product.dart';
 import '../../../services/customer/customer_create/customer_create_screen.dart';
+import '../../../services/customer/customers_list/customers_list_screen.dart';
 
 class CustomerPageMobileScreen extends StatelessWidget {
   static const route = 'CustomerPageMobileScreen';
-  const CustomerPageMobileScreen({super.key});
 
+  const CustomerPageMobileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,20 +51,16 @@ class CustomerPageMobileScreen extends StatelessWidget {
                     color: BLACK_TEXT_COLOR,
                   ),
                 ),
-                const SizedBox(
-                  width: MEDIUM_MARGIN,
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: const Icon(
-                    Icons.search_rounded,
-                    color: BLACK_TEXT_COLOR,
-                  ),
-                ),
               ],
             ),
           ),
         ),
+      ),
+      body: const Column(
+        children: [
+          CustomTextFieldSearchProduct(),
+          Expanded(child: CustomersListScreen()),
+        ],
       ),
       floatingActionButton: CustomFloatingButton(
         text: 'Thêm Khách hàng',

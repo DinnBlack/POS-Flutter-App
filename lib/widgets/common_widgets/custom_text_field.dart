@@ -12,6 +12,7 @@ class CustomTextField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final bool isPassword;
   final bool isNumeric;
+  final bool isPhoneNumber;  // Thêm biến isPhoneNumber
   final String? title;
   final bool isRequired;
   final TextEditingController? controller;
@@ -25,6 +26,7 @@ class CustomTextField extends StatefulWidget {
     this.onChanged,
     this.isPassword = false,
     this.isNumeric = false,
+    this.isPhoneNumber = false,  // Thêm thuộc tính này
     this.title,
     this.isRequired = false,
     this.controller,
@@ -116,7 +118,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
             minLines: widget.minLines ?? 1,
             obscureText: widget.isPassword ? _obscureText : false,
             keyboardType: widget.isNumeric ? TextInputType.number : TextInputType.text,
-            inputFormatters: widget.isNumeric ? [FilteringTextInputFormatter.digitsOnly] : [],
+            inputFormatters: widget.isNumeric
+                ? [
+              FilteringTextInputFormatter.digitsOnly
+            ]
+                : [],
             decoration: InputDecoration(
               hintText: widget.hintText,
               hintStyle: AppTextStyle.regular(MEDIUM_TEXT_SIZE, GREY_COLOR),
@@ -134,19 +140,24 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   : null,
             ),
             onChanged: (value) {
-              if (widget.isNumeric) {
+              String formattedValue = value;
+
+              if (widget.isNumeric && !widget.isPhoneNumber) {
+                // Nếu là số tiền, format lại theo kiểu tiền tệ
                 String cleanedValue = value.replaceAll('.', '').replaceAll('đ', '').trim();
                 final intValue = int.tryParse(cleanedValue) ?? 0;
-                String formattedValue = FormatText.formatCurrency(intValue);
-
-                widget.controller!.text = formattedValue;
-
-                widget.controller!.selection = TextSelection.fromPosition(TextPosition(offset: formattedValue.length - 1));
-
-                widget.onChanged?.call(formattedValue);
-              } else {
-                widget.onChanged?.call(value);
+                formattedValue = FormatText.formatCurrency(intValue);
               }
+
+              // Nếu là số điện thoại, không cần format, chỉ để nguyên giá trị nhập vào
+              if (widget.isPhoneNumber) {
+                formattedValue = value;
+              }
+
+              widget.controller!.text = formattedValue;
+              widget.controller!.selection = TextSelection.fromPosition(TextPosition(offset: formattedValue.length));
+
+              widget.onChanged?.call(formattedValue);
               _validateInput(value);
             },
             autofocus: widget.autofocus,
