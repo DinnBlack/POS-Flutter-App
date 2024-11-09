@@ -44,7 +44,7 @@ class UpdateProductDetailsStarted extends OrderEvent {
 class UpdateOrderDetailsStarted extends OrderEvent {
   final String? orderId;
   final int? newTotalPrice;
-  final String? newCustomerName;
+  final CustomerModel? newCustomer;
   final DateTime? newOrderTime;
   final String? newStatus;
   final String? newExecutor;
@@ -55,7 +55,7 @@ class UpdateOrderDetailsStarted extends OrderEvent {
   UpdateOrderDetailsStarted({
     this.orderId,
     this.newTotalPrice,
-    this.newCustomerName,
+    this.newCustomer,
     this.newOrderTime,
     this.newStatus,
     this.newExecutor,
@@ -63,4 +63,10 @@ class UpdateOrderDetailsStarted extends OrderEvent {
     this.newNote,
     this.newPaymentMethod,
   });
+}
+
+class SelectCustomerStarted extends OrderEvent {
+  final CustomerModel customerSelect;
+
+  SelectCustomerStarted({required this.customerSelect});
 }

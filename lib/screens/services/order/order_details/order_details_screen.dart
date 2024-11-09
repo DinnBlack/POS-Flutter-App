@@ -294,7 +294,7 @@ class _CustomerInfo extends StatelessWidget {
           ),
           const SizedBox(width: DEFAULT_MARGIN),
           Text(
-            order.customerName!,
+            order.customer!.name,
             style: AppTextStyle.semibold(LARGE_TEXT_SIZE),
           ),
           const SizedBox(width: DEFAULT_MARGIN),

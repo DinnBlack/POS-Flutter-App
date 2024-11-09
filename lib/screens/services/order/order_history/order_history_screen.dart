@@ -361,7 +361,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                 Expanded(
                   flex: 2,
                   child: CustomContent(
-                    text: order.customerName!,
+                    text: order.customer!.name,
                   ),
                 ),
                 Expanded(

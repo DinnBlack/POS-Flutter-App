@@ -10,3 +10,9 @@ class CustomerCreateStated extends CustomerEvent {
 }
 
 class CustomerFetchStated extends CustomerEvent {}
+
+class CustomerSearchStated extends CustomerEvent {
+  final String query;
+
+  CustomerSearchStated(this.query);
+}

@@ -79,7 +79,7 @@ class OrderDetailsDialogScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Customer: ${order.customerName}'),
+                    Text('Customer: ${order.customer?.name}'),
                     Text('Total Items: ${order.products?.length}'),
                     const SizedBox(height: 10),
                     ListView.builder(

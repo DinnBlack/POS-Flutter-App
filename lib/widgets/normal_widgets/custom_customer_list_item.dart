@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:pos_flutter_app/models/customer_model.dart';
+import 'package:pos_flutter_app/utils/constants/constants.dart';
+import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 
 class CustomCustomerListItem extends StatelessWidget {
-final CustomerModel customer;
+  final CustomerModel customer;
+  final VoidCallback? onTap;
 
   const CustomCustomerListItem({
-    super.key, required this.customer,
+    super.key,
+    required this.customer, this.onTap,
   });
 
   String _getInitials(String name) {
@@ -19,20 +23,27 @@ final CustomerModel customer;
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: Colors.blueAccent,
-        child: Text(
-          _getInitials(customer.name).toUpperCase(),
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-          ),
+    bool isGuest = customer.name == 'Khách lẻ';
+    bool hasPhoneNumber = customer.phoneNumber.isNotEmpty;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Colors.blueAccent,
+          child: isGuest
+              ? const Icon(Icons.person, color: Colors.white)
+              : Text(
+                  _getInitials(customer.name).toUpperCase(),
+                  style: AppTextStyle.semibold(
+                    MEDIUM_TEXT_SIZE,
+                    WHITE_COLOR,
+                  ),
+                ),
         ),
+        title: Text(customer.name),
+        subtitle: hasPhoneNumber ? Text(customer.phoneNumber) : null,
       ),
-      title: Text(customer.name),
-      subtitle: Text(customer.phoneNumber),
     );
   }
 }

@@ -9,7 +9,7 @@ class CustomerModel {
   const CustomerModel({
     required this.name,
     required this.phoneNumber,
-    required this.createdAt,
+     this.createdAt,
     this.purchaseCount,
     this.imageUrl,
   });

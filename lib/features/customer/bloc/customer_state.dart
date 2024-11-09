@@ -29,3 +29,15 @@ class CustomerFetchFailed extends CustomerState {
   final String error;
   CustomerFetchFailed({this.error = 'Failed to fetch customers.'});
 }
+
+class CustomerSearchSuccess extends CustomerState {
+  final List<CustomerModel> searchResults;
+
+  CustomerSearchSuccess({required this.searchResults});
+}
+
+class CustomerSearchFailed extends CustomerState {
+  final String error;
+
+  CustomerSearchFailed({required this.error});
+}

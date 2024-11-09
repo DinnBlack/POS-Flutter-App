@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:pos_flutter_app/features/order/data/order_firebase.dart';
+import 'package:pos_flutter_app/models/customer_model.dart';
 
 import '../../../models/order_model.dart';
 import '../../../models/product_model.dart';
@@ -35,6 +36,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     on<ClearOrderProductListStarted>(_onClearOrderProductList);
     on<UpdateProductDetailsStarted>(_onUpdateProductDetails);
     on<UpdateOrderDetailsStarted>(_onUpdateOrderDetails);
+    on<SelectCustomerStarted>(_onSelectCustomer);
   }
 
   String _generateOrderId() {
@@ -45,17 +47,41 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     return '$datePart-$orderCount';
   }
 
+  Future<void> _onSelectCustomer(
+      SelectCustomerStarted event, Emitter<OrderState> emit) async {
+    try {
+      // If no customer is selected, set the default "Khách lẻ"
+      final selectedCustomer = event.customerSelect ?? CustomerModel(name: 'Khách lẻ', phoneNumber: '');
+
+      // Update the currentOrder with the selected customer
+      currentOrder = currentOrder.copyWith(
+        customer: selectedCustomer,
+      );
+
+      emit(OrderUpdated(currentOrder)); // Ensure state is emitted after customer update
+      print('Selected Customer: ${selectedCustomer.name}');
+    } catch (e) {
+      emit(OrderUpdateFailure(error: e.toString()));
+      print('Failed to select customer: $e');
+    }
+  }
+
   Future<void> _onOrderCreate(
       OrderCreateStarted event, Emitter<OrderState> emit) async {
     emit(OrderCreateInProgress());
     try {
+      if (currentOrder.customer?.name == null || currentOrder.customer!.name.isEmpty) {
+        currentOrder = currentOrder.copyWith(
+          customer: CustomerModel(name: 'Khách lẻ', phoneNumber: ''),
+        );
+      }
+
       final newOrderId = _generateOrderId();
 
       currentOrder = currentOrder.copyWith(
         orderId: newOrderId,
         products: orderProductList,
         totalPrice: totalPrice,
-        customerName: 'Khách lẻ',
         orderTime: DateTime.now(),
         status: 'Đang xử lý',
         executor: 'User',
@@ -197,8 +223,8 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     Map<String, dynamic> updates = {};
     if (event.newTotalPrice != null)
       updates['totalPrice'] = event.newTotalPrice;
-    if (event.newCustomerName != null)
-      updates['customerName'] = event.newCustomerName;
+    if (event.newCustomer != null)
+      updates['customerName'] = event.newCustomer;
     if (event.newOrderTime != null)
       updates['orderTime'] = event.newOrderTime?.toIso8601String();
     if (event.newStatus != null) updates['status'] = event.newStatus;
@@ -223,7 +249,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       } else {
         currentOrder = currentOrder.copyWith(
           totalPrice: event.newTotalPrice,
-          customerName: event.newCustomerName,
+          customer: event.newCustomer,
           orderTime: event.newOrderTime,
           status: event.newStatus,
           executor: event.newExecutor,

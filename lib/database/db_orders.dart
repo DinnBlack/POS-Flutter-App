@@ -1,3 +1,4 @@
+import 'package:pos_flutter_app/models/customer_model.dart';
 import 'package:pos_flutter_app/models/order_model.dart';
 import 'package:pos_flutter_app/models/product_model.dart';
 
@@ -47,7 +48,7 @@ final List<OrderModel> dbOrders = [
       ),
     ],
     totalPrice: 150,
-    customerName: 'John Doe',
+    customer: CustomerModel(name: 'Khách lẻ', phoneNumber: ''),
     orderTime: DateTime.now().subtract( Duration(hours: 1)),
     status: 'Pending',
     paymentStatus: true,
@@ -76,7 +77,7 @@ final List<OrderModel> dbOrders = [
       ),
     ],
     totalPrice: 250,
-    customerName: 'Jane Smith',
+    customer: CustomerModel(name: 'Khách lẻ', phoneNumber: ''),
     orderTime: DateTime.now().subtract( Duration(hours: 2)),
     status: 'Completed',
     paymentStatus: false,

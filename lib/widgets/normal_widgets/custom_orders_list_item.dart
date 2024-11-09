@@ -52,13 +52,14 @@ class CustomOrdersListItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        order.customerName!,
+                        order.customer!.name!,
                         style: AppTextStyle.semibold(LARGE_TEXT_SIZE),
                       ),
                       const SizedBox(height: SMALL_MARGIN),
                       Text(
                         '${DateFormat('HH:mm dd/MM').format(order.orderTime!)} - ${order.orderId!}',
-                        style: AppTextStyle.medium(MEDIUM_TEXT_SIZE, GREY_COLOR),
+                        style:
+                            AppTextStyle.medium(MEDIUM_TEXT_SIZE, GREY_COLOR),
                       ),
                     ],
                   ),
@@ -66,15 +67,21 @@ class CustomOrdersListItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    // Cập nhật điều kiện màu sắc cho status
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: DEFAULT_PADDING),
                       decoration: BoxDecoration(
                         color: order.status == 'Đang xử lý'
                             ? Colors.orange.withOpacity(0.2)
                             : order.status == 'Hoàn tất'
-                            ? Colors.green.withOpacity(0.2)
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+                                ? Colors.green.withOpacity(0.2)
+                                : order.status == 'Hủy'
+                                    ? Colors.red
+                                        .withOpacity(0.2) // Màu đỏ cho 'Hủy'
+                                    : Colors.transparent,
+                        borderRadius:
+                            BorderRadius.circular(DEFAULT_BORDER_RADIUS),
                       ),
                       child: Text(
                         order.status!,
@@ -83,8 +90,10 @@ class CustomOrdersListItem extends StatelessWidget {
                           order.status == 'Đang xử lý'
                               ? Colors.orange
                               : order.status == 'Hoàn tất'
-                              ? Colors.green
-                              : GREY_COLOR,
+                                  ? Colors.green
+                                  : order.status == 'Hủy'
+                                      ? Colors.red // Màu đỏ cho 'Hủy'
+                                      : GREY_COLOR,
                         ),
                       ),
                     ),
@@ -139,12 +148,51 @@ class CustomOrdersListItem extends StatelessWidget {
                   Expanded(
                     child: CustomOutlineButton(
                       onPressed: () {
-                        context.read<OrderBloc>().add(UpdateOrderDetailsStarted(orderId: order.orderId!,newStatus: 'Hủy'));
-                        ToastHelper.showToast(
-                          context,
-                          'Đơn hàng đã hủy!',
-                          'Thông tin đơn hàng của bạn đã được lưu.',
-                          ToastificationType.error,
+                        // Hiển thị dialog xác nhận
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: WHITE_COLOR,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    DEFAULT_BORDER_RADIUS),
+                              ),
+                              title: Text(
+                                'Xác nhận hủy đơn hàng',
+                                style:
+                                    AppTextStyle.semibold(PLUS_LARGE_TEXT_SIZE),
+                              ),
+                              content: Text(
+                                'Bạn có chắc chắn muốn hủy đơn hàng này?',
+                                style: AppTextStyle.medium(LARGE_TEXT_SIZE),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Hủy'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    context.read<OrderBloc>().add(
+                                        UpdateOrderDetailsStarted(
+                                            orderId: order.orderId!,
+                                            newStatus: 'Hủy'));
+                                    ToastHelper.showToast(
+                                      context,
+                                      'Đơn hàng đã hủy!',
+                                      'Thông tin đơn hàng của bạn đã được lưu.',
+                                      ToastificationType.error,
+                                    );
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Đồng ý'),
+                                ),
+                              ],
+                            );
+                          },
                         );
                       },
                       text: 'Hủy bỏ',
@@ -155,7 +203,8 @@ class CustomOrdersListItem extends StatelessWidget {
                   Expanded(
                     child: CustomButton(
                       onPressed: () {
-                        context.read<OrderBloc>().add(UpdateOrderDetailsStarted(orderId: order.orderId!,newStatus: 'Hoàn tất'));
+                        context.read<OrderBloc>().add(UpdateOrderDetailsStarted(
+                            orderId: order.orderId!, newStatus: 'Hoàn tất'));
                         ToastHelper.showToast(
                           context,
                           'Đơn hàng đã hoàn tất!',

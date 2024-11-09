@@ -95,6 +95,9 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
                                         Navigator.pop(context);
                                         context.read<CategoryBloc>().add(
                                             CategoryResetToDefaultStated());
+                                        context
+                                            .read<OrderBloc>()
+                                            .add(OrderFetchStarted());
                                       },
                                       child: Text(
                                         'Xác nhận',
@@ -118,6 +121,9 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
                       context
                           .read<CategoryBloc>()
                           .add(CategoryResetToDefaultStated());
+                      context
+                          .read<OrderBloc>()
+                          .add(OrderFetchStarted());
                     }
                   },
                   child: const Icon(

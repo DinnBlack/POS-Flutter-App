@@ -1,3 +1,4 @@
+import 'package:pos_flutter_app/models/customer_model.dart';
 import 'package:pos_flutter_app/models/product_model.dart';
 
 class OrderModel {
@@ -7,7 +8,7 @@ class OrderModel {
   final int? shipping;
   final int? surcharge;
   final int? totalPrice;
-  final String? customerName;
+  final CustomerModel? customer; // Change customerName to customer of type CustomerModel
   final DateTime? orderTime;
   final String? status;
   final String? executor;
@@ -20,7 +21,6 @@ class OrderModel {
     return basePrice - (discount ?? 0) + (shipping ?? 0) + (surcharge ?? 0);
   }
 
-//<editor-fold desc="Data Methods">
   const OrderModel({
     this.orderId,
     this.products,
@@ -28,7 +28,7 @@ class OrderModel {
     this.shipping = 0,  // Default shipping cost
     this.surcharge = 0, // Default surcharge
     this.totalPrice,
-    this.customerName,
+    this.customer, // Updated to customer of type CustomerModel
     this.orderTime,
     this.status,
     this.executor,
@@ -48,7 +48,7 @@ class OrderModel {
               shipping == other.shipping &&
               surcharge == other.surcharge &&
               totalPrice == other.totalPrice &&
-              customerName == other.customerName &&
+              customer == other.customer && // Updated comparison
               orderTime == other.orderTime &&
               status == other.status &&
               executor == other.executor &&
@@ -64,7 +64,7 @@ class OrderModel {
       shipping.hashCode ^
       surcharge.hashCode ^
       totalPrice.hashCode ^
-      customerName.hashCode ^
+      customer.hashCode ^ // Updated hashCode
       orderTime.hashCode ^
       status.hashCode ^
       executor.hashCode ^
@@ -82,7 +82,7 @@ class OrderModel {
         ' surcharge: $surcharge,' +
         ' totalPrice: $totalPrice,' +
         ' finalTotalPrice: $finalTotalPrice,' + // Include final total price in string
-        ' customerName: $customerName,' +
+        ' customer: $customer,' + // Updated to display customer
         ' orderTime: $orderTime,' +
         ' status: $status,' +
         ' executor: $executor,' +
@@ -99,7 +99,7 @@ class OrderModel {
     int? shipping,
     int? surcharge,
     int? totalPrice,
-    String? customerName,
+    CustomerModel? customer, // Updated to CustomerModel
     DateTime? orderTime,
     String? status,
     String? executor,
@@ -114,7 +114,7 @@ class OrderModel {
       shipping: shipping ?? this.shipping,
       surcharge: surcharge ?? this.surcharge,
       totalPrice: totalPrice ?? this.totalPrice,
-      customerName: customerName ?? this.customerName,
+      customer: customer ?? this.customer, // Updated to CustomerModel
       orderTime: orderTime ?? this.orderTime,
       status: status ?? this.status,
       executor: executor ?? this.executor,
@@ -132,7 +132,7 @@ class OrderModel {
       'shipping': shipping,
       'surcharge': surcharge,
       'totalPrice': totalPrice,
-      'customerName': customerName,
+      'customer': customer?.toMap(), // Serialize the customer to map
       'orderTime': orderTime?.toIso8601String(),
       'status': status,
       'executor': executor,
@@ -152,7 +152,9 @@ class OrderModel {
       shipping: map['shipping'] as int? ?? 0,
       surcharge: map['surcharge'] as int? ?? 0,
       totalPrice: map['totalPrice'] as int?,
-      customerName: map['customerName'] as String?,
+      customer: map['customer'] != null
+          ? CustomerModel.fromMap(Map<String, dynamic>.from(map['customer']))
+          : null, // Deserialize the customer from map
       orderTime: map['orderTime'] != null ? DateTime.parse(map['orderTime']) : null,
       status: map['status'] as String?,
       executor: map['executor'] as String?,
@@ -161,5 +163,4 @@ class OrderModel {
       paymentMethod: map['paymentMethod'] as String?,
     );
   }
-//</editor-fold>
 }

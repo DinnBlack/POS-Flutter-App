@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:pos_flutter_app/screens/services/customer/dialog/chose_customer_dialog.dart';
 import 'package:pos_flutter_app/screens/services/pay/pay_order/pay_order_screen.dart';
 import 'package:pos_flutter_app/widgets/common_widgets/custom_bottom_bar.dart';
 import 'package:pos_flutter_app/widgets/normal_widgets/custom_list_order_product_item.dart';
@@ -9,11 +8,13 @@ import 'package:pos_flutter_app/widgets/normal_widgets/custom_list_order_product
 import '../../../../features/category/bloc/category_bloc.dart';
 import '../../../../features/order/bloc/order_bloc.dart';
 import '../../../../features/product/bloc/product_bloc.dart';
+import '../../../../models/customer_model.dart';
 import '../../../../utils/constants/constants.dart';
 import '../../../../utils/ui_util/app_text_style.dart';
 import '../../../../utils/ui_util/format_text.dart';
 import '../../../../widgets/common_widgets/custom_outline_button.dart';
 import '../../../../widgets/common_widgets/dashed_line_painter.dart';
+import '../../customer/customer_select/customer_select_dialog.dart';
 
 class OrderCreateScreen extends StatefulWidget {
   static const route = 'OrderCreateScreen';
@@ -25,13 +26,21 @@ class OrderCreateScreen extends StatefulWidget {
 }
 
 class _OrderCreateScreenState extends State<OrderCreateScreen> {
-  void _showCustomerDialog(BuildContext context) {
-    showDialog(
+  CustomerModel? selectedCustomer;
+
+  void _showCustomerDialog(BuildContext context) async {
+    final result = await showDialog<CustomerModel>(
       context: context,
       builder: (context) {
-        return const ChoseCustomerDialog();
+        return const CustomerSelectDialog();
       },
     );
+
+    if (result != null) {
+      setState(() {
+        selectedCustomer = result;
+      });
+    }
   }
 
   List<Map<String, dynamic>> selectedDiscounts = [];
@@ -211,7 +220,9 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Chọn khách hàng',
+                                selectedCustomer != null
+                                    ? selectedCustomer!.name
+                                    : 'Chọn khách hàng', // Hiển thị tên khách hàng nếu đã chọn
                                 style: AppTextStyle.medium(
                                     LARGE_TEXT_SIZE, GREY_COLOR),
                               ),
