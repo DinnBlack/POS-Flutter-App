@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:pos_flutter_app/features/order/bloc/order_bloc.dart';
+import 'package:pos_flutter_app/features/product/bloc/product_bloc.dart';
 
 import '../../../../utils/constants/constants.dart';
 import '../../../../utils/ui_util/app_text_style.dart';
@@ -28,6 +31,8 @@ class InvoiceDetailsScreen extends StatelessWidget {
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
+                    context.read<OrderBloc>().add(ClearOrderProductListStarted());
+                    context.read<ProductBloc>().add(ProductFetchStarted());
                   },
                   child: const Icon(
                     Iconsax.arrow_left_2_copy,
@@ -86,6 +91,8 @@ class InvoiceDetailsScreen extends StatelessWidget {
           Navigator.of(context).pop();
           Navigator.of(context).pop();
           Navigator.of(context).pop();
+          context.read<OrderBloc>().add(ClearOrderProductListStarted());
+          context.read<ProductBloc>().add(ProductFetchStarted());
         },
       ),
     );

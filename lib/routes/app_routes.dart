@@ -9,6 +9,7 @@ import '../screens/services/order/order_create/order_create_screen.dart';
 import '../screens/services/pay/pay_order/pay_order_screen.dart';
 import '../screens/services/product/product_create/product_create_screen.dart';
 import '../screens/services/register/register_screen.dart';
+import '../screens/services/search/search_screen.dart';
 import '../screens/services/store/store_create_screen.dart';
 import '../screens/services/store/store_select_screen.dart';
 import '../screens/tablet/main_tablet_screen.dart';
@@ -40,6 +41,8 @@ Route<dynamic?> appRoutes(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const OrderPageMobileScreen());
     case CustomerCreateScreen.route:
       return MaterialPageRoute(builder: (context) => const CustomerCreateScreen());
+    case SearchScreen.route:
+      return MaterialPageRoute(builder: (context) => const SearchScreen());
     default:
       return MaterialPageRoute(builder: (context) => const MainTabletScreen());
   }

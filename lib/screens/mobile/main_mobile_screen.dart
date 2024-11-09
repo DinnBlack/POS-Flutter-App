@@ -11,6 +11,7 @@ import '../../routes/page_routes.dart';
 import '../../utils/constants/constants.dart';
 import '../../widgets/common_widgets/menu_mobile.dart';
 import '../../widgets/normal_widgets/image_slider.dart';
+import '../services/search/search_screen.dart';
 
 class MainMobileScreen extends StatefulWidget {
   static const route = 'MainMobileScreen';
@@ -22,6 +23,44 @@ class MainMobileScreen extends StatefulWidget {
 }
 
 class MainMobileScreenState extends State<MainMobileScreen> {
+  final ScrollController _scrollController = ScrollController();
+  bool _isNavigating = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_handleScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_handleScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _handleScroll() {
+    // Print the scroll position to debug
+    print('Scroll Position: ${_scrollController.position.pixels}');
+
+    // Check if the scroll position is at the top and we are not navigating already
+    if (_scrollController.position.pixels <= 0 && !_isNavigating) {
+      setState(() {
+        _isNavigating = true;
+      });
+      _navigateToSearch();
+    }
+  }
+
+  Future<void> _navigateToSearch() async {
+    // Navigate to the search screen and reset the navigation flag after the navigation is done
+    Navigator.pushNamed(context, SearchScreen.route).then((_) {
+      setState(() {
+        _isNavigating = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final store = context.read<StoreBloc>().selectedStore;
@@ -53,7 +92,7 @@ class MainMobileScreenState extends State<MainMobileScreen> {
                     Text(
                       store!.name,
                       style:
-                          AppTextStyle.semibold(LARGE_TEXT_SIZE, WHITE_COLOR),
+                      AppTextStyle.semibold(LARGE_TEXT_SIZE, WHITE_COLOR),
                     ),
                     Text(
                       'Thông tin cửa hàng >',
@@ -92,8 +131,8 @@ class MainMobileScreenState extends State<MainMobileScreen> {
                 ),
               ),
             ),
-            // Make the main content scrollable
             SingleChildScrollView(
+              controller: _scrollController,
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
@@ -106,7 +145,7 @@ class MainMobileScreenState extends State<MainMobileScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  const ActivityPageMobileScreen(),
+                              const ActivityPageMobileScreen(),
                             ),
                           );
                           break;
@@ -115,7 +154,7 @@ class MainMobileScreenState extends State<MainMobileScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  const InventoryPageMobileScreen(),
+                              const InventoryPageMobileScreen(),
                             ),
                           );
                           break;
@@ -124,9 +163,10 @@ class MainMobileScreenState extends State<MainMobileScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  const OrderPageMobileScreen(),
+                              const OrderPageMobileScreen(),
                             ),
                           );
+                          break;
                         case PageRoutes.customerPageMobile:
                           Navigator.push(
                             context,

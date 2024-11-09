@@ -50,11 +50,11 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
     if (widget.isEditing && widget.existingProduct != null) {
       _titleController.text = widget.existingProduct!.title;
       _sellingPriceController.text =
-          widget.existingProduct!.price.toStringAsFixed(3);
+           FormatText.formatCurrency(widget.existingProduct!.price);
       _costPriceController.text =
-          widget.existingProduct!.primeCost?.toStringAsFixed(3) ?? '';
+          FormatText.formatCurrency(widget.existingProduct!.primeCost!);
       _promotionPriceController.text =
-          widget.existingProduct!.promotionCost?.toStringAsFixed(3) ?? '';
+          FormatText.formatCurrency(widget.existingProduct!.promotionCost!);
       _unitController.text = widget.existingProduct!.unit ?? '';
       _descriptionController.text = widget.existingProduct!.description ?? '';
       _selectedImages = widget.existingProduct!.image

@@ -8,7 +8,6 @@ import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
 import '../../../../features/category/bloc/category_bloc.dart';
 import '../../../services/category/categories_list/categories_list_horizontal_screen.dart';
 import '../../../services/category/categories_list/categories_list_vertical_screen.dart';
-import '../../../services/product/product_create/product_create_screen.dart';
 import '../../../services/product/products_list/list_products_screen.dart';
 
 class InventoryPageMobileScreen extends StatefulWidget {
@@ -179,11 +178,13 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen>
                         child: ProductsListScreen(
                           isGridView: isGridView,
                           isOrderPage: false,
+                          isFloating: true,
                         ),
                       ),
                     ],
                   ),
-                  const CategoriesListVerticalScreen(),
+                  const CategoriesListVerticalScreen(
+                  ),
                 ],
               ),
             ),

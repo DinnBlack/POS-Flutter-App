@@ -3,15 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../features/order/bloc/order_bloc.dart';
 import '../../models/product_model.dart';
+import '../../screens/services/product/product_create/product_create_screen.dart';
 import '../../screens/services/product/sale_product/sale_product_dialog_screen.dart';
 import '../../utils/constants/constants.dart';
 import '../../utils/ui_util/app_text_style.dart';
 import '../../utils/ui_util/format_text.dart';
 
 class CustomGridProductsItem extends StatefulWidget {
-  const CustomGridProductsItem({super.key, required this.product});
+  const CustomGridProductsItem({
+    super.key,
+    required this.product,
+    required this.isOrderPage,
+  });
 
   final ProductModel product;
+  final bool isOrderPage;
 
   @override
   State<CustomGridProductsItem> createState() => _CustomGridProductsItemState();
@@ -37,11 +43,6 @@ class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
       if (!mounted) return;
       quantity = selectedItem?.quantityOrder ?? 0;
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   void showProductDetailsDialog() {
@@ -79,14 +80,27 @@ class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (widget.product.request != null &&
-            widget.product.request!.isNotEmpty) {
-          showProductDetailsDialog();
+        if (!widget.isOrderPage) {
+          // Navigate to ProductCreateScreen with the product
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductCreateScreen(
+                existingProduct: widget.product,
+                isEditing: true,
+              ),
+            ),
+          );
         } else {
-          setState(() {
-            quantity = quantity == 0 ? 1 : quantity + 1;
-          });
-          addProductToOrderList();
+          if (widget.product.request != null &&
+              widget.product.request!.isNotEmpty) {
+            showProductDetailsDialog();
+          } else {
+            setState(() {
+              quantity = quantity == 0 ? 1 : quantity + 1;
+            });
+            addProductToOrderList();
+          }
         }
       },
       child: AnimatedContainer(
@@ -97,7 +111,7 @@ class _CustomGridProductsItemState extends State<CustomGridProductsItem> {
           color: WHITE_COLOR,
           border: Border.all(
             color: quantity > 0 ? PRIMARY_COLOR : GREY_COLOR.withOpacity(0.5),
-            width: quantity > 0 ? 1 : 1,
+            width: 1,
           ),
         ),
         child: Stack(

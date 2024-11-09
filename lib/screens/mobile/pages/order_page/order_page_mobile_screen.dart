@@ -190,6 +190,7 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
                           child: ProductsListScreen(
                             isGridView: true,
                             isOrderPage: true,
+                            isAddProduct: true,
                           ),
                         ),
                       ],
@@ -204,6 +205,7 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
                               child: ProductsListScreen(
                                 isGridView: false,
                                 isOrderPage: true,
+                                isAddProduct: true,
                               ),
                             ),
                           ],
@@ -222,6 +224,7 @@ class _OrderPageMobileScreenState extends State<OrderPageMobileScreen> {
                               child: ProductsListScreen(
                                 isGridView: true,
                                 isOrderPage: true,
+                                isAddProduct: true,
                               ),
                             ),
                           ],

@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pos_flutter_app/utils/constants/constants.dart';
-import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
-import 'package:pos_flutter_app/widgets/common_widgets/custom_grid_products_item.dart';
-import 'package:pos_flutter_app/widgets/common_widgets/custom_list_products_item.dart';
 
-import '../../../../features/product/bloc/product_bloc.dart';
 import '../../../../features/category/bloc/category_bloc.dart';
+import '../../../../features/product/bloc/product_bloc.dart';
+import '../../../../utils/constants/constants.dart';
+import '../../../../utils/ui_util/app_text_style.dart';
 import '../../../../widgets/common_widgets/custom_floating_button.dart';
+import '../../../../widgets/common_widgets/custom_grid_products_item.dart';
+import '../../../../widgets/common_widgets/custom_list_products_item.dart';
 import '../product_create/product_create_screen.dart';
 
 class ProductsListScreen extends StatefulWidget {
   final bool isGridView;
   final bool? isOrderPage;
+  final bool isFloating;
+  final bool isAddProduct;
 
   const ProductsListScreen({
     super.key,
     required this.isGridView,
     this.isOrderPage = false,
+    this.isFloating = false,
+    this.isAddProduct = false,
   });
 
   @override
@@ -62,13 +66,13 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
           } else {
             crossAxisCount = 2;
           }
-      
+
           double itemHeight = 142;
           double itemWidth =
-              (constraints.maxWidth - (crossAxisCount - 1) * 10) / crossAxisCount;
-      
+              (constraints.maxWidth - (crossAxisCount - 1) * 10) /
+                  crossAxisCount;
+
           return Container(
-            // color: PRIMARY_COLOR,
             padding: const EdgeInsets.only(bottom: DEFAULT_PADDING),
             child: BlocBuilder<ProductBloc, ProductState>(
               builder: (context, state) {
@@ -76,9 +80,10 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is ProductFetchSuccess) {
                   final products = state.products;
-      
-                  final itemCount = products.length + 1;
-      
+
+                  final itemCount =
+                      products.length + (widget.isAddProduct ? 1 : 0);
+
                   if (widget.isGridView) {
                     return GridView.builder(
                       padding: const EdgeInsets.only(
@@ -96,10 +101,14 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                       itemBuilder: (context, index) {
                         if (index < products.length) {
                           final product = products[index];
-                          return CustomGridProductsItem(product: product);
-                        } else {
+                          return CustomGridProductsItem(
+                            product: product,
+                            isOrderPage: widget.isOrderPage!,
+                          );
+                        } else if (widget.isAddProduct) {
                           return _buildAddProductButton(widget.isGridView);
                         }
+                        return Container();
                       },
                     );
                   } else {
@@ -124,10 +133,10 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                               ),
                             ],
                           );
-                        } else {
-                          // Nút "Add Product"
+                        } else if (widget.isAddProduct) {
                           return _buildAddProductButton(widget.isGridView);
                         }
+                        return Container();
                       },
                     );
                   }
@@ -144,13 +153,13 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
           );
         },
       ),
-      floatingActionButton: CustomFloatingButton(
-        text: 'Tạo Sản Phẩm',
-        onPressed: () {
-          Navigator.pushNamed(context, ProductCreateScreen.route);
-        },
-        icon: const Icon(Icons.add, color: Colors.white),
-      ),
+      floatingActionButton: widget.isFloating
+          ? CustomFloatingButton(
+              text: 'Tạo Sản Phẩm',
+              onPressed: _addProduct,
+              icon: const Icon(Icons.add, color: Colors.white),
+            )
+          : null,
     );
   }
 
@@ -162,8 +171,12 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: WHITE_COLOR,
-          borderRadius: isGridView ? BorderRadius.circular(DEFAULT_BORDER_RADIUS) : BorderRadius.zero,
-          border: isGridView ? Border.all(color: GREY_COLOR.withOpacity(0.5), width: 1) : null,
+          borderRadius: isGridView
+              ? BorderRadius.circular(DEFAULT_BORDER_RADIUS)
+              : BorderRadius.zero,
+          border: isGridView
+              ? Border.all(color: GREY_COLOR.withOpacity(0.5), width: 1)
+              : null,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
