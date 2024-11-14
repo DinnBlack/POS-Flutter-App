@@ -19,17 +19,17 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       0, (sum, product) => sum + (product.quantityOrder ?? 0));
 
   int get basePrice => orderProductList.fold(
-    0,
+        0,
         (sum, product) {
-      int price = (product.promotionCost! > 0
-          ? product.promotionCost! * (product.quantityOrder ?? 0)
-          : product.price * (product.quantityOrder ?? 0));
+          int price = (product.promotionCost! > 0
+              ? product.promotionCost! * (product.quantityOrder ?? 0)
+              : product.price * (product.quantityOrder ?? 0));
 
-      price -= (product.discount ?? 0);
+          price -= (product.discount ?? 0);
 
-      return sum + price;
-    },
-  );
+          return sum + price;
+        },
+      );
 
   int get totalPrice {
     int discount = currentOrder.discount ?? 0;
@@ -38,12 +38,14 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
     return basePrice - discount + surcharge + shipping;
   }
+
   OrderBloc(this._orderFirebase) : super(OrderInitial()) {
     on<OrderCreateStarted>(_onOrderCreate);
     on<OrderFetchStarted>(_onOrderFetch);
     on<AddProductToOrderListStarted>(_onAddProductToOrderList);
     on<RemoveProductFromOrderListStarted>(_onRemoveProductFromOrderList);
     on<ClearOrderProductListStarted>(_onClearOrderProductList);
+    on<SetDefaultStated>(_onSetDefault);
     on<UpdateProductDetailsStarted>(_onUpdateProductDetails);
     on<UpdateOrderDetailsStarted>(_onUpdateOrderDetails);
     on<SelectCustomerStarted>(_onSelectCustomer);
@@ -116,13 +118,6 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
       await _orderFirebase.createOrder(currentOrder);
       print('New Order: $currentOrder');
-
-      currentOrder = currentOrder.copyWith(
-        discount: 0,
-        surcharge: 0,
-        shipping: 0,
-        totalPrice: 0,
-      );
 
       emit(OrderCreateSuccess());
     } catch (e) {
@@ -226,6 +221,15 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     emit(OrderProductListUpdated(orderProductList));
   }
 
+  Future<void> _onSetDefault(
+      SetDefaultStated event, Emitter<OrderState> emit) async {
+    orderProductList.clear();
+    currentOrder = const OrderModel();
+    print("Current Order: $currentOrder");
+    emit(SetDefaultState(orderProductList, currentOrder));
+  }
+
+
   Future<void> _onUpdateProductDetails(
       UpdateProductDetailsStarted event, Emitter<OrderState> emit) async {
     final index = orderProductList
@@ -275,7 +279,8 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     if (event.newDiscount != null) updates['discount'] = event.newDiscount;
     if (event.newShipping != null) updates['shipping'] = event.newShipping;
     if (event.newSurcharge != null) updates['surcharge'] = event.newSurcharge;
-    if (event.newPaidAmount != null) updates['paidAmount'] = event.newPaidAmount;
+    if (event.newPaidAmount != null)
+      updates['paidAmount'] = event.newPaidAmount;
 
     try {
       if (event.orderId != null) {

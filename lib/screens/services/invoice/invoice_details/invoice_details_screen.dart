@@ -34,7 +34,7 @@ class InvoiceDetailsScreen extends StatelessWidget {
                     Navigator.of(context).pop();
                     context
                         .read<OrderBloc>()
-                        .add(ClearOrderProductListStarted());
+                        .add(SetDefaultStated());
                     context.read<ProductBloc>().add(ProductFetchStarted());
                   },
                   child: const Icon(
@@ -94,7 +94,7 @@ class InvoiceDetailsScreen extends StatelessWidget {
           Navigator.of(context).pop();
           Navigator.of(context).pop();
           Navigator.of(context).pop();
-          context.read<OrderBloc>().add(ClearOrderProductListStarted());
+          context.read<OrderBloc>().add(SetDefaultStated());
           context.read<ProductBloc>().add(ProductFetchStarted());
         },
       ),

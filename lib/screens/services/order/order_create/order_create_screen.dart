@@ -33,12 +33,14 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
   final Set<String> selectedDiscountTypes = {};
   List<TextEditingController> discountControllers = [];
   List<FocusNode> focusNodes = [];
+  TextEditingController noteController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     discountControllers.add(TextEditingController(text: '0đ'));
     focusNodes.add(FocusNode());
+    noteController.addListener(_onNoteChanged);
   }
 
   void _showCustomerDialog(BuildContext context) async {
@@ -56,6 +58,15 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
     }
   }
 
+  void _onNoteChanged() {
+    final noteText = noteController.text;
+    context.read<OrderBloc>().add(
+          UpdateOrderDetailsStarted(
+            newNote: noteText,
+          ),
+        );
+  }
+
   void _onDiscountChanged(int index, String newValue) {
     if (index < selectedDiscounts.length) {
       setState(() {
@@ -69,45 +80,44 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
         );
         if (index == 0) {
           context.read<OrderBloc>().add(
-            UpdateOrderDetailsStarted(
-              newDiscount: amount,
-              newShipping: selectedDiscounts.length > 1
-                  ? selectedDiscounts[1]['amount']
-                  : 0,
-              newSurcharge: selectedDiscounts.length > 2
-                  ? selectedDiscounts[2]['amount']
-                  : 0,
-            ),
-          );
+                UpdateOrderDetailsStarted(
+                  newDiscount: amount,
+                  newShipping: selectedDiscounts.length > 1
+                      ? selectedDiscounts[1]['amount']
+                      : 0,
+                  newSurcharge: selectedDiscounts.length > 2
+                      ? selectedDiscounts[2]['amount']
+                      : 0,
+                ),
+              );
         } else if (index == 1) {
           context.read<OrderBloc>().add(
-            UpdateOrderDetailsStarted(
-              newDiscount: selectedDiscounts.length > 0
-                  ? selectedDiscounts[0]['amount']
-                  : 0,
-              newShipping: amount,
-              newSurcharge: selectedDiscounts.length > 2
-                  ? selectedDiscounts[2]['amount']
-                  : 0,
-            ),
-          );
+                UpdateOrderDetailsStarted(
+                  newDiscount: selectedDiscounts.length > 0
+                      ? selectedDiscounts[0]['amount']
+                      : 0,
+                  newShipping: amount,
+                  newSurcharge: selectedDiscounts.length > 2
+                      ? selectedDiscounts[2]['amount']
+                      : 0,
+                ),
+              );
         } else if (index == 2) {
           context.read<OrderBloc>().add(
-            UpdateOrderDetailsStarted(
-              newDiscount: selectedDiscounts.length > 0
-                  ? selectedDiscounts[0]['amount']
-                  : 0,
-              newShipping: selectedDiscounts.length > 1
-                  ? selectedDiscounts[1]['amount']
-                  : 0,
-              newSurcharge: amount,
-            ),
-          );
+                UpdateOrderDetailsStarted(
+                  newDiscount: selectedDiscounts.length > 0
+                      ? selectedDiscounts[0]['amount']
+                      : 0,
+                  newShipping: selectedDiscounts.length > 1
+                      ? selectedDiscounts[1]['amount']
+                      : 0,
+                  newSurcharge: amount,
+                ),
+              );
         }
       });
     }
   }
-
 
   void _addDiscount(String discountType) {
     if (!selectedDiscountTypes.contains(discountType)) {
@@ -588,43 +598,40 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
                     const SizedBox(
                       height: DEFAULT_MARGIN,
                     ),
-                    GestureDetector(
-                      onTap: () => _showCustomerDialog(context),
-                      child: Container(
-                        color: WHITE_COLOR,
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                      hintText: 'Ghi chú',
-                                      hintStyle: AppTextStyle.medium(
-                                          LARGE_TEXT_SIZE, GREY_COLOR),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: GREY_COLOR.withOpacity(0.5)),
-                                      ),
-                                      focusedBorder: const UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: GREY_COLOR),
-                                      ),
+                    Container(
+                      color: WHITE_COLOR,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: noteController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Ghi chú',
+                                    hintStyle: AppTextStyle.medium(
+                                        LARGE_TEXT_SIZE, GREY_COLOR),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: GREY_COLOR.withOpacity(0.5)),
+                                    ),
+                                    focusedBorder: const UnderlineInputBorder(
+                                      borderSide: BorderSide(color: GREY_COLOR),
                                     ),
                                   ),
                                 ),
-                                InkWell(
-                                  onTap: () {},
-                                  child: const Icon(
-                                    Icons.image_outlined,
-                                    color: GREY_COLOR,
-                                  ),
+                              ),
+                              InkWell(
+                                onTap: () {},
+                                child: const Icon(
+                                  Icons.image_outlined,
+                                  color: GREY_COLOR,
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ],

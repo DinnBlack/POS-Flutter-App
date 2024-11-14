@@ -22,6 +22,13 @@ class OrderProductListUpdated extends OrderState {
   OrderProductListUpdated(this.orderProductList);
 }
 
+class SetDefaultState extends OrderState {
+  final List<ProductModel> orderProductList;
+  final OrderModel currentOrder;
+
+  SetDefaultState(this.orderProductList, this.currentOrder);
+}
+
 class OrderUpdated extends OrderState {
   final OrderModel updatedOrder;
 
@@ -45,7 +52,8 @@ class OrderFetchFailure extends OrderState {
   OrderFetchFailure({this.error = 'Failed to fetch orders.'});
 }
 
-class OrderUpdateFailure extends OrderState { // Added to handle failure case
+class OrderUpdateFailure extends OrderState {
+  // Added to handle failure case
   final String error;
 
   OrderUpdateFailure({this.error = 'Failed to update order.'});

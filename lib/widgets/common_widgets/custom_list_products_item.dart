@@ -11,12 +11,12 @@ class CustomListProductsItem extends StatefulWidget {
     super.key,
     required this.product,
     this.isOrderPage = true,
-    this.shouldShowDialog = true, // New parameter with default value
+    this.shouldShowDialog = true,
   });
 
   final ProductModel product;
   final bool isOrderPage;
-  final bool shouldShowDialog; // New parameter to control dialog display
+  final bool shouldShowDialog;
 
   @override
   State<CustomListProductsItem> createState() => _CustomListProductsItemState();
@@ -26,7 +26,6 @@ class _CustomListProductsItemState extends State<CustomListProductsItem> {
   int quantity = 0;
 
   void showProductDetailsDialog() {
-    // Check if dialog should be shown based on shouldShowDialog parameter
     if (widget.shouldShowDialog) {
       if (widget.isOrderPage) {
         showDialog(
@@ -62,29 +61,27 @@ class _CustomListProductsItemState extends State<CustomListProductsItem> {
       onTap: showProductDetailsDialog,
       child: Container(
         color: WHITE_COLOR,
+        padding: const EdgeInsets.all(DEFAULT_PADDING),
         height: 80,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              padding: const EdgeInsets.all(DEFAULT_PADDING),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
-                child: widget.product.image != null &&
-                    widget.product.image!.isNotEmpty
-                    ? Image.network(
-                  widget.product.image!.first,
-                  height: 60,
-                  width: 60,
-                  fit: BoxFit.cover,
-                )
-                    : Image.asset(
-                  'assets/images/default_image.png',
-                  height: 60,
-                  width: 60,
-                  fit: BoxFit.cover,
-                ),
-              ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+              child: widget.product.image != null &&
+                      widget.product.image!.isNotEmpty
+                  ? Image.network(
+                      widget.product.image!.first,
+                      height: 60,
+                      width: 60,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      'assets/images/default_image.png',
+                      height: 60,
+                      width: 60,
+                      fit: BoxFit.cover,
+                    ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -93,23 +90,59 @@ class _CustomListProductsItemState extends State<CustomListProductsItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(widget.product.title,
-                      style: AppTextStyle.semibold(MEDIUM_TEXT_SIZE)),
-                  Text('SL: ${widget.product.quantityOrder}',
-                      style:
-                      AppTextStyle.medium(MEDIUM_TEXT_SIZE, GREEN_COLOR)),
+                  Text(
+                    widget.product.title,
+                    style:
+                        AppTextStyle.medium(SMALL_TEXT_SIZE, BLACK_TEXT_COLOR),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    FormatText.formatCurrency(
+                        (widget.product.promotionCost != null &&
+                                    widget.product.promotionCost! > 0
+                                ? widget.product.promotionCost!
+                                : widget.product.price) -
+                            widget.product.discount!),
+                    style: AppTextStyle.semibold(MEDIUM_TEXT_SIZE),
+                  ),
                 ],
               ),
             ),
             const Spacer(),
-            Text(
-              FormatText.formatCurrency((widget.product.promotionCost! > 0
-                  ? widget.product.promotionCost! *
-                  (widget.product.quantityOrder ?? 0)
-                  : widget.product.price *
-                  (widget.product.quantityOrder ?? 0)) -
-                  (widget.product.discount ?? 0)),
-              style: AppTextStyle.semibold(LARGE_TEXT_SIZE),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      quantity--;
+                    });
+                    // removeProductFromOrderList();
+                  },
+                  child: const Icon(Icons.remove_circle_rounded,
+                      color: PRIMARY_COLOR),
+                ),
+                SizedBox(
+                  width: 20,
+                  child: Text(
+                    quantity.toString(),
+                    style: AppTextStyle.medium(MEDIUM_TEXT_SIZE),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      quantity++;
+                    });
+                    // addProductToOrderList();
+                  },
+                  child: const Icon(Icons.add_circle_rounded,
+                      color: PRIMARY_COLOR),
+                ),
+              ],
             ),
           ],
         ),

@@ -27,6 +27,8 @@ class RemoveProductFromOrderListStarted extends OrderEvent {
 
 class ClearOrderProductListStarted extends OrderEvent {}
 
+class SetDefaultStated extends OrderEvent {}
+
 class UpdateProductDetailsStarted extends OrderEvent {
   final ProductModel product;
   final int? newPrice;

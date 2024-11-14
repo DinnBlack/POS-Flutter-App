@@ -52,6 +52,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: BACKGROUND_COLOR,
       body: LayoutBuilder(
         builder: (context, constraints) {
           int crossAxisCount;
