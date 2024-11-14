@@ -12,11 +12,12 @@ class CustomTextField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final bool isPassword;
   final bool isNumeric;
-  final bool isPhoneNumber;  // Thêm biến isPhoneNumber
+  final bool isPhoneNumber;
   final String? title;
   final bool isRequired;
   final TextEditingController? controller;
   final bool autofocus;
+  final double? height; // New height parameter
 
   const CustomTextField({
     super.key,
@@ -26,11 +27,12 @@ class CustomTextField extends StatefulWidget {
     this.onChanged,
     this.isPassword = false,
     this.isNumeric = false,
-    this.isPhoneNumber = false,  // Thêm thuộc tính này
+    this.isPhoneNumber = false,
     this.title,
     this.isRequired = false,
     this.controller,
     this.autofocus = false,
+    this.height, // Initialize new height parameter
   });
 
   @override
@@ -64,6 +66,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   void initState() {
     super.initState();
     _focusNode.addListener(() {
+      setState(() {}); // Rebuild to update border color on focus change
       if (!_focusNode.hasFocus) {
         _validateInput(widget.controller?.text ?? '');
       }
@@ -105,9 +108,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
           ),
         Container(
           alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(horizontal: DEFAULT_PADDING, vertical: DEFAULT_PADDING),
+          padding: const EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
+          height: widget.height ?? 50, // Use custom height or default to 50
           decoration: BoxDecoration(
-            border: Border.all(width: 1, color: GREY_LIGHT_COLOR),
+            border: Border.all(
+              width: 1,
+              color: _focusNode.hasFocus ? PRIMARY_COLOR : GREY_LIGHT_COLOR,
+            ),
             color: WHITE_COLOR,
             borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
           ),
@@ -119,9 +126,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             obscureText: widget.isPassword ? _obscureText : false,
             keyboardType: widget.isNumeric ? TextInputType.number : TextInputType.text,
             inputFormatters: widget.isNumeric
-                ? [
-              FilteringTextInputFormatter.digitsOnly
-            ]
+                ? [FilteringTextInputFormatter.digitsOnly]
                 : [],
             decoration: InputDecoration(
               hintText: widget.hintText,
@@ -143,19 +148,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
               String formattedValue = value;
 
               if (widget.isNumeric && !widget.isPhoneNumber) {
-                // Nếu là số tiền, format lại theo kiểu tiền tệ
                 String cleanedValue = value.replaceAll('.', '').replaceAll('đ', '').trim();
                 final intValue = int.tryParse(cleanedValue) ?? 0;
                 formattedValue = FormatText.formatCurrency(intValue);
               }
 
-              // Nếu là số điện thoại, không cần format, chỉ để nguyên giá trị nhập vào
               if (widget.isPhoneNumber) {
                 formattedValue = value;
               }
 
               widget.controller!.text = formattedValue;
-              widget.controller!.selection = TextSelection.fromPosition(TextPosition(offset: formattedValue.length));
+              widget.controller!.selection =
+                  TextSelection.fromPosition(TextPosition(offset: formattedValue.length));
 
               widget.onChanged?.call(formattedValue);
               _validateInput(value);

@@ -31,7 +31,10 @@ class InvoiceDetailsScreen extends StatelessWidget {
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
-                    context.read<OrderBloc>().add(ClearOrderProductListStarted());
+                    Navigator.of(context).pop();
+                    context
+                        .read<OrderBloc>()
+                        .add(ClearOrderProductListStarted());
                     context.read<ProductBloc>().add(ProductFetchStarted());
                   },
                   child: const Icon(
@@ -63,7 +66,6 @@ class InvoiceDetailsScreen extends StatelessWidget {
               ),
               child: const Placeholder(),
             ),
-
           ),
           Container(
             color: Colors.white,
@@ -88,6 +90,7 @@ class InvoiceDetailsScreen extends StatelessWidget {
         rightButtonText: 'Tạo đơn mới',
         hasShadow: false,
         onRightButtonPressed: () {
+          Navigator.of(context).pop();
           Navigator.of(context).pop();
           Navigator.of(context).pop();
           Navigator.of(context).pop();

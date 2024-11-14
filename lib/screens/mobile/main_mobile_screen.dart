@@ -23,42 +23,18 @@ class MainMobileScreen extends StatefulWidget {
 }
 
 class MainMobileScreenState extends State<MainMobileScreen> {
-  final ScrollController _scrollController = ScrollController();
   bool _isNavigating = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_handleScroll);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_handleScroll);
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void _handleScroll() {
-    // Print the scroll position to debug
-    print('Scroll Position: ${_scrollController.position.pixels}');
-
-    // Check if the scroll position is at the top and we are not navigating already
-    if (_scrollController.position.pixels <= 0 && !_isNavigating) {
+  Future<void> _refreshPage() async {
+    if (!_isNavigating) {
       setState(() {
         _isNavigating = true;
       });
-      _navigateToSearch();
-    }
-  }
-
-  Future<void> _navigateToSearch() async {
-    // Navigate to the search screen and reset the navigation flag after the navigation is done
-    Navigator.pushNamed(context, SearchScreen.route).then((_) {
+      await Navigator.pushNamed(context, SearchScreen.route);
       setState(() {
         _isNavigating = false;
       });
-    });
+    }
   }
 
   @override
@@ -92,7 +68,7 @@ class MainMobileScreenState extends State<MainMobileScreen> {
                     Text(
                       store!.name,
                       style:
-                      AppTextStyle.semibold(LARGE_TEXT_SIZE, WHITE_COLOR),
+                          AppTextStyle.semibold(LARGE_TEXT_SIZE, WHITE_COLOR),
                     ),
                     Text(
                       'Thông tin cửa hàng >',
@@ -102,7 +78,9 @@ class MainMobileScreenState extends State<MainMobileScreen> {
                 ),
                 const Spacer(),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, SearchScreen.route);
+                  },
                   child: const Icon(Icons.search_rounded, color: WHITE_COLOR),
                 ),
                 const SizedBox(width: DEFAULT_MARGIN),
@@ -131,10 +109,10 @@ class MainMobileScreenState extends State<MainMobileScreen> {
                 ),
               ),
             ),
-            SingleChildScrollView(
-              controller: _scrollController,
-              scrollDirection: Axis.vertical,
-              child: Column(
+            RefreshIndicator(
+              onRefresh: _refreshPage,
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
                 children: [
                   const MiniDashBoard(),
                   MenuMobile(
@@ -145,7 +123,7 @@ class MainMobileScreenState extends State<MainMobileScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                              const ActivityPageMobileScreen(),
+                                  const ActivityPageMobileScreen(),
                             ),
                           );
                           break;
@@ -154,7 +132,7 @@ class MainMobileScreenState extends State<MainMobileScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                              const InventoryPageMobileScreen(),
+                                  const InventoryPageMobileScreen(),
                             ),
                           );
                           break;
@@ -163,7 +141,7 @@ class MainMobileScreenState extends State<MainMobileScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                              const OrderPageMobileScreen(),
+                                  const OrderPageMobileScreen(),
                             ),
                           );
                           break;
@@ -172,7 +150,7 @@ class MainMobileScreenState extends State<MainMobileScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                              const CustomerPageMobileScreen(),
+                                  const CustomerPageMobileScreen(),
                             ),
                           );
                           break;

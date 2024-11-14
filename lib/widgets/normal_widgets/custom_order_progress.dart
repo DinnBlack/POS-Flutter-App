@@ -10,13 +10,13 @@ class CustomOrderProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const List<String> statuses = [
-      'Chờ xác nhận',
-      'Đang xử lý',
-      'Hoàn tất',
-    ];
+    // Define the statuses, replacing "Hoàn tất" with "Đã hủy" if orderStatus is "Hủy"
+    final List<String> statuses = orderStatus == 'Hủy'
+        ? ['Chờ xác nhận', 'Đang xử lý', 'Đã hủy']
+        : ['Chờ xác nhận', 'Đang xử lý', 'Hoàn tất'];
 
-    int progressIndex = statuses.indexOf(orderStatus);
+    // Set progress index to reach "Đã hủy" if orderStatus is "Hủy"
+    int progressIndex = orderStatus == 'Hủy' ? statuses.length - 1 : statuses.indexOf(orderStatus);
     if (progressIndex == -1) {
       progressIndex = 0;
     }
@@ -58,17 +58,16 @@ class CustomOrderProgress extends StatelessWidget {
                     Icon(
                       Icons.check,
                       color: isComplete ? Colors.green : Colors.grey,
-                      size: 20, // Icon size
+                      size: 20,
                     ),
                     if (index < statuses.length - 1)
                       Expanded(
                         child: Container(
                           height: 2,
-
                           decoration: BoxDecoration(
                             color: isComplete ? Colors.green : Colors.grey,
                             borderRadius:
-                                BorderRadius.circular(MEDIUM_BORDER_RADIUS),
+                            BorderRadius.circular(MEDIUM_BORDER_RADIUS),
                           ),
                         ),
                       ),
@@ -79,7 +78,7 @@ class CustomOrderProgress extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: WHITE_COLOR,
                             borderRadius:
-                                BorderRadius.circular(MEDIUM_BORDER_RADIUS),
+                            BorderRadius.circular(MEDIUM_BORDER_RADIUS),
                           ),
                         ),
                       ),

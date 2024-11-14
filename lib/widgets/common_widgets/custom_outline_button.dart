@@ -8,7 +8,7 @@ class CustomOutlineButton extends StatelessWidget {
   final String text;
   final IconData? icon;
   final double? height;
-  final double textSize; // Thêm tham số textSize
+  final double textSize;
 
   const CustomOutlineButton({
     super.key,
@@ -16,7 +16,7 @@ class CustomOutlineButton extends StatelessWidget {
     required this.text,
     this.icon,
     this.height,
-    this.textSize = MEDIUM_TEXT_SIZE, // Gán giá trị mặc định cho textSize
+    this.textSize = MEDIUM_TEXT_SIZE,
   });
 
   @override

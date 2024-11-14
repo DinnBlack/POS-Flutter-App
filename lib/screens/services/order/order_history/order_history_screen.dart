@@ -376,30 +376,41 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                     text: '\$${order.totalPrice?.toStringAsFixed(2)}',
                   ),
                 ),
-                Expanded(
-                  flex: 2,
-                  child: Center(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: DEFAULT_PADDING),
-                      decoration: BoxDecoration(
-                        color: order.paymentStatus!
-                            ? Colors.green.withOpacity(0.1)
-                            : Colors.red.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(LARGE_BORDER_RADIUS),
-                      ),
-                      child: Text(
-                        order.paymentStatus! ? 'Paid' : 'Unpaid',
-                        style: TextStyle(
-                          color:
-                              order.paymentStatus! ? Colors.green : Colors.red,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+            Expanded(
+              flex: 2,
+              child: Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 5,
+                    horizontal: DEFAULT_PADDING,
+                  ),
+                  decoration: BoxDecoration(
+                    color: order.paymentStatus == 'Đã thanh toán'
+                        ? Colors.green.withOpacity(0.1)
+                        : order.paymentStatus == 'Thanh toán một phần'
+                        ? Colors.orange.withOpacity(0.1)
+                        : Colors.red.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(LARGE_BORDER_RADIUS),
+                  ),
+                  child: Text(
+                    order.paymentStatus == 'Đã thanh toán'
+                        ? 'Paid'
+                        : order.paymentStatus == 'Thanh toán một phần'
+                        ? 'Partially Paid'
+                        : 'Unpaid',
+                    style: TextStyle(
+                      color: order.paymentStatus == 'Đã thanh toán'
+                          ? Colors.green
+                          : order.paymentStatus == 'Thanh toán một phần'
+                          ? Colors.orange
+                          : Colors.red,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                Expanded(
+              ),
+            ),
+            Expanded(
                   flex: 2,
                   child: Center(
                     child: GestureDetector(

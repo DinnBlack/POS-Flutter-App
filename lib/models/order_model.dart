@@ -8,31 +8,33 @@ class OrderModel {
   final int? shipping;
   final int? surcharge;
   final int? totalPrice;
-  final CustomerModel? customer; // Change customerName to customer of type CustomerModel
+  final CustomerModel? customer;
   final DateTime? orderTime;
   final String? status;
   final String? executor;
-  final bool? paymentStatus;
+  final String? paymentStatus;
+  final int? paidAmount;
   final String? note;
   final String? paymentMethod;
-
-  int get finalTotalPrice {
-    int basePrice = totalPrice ?? 0;
-    return basePrice - (discount ?? 0) + (shipping ?? 0) + (surcharge ?? 0);
-  }
+  //
+  // int get finalTotalPrice {
+  //   int basePrice = totalPrice ?? 0;
+  //   return basePrice - (discount ?? 0) + (shipping ?? 0) - (surcharge ?? 0);
+  // }
 
   const OrderModel({
     this.orderId,
     this.products,
-    this.discount = 0, // Default discount
-    this.shipping = 0,  // Default shipping cost
-    this.surcharge = 0, // Default surcharge
+    this.discount = 0,
+    this.shipping = 0,
+    this.surcharge = 0,
     this.totalPrice,
-    this.customer, // Updated to customer of type CustomerModel
+    this.customer,
     this.orderTime,
     this.status,
     this.executor,
     this.paymentStatus,
+    this.paidAmount = 0, // Default to 0
     this.note,
     this.paymentMethod,
   });
@@ -48,11 +50,12 @@ class OrderModel {
               shipping == other.shipping &&
               surcharge == other.surcharge &&
               totalPrice == other.totalPrice &&
-              customer == other.customer && // Updated comparison
+              customer == other.customer &&
               orderTime == other.orderTime &&
               status == other.status &&
               executor == other.executor &&
-              paymentStatus == other.paymentStatus &&
+              paymentStatus == other.paymentStatus && // Updated comparison
+              paidAmount == other.paidAmount && // New field comparison
               note == other.note &&
               paymentMethod == other.paymentMethod);
 
@@ -64,11 +67,12 @@ class OrderModel {
       shipping.hashCode ^
       surcharge.hashCode ^
       totalPrice.hashCode ^
-      customer.hashCode ^ // Updated hashCode
+      customer.hashCode ^
       orderTime.hashCode ^
       status.hashCode ^
       executor.hashCode ^
-      paymentStatus.hashCode ^
+      paymentStatus.hashCode ^ // Updated hashCode
+      paidAmount.hashCode ^ // New field hashCode
       note.hashCode ^
       paymentMethod.hashCode;
 
@@ -81,12 +85,12 @@ class OrderModel {
         ' shipping: $shipping,' +
         ' surcharge: $surcharge,' +
         ' totalPrice: $totalPrice,' +
-        ' finalTotalPrice: $finalTotalPrice,' + // Include final total price in string
-        ' customer: $customer,' + // Updated to display customer
+        ' customer: $customer,' +
         ' orderTime: $orderTime,' +
         ' status: $status,' +
         ' executor: $executor,' +
         ' paymentStatus: $paymentStatus,' +
+        ' paidAmount: $paidAmount,' + // New field display
         ' note: $note,' +
         ' paymentMethod: $paymentMethod,' +
         '}';
@@ -99,11 +103,12 @@ class OrderModel {
     int? shipping,
     int? surcharge,
     int? totalPrice,
-    CustomerModel? customer, // Updated to CustomerModel
+    CustomerModel? customer,
     DateTime? orderTime,
     String? status,
     String? executor,
-    bool? paymentStatus,
+    String? paymentStatus, // Changed to String
+    int? paidAmount, // New field
     String? note,
     String? paymentMethod,
   }) {
@@ -114,11 +119,12 @@ class OrderModel {
       shipping: shipping ?? this.shipping,
       surcharge: surcharge ?? this.surcharge,
       totalPrice: totalPrice ?? this.totalPrice,
-      customer: customer ?? this.customer, // Updated to CustomerModel
+      customer: customer ?? this.customer,
       orderTime: orderTime ?? this.orderTime,
       status: status ?? this.status,
       executor: executor ?? this.executor,
       paymentStatus: paymentStatus ?? this.paymentStatus,
+      paidAmount: paidAmount ?? this.paidAmount, // New field
       note: note ?? this.note,
       paymentMethod: paymentMethod ?? this.paymentMethod,
     );
@@ -132,11 +138,12 @@ class OrderModel {
       'shipping': shipping,
       'surcharge': surcharge,
       'totalPrice': totalPrice,
-      'customer': customer?.toMap(), // Serialize the customer to map
+      'customer': customer?.toMap(),
       'orderTime': orderTime?.toIso8601String(),
       'status': status,
       'executor': executor,
       'paymentStatus': paymentStatus,
+      'paidAmount': paidAmount, // New field in map
       'note': note,
       'paymentMethod': paymentMethod,
     };
@@ -154,11 +161,12 @@ class OrderModel {
       totalPrice: map['totalPrice'] as int?,
       customer: map['customer'] != null
           ? CustomerModel.fromMap(Map<String, dynamic>.from(map['customer']))
-          : null, // Deserialize the customer from map
+          : null,
       orderTime: map['orderTime'] != null ? DateTime.parse(map['orderTime']) : null,
       status: map['status'] as String?,
       executor: map['executor'] as String?,
-      paymentStatus: map['paymentStatus'] as bool?,
+      paymentStatus: map['paymentStatus'] as String?, // Changed to String
+      paidAmount: map['paidAmount'] as int? ?? 0, // New field initialization
       note: map['note'] as String?,
       paymentMethod: map['paymentMethod'] as String?,
     );

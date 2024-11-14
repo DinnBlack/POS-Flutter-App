@@ -7,7 +7,6 @@ import 'package:pos_flutter_app/utils/ui_util/format_text.dart';
 import 'package:pos_flutter_app/widgets/common_widgets/custom_bottom_bar.dart';
 import '../../../../utils/ui_util/app_text_style.dart';
 import '../../../../widgets/common_widgets/dashed_line_painter.dart';
-import '../../../mobile/pages/order_page/order_page_mobile_screen.dart';
 import '../../invoice/invoice_details/invoice_details_screen.dart';
 
 class PayOrderScreen extends StatefulWidget {
@@ -30,6 +29,7 @@ class _PayOrderScreenState extends State<PayOrderScreen> {
   void initState() {
     super.initState();
     totalPrice = context.read<OrderBloc>().totalPrice;
+    enteredAmount = context.read<OrderBloc>().totalPrice;
     _amountController.text = FormatText.formatCurrency(totalPrice);
   }
 
@@ -53,6 +53,11 @@ class _PayOrderScreenState extends State<PayOrderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Define the payment status based on enteredAmount and totalPrice
+    final paymentStatus = enteredAmount < totalPrice
+        ? 'Thanh toán một phần'
+        : 'Đã thanh toán';
+
     return BlocListener<OrderBloc, OrderState>(
       listener: (context, state) {
         if (state is OrderCreateInProgress) {
@@ -67,7 +72,8 @@ class _PayOrderScreenState extends State<PayOrderScreen> {
         } else if (state is OrderCreateSuccess) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const InvoiceDetailsScreen()),
+            MaterialPageRoute(
+                builder: (context) => const InvoiceDetailsScreen()),
           );
         } else if (state is OrderCreateFailure) {
           Navigator.of(context).pop();
@@ -123,8 +129,7 @@ class _PayOrderScreenState extends State<PayOrderScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: MEDIUM_PADDING),
                       shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(SMALL_BORDER_RADIUS),
+                        borderRadius: BorderRadius.circular(SMALL_BORDER_RADIUS),
                       ),
                     ),
                     child: Row(
@@ -135,8 +140,7 @@ class _PayOrderScreenState extends State<PayOrderScreen> {
                         const SizedBox(width: DEFAULT_MARGIN),
                         Text(
                           'Thảo Vy',
-                          style: AppTextStyle.medium(
-                              MEDIUM_TEXT_SIZE, PRIMARY_COLOR),
+                          style: AppTextStyle.medium(MEDIUM_TEXT_SIZE, PRIMARY_COLOR),
                         ),
                       ],
                     ),
@@ -149,9 +153,7 @@ class _PayOrderScreenState extends State<PayOrderScreen> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(
-              height: SUPER_LARGE_MARGIN,
-            ),
+            const SizedBox(height: SUPER_LARGE_MARGIN),
             Text(
               'Khách trả',
               style: AppTextStyle.semibold(LARGE_TEXT_SIZE, GREY_COLOR),
@@ -171,13 +173,10 @@ class _PayOrderScreenState extends State<PayOrderScreen> {
                     style: AppTextStyle.semibold(40, PRIMARY_COLOR),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: LARGE_PADDING),
+                    padding: const EdgeInsets.symmetric(horizontal: LARGE_PADDING),
                     child: CustomPaint(
                       size: const Size(double.infinity, 1),
-                      painter: DashedLinePainter(
-                        color: PRIMARY_COLOR,
-                      ),
+                      painter: DashedLinePainter(color: PRIMARY_COLOR),
                     ),
                   ),
                 ],
@@ -188,8 +187,7 @@ class _PayOrderScreenState extends State<PayOrderScreen> {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text:
-                        enteredAmount < totalPrice ? 'Ghi nợ: ' : 'Tiền thừa: ',
+                    text: enteredAmount < totalPrice ? 'Ghi nợ: ' : 'Tiền thừa: ',
                     style: AppTextStyle.medium(LARGE_TEXT_SIZE, GREY_COLOR),
                   ),
                   TextSpan(
@@ -214,20 +212,16 @@ class _PayOrderScreenState extends State<PayOrderScreen> {
                     child: PaymentMethodItem(
                       title: 'Tiền mặt',
                       backgroundColor:
-                          _selectedPaymentMethod == GREEN_COLOR.withOpacity(0.1)
-                              ? GREEN_COLOR.withOpacity(0.1)
-                              : Colors.white,
-                      borderColor:
-                          _selectedPaymentMethod == GREEN_COLOR.withOpacity(0.1)
-                              ? GREEN_COLOR
-                              : Colors.grey,
-                      textColor:
-                          _selectedPaymentMethod == GREEN_COLOR.withOpacity(0.1)
-                              ? GREEN_COLOR
-                              : Colors.grey,
-                      // Set text color based on selection
-                      onTap: () => _onPaymentMethodSelected(
-                          'Tiền mặt', GREEN_COLOR.withOpacity(0.1)),
+                      _selectedPaymentMethod == GREEN_COLOR.withOpacity(0.1)
+                          ? GREEN_COLOR.withOpacity(0.1)
+                          : Colors.white,
+                      borderColor: _selectedPaymentMethod == GREEN_COLOR.withOpacity(0.1)
+                          ? GREEN_COLOR
+                          : Colors.grey,
+                      textColor: _selectedPaymentMethod == GREEN_COLOR.withOpacity(0.1)
+                          ? GREEN_COLOR
+                          : Colors.grey,
+                      onTap: () => _onPaymentMethodSelected('Tiền mặt', GREEN_COLOR.withOpacity(0.1)),
                     ),
                   ),
                   const SizedBox(width: DEFAULT_MARGIN),
@@ -235,21 +229,16 @@ class _PayOrderScreenState extends State<PayOrderScreen> {
                     flex: 1,
                     child: PaymentMethodItem(
                       title: 'Ví điện tử',
-                      backgroundColor: _selectedPaymentMethod ==
-                              PRIMARY_COLOR.withOpacity(0.1)
+                      backgroundColor: _selectedPaymentMethod == PRIMARY_COLOR.withOpacity(0.1)
                           ? PRIMARY_COLOR.withOpacity(0.1)
                           : Colors.white,
-                      borderColor: _selectedPaymentMethod ==
-                              PRIMARY_COLOR.withOpacity(0.1)
+                      borderColor: _selectedPaymentMethod == PRIMARY_COLOR.withOpacity(0.1)
                           ? PRIMARY_COLOR
                           : Colors.grey,
-                      textColor: _selectedPaymentMethod ==
-                              PRIMARY_COLOR.withOpacity(0.1)
+                      textColor: _selectedPaymentMethod == PRIMARY_COLOR.withOpacity(0.1)
                           ? PRIMARY_COLOR
                           : Colors.grey,
-                      // Set text color based on selection
-                      onTap: () => _onPaymentMethodSelected(
-                          'Ví điện tử', PRIMARY_COLOR.withOpacity(0.1)),
+                      onTap: () => _onPaymentMethodSelected('Ví điện tử', PRIMARY_COLOR.withOpacity(0.1)),
                     ),
                   ),
                   const SizedBox(width: DEFAULT_MARGIN),
@@ -257,36 +246,34 @@ class _PayOrderScreenState extends State<PayOrderScreen> {
                     flex: 1,
                     child: PaymentMethodItem(
                       title: 'Ngân hàng',
-                      backgroundColor: _selectedPaymentMethod ==
-                              ORANGE_COLOR.withOpacity(0.1)
+                      backgroundColor: _selectedPaymentMethod == ORANGE_COLOR.withOpacity(0.1)
                           ? ORANGE_COLOR.withOpacity(0.1)
                           : Colors.white,
-                      borderColor: _selectedPaymentMethod ==
-                              ORANGE_COLOR.withOpacity(0.1)
+                      borderColor: _selectedPaymentMethod == ORANGE_COLOR.withOpacity(0.1)
                           ? ORANGE_COLOR
                           : Colors.grey,
-                      textColor: _selectedPaymentMethod ==
-                              ORANGE_COLOR.withOpacity(0.1)
+                      textColor: _selectedPaymentMethod == ORANGE_COLOR.withOpacity(0.1)
                           ? ORANGE_COLOR
                           : Colors.grey,
-                      // Set text color based on selection
-                      onTap: () => _onPaymentMethodSelected(
-                          'Ngân hàng', ORANGE_COLOR.withOpacity(0.1)),
+                      onTap: () => _onPaymentMethodSelected('Ngân hàng', ORANGE_COLOR.withOpacity(0.1)),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(
-              height: DEFAULT_MARGIN,
-            ),
+            const SizedBox(height: DEFAULT_MARGIN),
           ],
         ),
         bottomNavigationBar: CustomBottomBar(
           rightButtonText: 'Xác nhận',
           onRightButtonPressed: () {
-            context.read<OrderBloc>().add((UpdateOrderDetailsStarted(
-                newPaymentMethod: _selectedPaymentMethodLabel)));
+            // Trigger the event with payment status
+            context.read<OrderBloc>().add(UpdateOrderDetailsStarted(
+              newPaymentMethod: _selectedPaymentMethodLabel,
+              newPaymentStatus: paymentStatus,
+              newPaidAmount: enteredAmount,
+
+            ));
             context.read<OrderBloc>().add(OrderCreateStarted());
           },
         ),

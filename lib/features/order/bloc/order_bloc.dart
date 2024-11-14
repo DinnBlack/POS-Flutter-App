@@ -18,16 +18,26 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   int get totalProductCount => orderProductList.fold(
       0, (sum, product) => sum + (product.quantityOrder ?? 0));
 
-  int get totalPrice => orderProductList.fold(
-        0,
-        (sum, product) =>
-            sum +
-            ((product.promotionCost! > 0
-                    ? product.promotionCost! * (product.quantityOrder ?? 0)
-                    : product.price * (product.quantityOrder ?? 0)) -
-                (product.discount ?? 0)),
-      );
+  int get basePrice => orderProductList.fold(
+    0,
+        (sum, product) {
+      int price = (product.promotionCost! > 0
+          ? product.promotionCost! * (product.quantityOrder ?? 0)
+          : product.price * (product.quantityOrder ?? 0));
 
+      price -= (product.discount ?? 0);
+
+      return sum + price;
+    },
+  );
+
+  int get totalPrice {
+    int discount = currentOrder.discount ?? 0;
+    int surcharge = currentOrder.surcharge ?? 0;
+    int shipping = currentOrder.shipping ?? 0;
+
+    return basePrice - discount + surcharge + shipping;
+  }
   OrderBloc(this._orderFirebase) : super(OrderInitial()) {
     on<OrderCreateStarted>(_onOrderCreate);
     on<OrderFetchStarted>(_onOrderFetch);
@@ -37,6 +47,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     on<UpdateProductDetailsStarted>(_onUpdateProductDetails);
     on<UpdateOrderDetailsStarted>(_onUpdateOrderDetails);
     on<SelectCustomerStarted>(_onSelectCustomer);
+    on<PrePaymentStarted>(_onPrePayment);
   }
 
   String _generateOrderId() {
@@ -50,15 +61,14 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   Future<void> _onSelectCustomer(
       SelectCustomerStarted event, Emitter<OrderState> emit) async {
     try {
-      // If no customer is selected, set the default "Khách lẻ"
-      final selectedCustomer = event.customerSelect ?? CustomerModel(name: 'Khách lẻ', phoneNumber: '');
+      final selectedCustomer = event.customerSelect ??
+          CustomerModel(name: 'Khách lẻ', phoneNumber: '');
 
-      // Update the currentOrder with the selected customer
       currentOrder = currentOrder.copyWith(
         customer: selectedCustomer,
       );
 
-      emit(OrderUpdated(currentOrder)); // Ensure state is emitted after customer update
+      emit(OrderUpdated(currentOrder));
       print('Selected Customer: ${selectedCustomer.name}');
     } catch (e) {
       emit(OrderUpdateFailure(error: e.toString()));
@@ -66,11 +76,25 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     }
   }
 
+  Future<void> _onPrePayment(
+      PrePaymentStarted event, Emitter<OrderState> emit) async {
+    currentOrder = currentOrder.copyWith(
+      paymentStatus: event.paymentStatus,
+      paidAmount: event.paidAmount,
+      paymentMethod: event.paymentMethod,
+    );
+
+    emit(OrderUpdated(currentOrder));
+    print(
+        'Updated with pre-payment: paymentStatus=${event.paymentStatus}, paidAmount=${event.paidAmount}, paymentMethod=${event.paymentMethod}');
+  }
+
   Future<void> _onOrderCreate(
       OrderCreateStarted event, Emitter<OrderState> emit) async {
     emit(OrderCreateInProgress());
     try {
-      if (currentOrder.customer?.name == null || currentOrder.customer!.name.isEmpty) {
+      if (currentOrder.customer?.name == null ||
+          currentOrder.customer!.name.isEmpty) {
         currentOrder = currentOrder.copyWith(
           customer: CustomerModel(name: 'Khách lẻ', phoneNumber: ''),
         );
@@ -85,13 +109,22 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
         orderTime: DateTime.now(),
         status: 'Đang xử lý',
         executor: 'User',
-        paymentStatus: true,
+        paymentStatus: currentOrder.paymentStatus ?? 'Chưa thanh toán',
+        paidAmount: currentOrder.paidAmount ?? 0,
+        paymentMethod: currentOrder.paymentMethod ?? 'Tiền mặt',
       );
 
       await _orderFirebase.createOrder(currentOrder);
+      print('New Order: $currentOrder');
+
+      currentOrder = currentOrder.copyWith(
+        discount: 0,
+        surcharge: 0,
+        shipping: 0,
+        totalPrice: 0,
+      );
 
       emit(OrderCreateSuccess());
-      print('New Order: $currentOrder');
     } catch (e) {
       emit(OrderCreateFailure(error: e.toString()));
       print('Failed to create order: $e');
@@ -221,19 +254,28 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       UpdateOrderDetailsStarted event, Emitter<OrderState> emit) async {
     // Prepare the updates map
     Map<String, dynamic> updates = {};
-    if (event.newTotalPrice != null)
+    if (event.newTotalPrice != null) {
       updates['totalPrice'] = event.newTotalPrice;
-    if (event.newCustomer != null)
+    }
+    if (event.newCustomer != null) {
       updates['customerName'] = event.newCustomer;
-    if (event.newOrderTime != null)
+    }
+    if (event.newOrderTime != null) {
       updates['orderTime'] = event.newOrderTime?.toIso8601String();
+    }
     if (event.newStatus != null) updates['status'] = event.newStatus;
     if (event.newExecutor != null) updates['executor'] = event.newExecutor;
-    if (event.newPaymentStatus != null)
+    if (event.newPaymentStatus != null) {
       updates['paymentStatus'] = event.newPaymentStatus;
+    }
     if (event.newNote != null) updates['note'] = event.newNote;
-    if (event.newPaymentMethod != null)
+    if (event.newPaymentMethod != null) {
       updates['paymentMethod'] = event.newPaymentMethod;
+    }
+    if (event.newDiscount != null) updates['discount'] = event.newDiscount;
+    if (event.newShipping != null) updates['shipping'] = event.newShipping;
+    if (event.newSurcharge != null) updates['surcharge'] = event.newSurcharge;
+    if (event.newPaidAmount != null) updates['paidAmount'] = event.newPaidAmount;
 
     try {
       if (event.orderId != null) {
@@ -256,6 +298,10 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
           paymentStatus: event.newPaymentStatus,
           note: event.newNote,
           paymentMethod: event.newPaymentMethod,
+          discount: event.newDiscount,
+          shipping: event.newShipping,
+          surcharge: event.newSurcharge,
+          paidAmount: event.newPaidAmount,
         );
         emit(OrderUpdated(currentOrder));
         print('Updated currentOrder: $currentOrder');

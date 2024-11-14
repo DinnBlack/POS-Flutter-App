@@ -51,7 +51,7 @@ final List<OrderModel> dbOrders = [
     customer: CustomerModel(name: 'Khách lẻ', phoneNumber: ''),
     orderTime: DateTime.now().subtract( Duration(hours: 1)),
     status: 'Pending',
-    paymentStatus: true,
+    paymentStatus: '',
   ),
   OrderModel(
     orderId: '002',
@@ -80,6 +80,6 @@ final List<OrderModel> dbOrders = [
     customer: CustomerModel(name: 'Khách lẻ', phoneNumber: ''),
     orderTime: DateTime.now().subtract( Duration(hours: 2)),
     status: 'Completed',
-    paymentStatus: false,
+    paymentStatus: '',
   ),
 ];

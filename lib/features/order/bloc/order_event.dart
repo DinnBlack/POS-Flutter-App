@@ -48,9 +48,13 @@ class UpdateOrderDetailsStarted extends OrderEvent {
   final DateTime? newOrderTime;
   final String? newStatus;
   final String? newExecutor;
-  final bool? newPaymentStatus;
+  final String? newPaymentStatus;
   final String? newNote;
   final String? newPaymentMethod;
+  final int? newDiscount;
+  final int? newShipping;
+  final int? newSurcharge;
+  final int? newPaidAmount;
 
   UpdateOrderDetailsStarted({
     this.orderId,
@@ -62,6 +66,10 @@ class UpdateOrderDetailsStarted extends OrderEvent {
     this.newPaymentStatus,
     this.newNote,
     this.newPaymentMethod,
+    this.newDiscount,
+    this.newShipping,
+    this.newSurcharge,
+    this.newPaidAmount,
   });
 }
 
@@ -69,4 +77,16 @@ class SelectCustomerStarted extends OrderEvent {
   final CustomerModel customerSelect;
 
   SelectCustomerStarted({required this.customerSelect});
+}
+
+class PrePaymentStarted extends OrderEvent {
+  final String paymentStatus;
+  final int paidAmount;
+  final String paymentMethod;
+
+  PrePaymentStarted({
+    required this.paymentStatus,
+    required this.paidAmount,
+    required this.paymentMethod,
+  });
 }

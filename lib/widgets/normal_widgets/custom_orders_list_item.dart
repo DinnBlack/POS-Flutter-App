@@ -52,7 +52,7 @@ class CustomOrdersListItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        order.customer!.name!,
+                        order.customer!.name,
                         style: AppTextStyle.semibold(LARGE_TEXT_SIZE),
                       ),
                       const SizedBox(height: SMALL_MARGIN),
@@ -67,7 +67,6 @@ class CustomOrdersListItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    // Cập nhật điều kiện màu sắc cho status
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: DEFAULT_PADDING),
@@ -78,7 +77,7 @@ class CustomOrdersListItem extends StatelessWidget {
                                 ? Colors.green.withOpacity(0.2)
                                 : order.status == 'Hủy'
                                     ? Colors.red
-                                        .withOpacity(0.2) // Màu đỏ cho 'Hủy'
+                                        .withOpacity(0.2)
                                     : Colors.transparent,
                         borderRadius:
                             BorderRadius.circular(DEFAULT_BORDER_RADIUS),
@@ -92,7 +91,7 @@ class CustomOrdersListItem extends StatelessWidget {
                               : order.status == 'Hoàn tất'
                                   ? Colors.green
                                   : order.status == 'Hủy'
-                                      ? Colors.red // Màu đỏ cho 'Hủy'
+                                      ? Colors.red
                                       : GREY_COLOR,
                         ),
                       ),
@@ -130,14 +129,17 @@ class CustomOrdersListItem extends StatelessWidget {
                     ),
                     const SizedBox(height: SMALL_MARGIN),
                     Text(
-                      order.paymentStatus == true
-                          ? 'Đã thanh toán'
-                          : 'Chưa thanh toán',
+                      '${order.paymentStatus}',
                       style: AppTextStyle.medium(
                         MEDIUM_TEXT_SIZE,
-                        order.paymentStatus == true ? Colors.green : Colors.red,
+                        order.paymentStatus == 'Đã thanh toán'
+                            ? Colors.green
+                            : order.paymentStatus == 'Thanh toán một phần'
+                            ? Colors.orange
+                            : Colors.red,
                       ),
                     ),
+
                   ],
                 ),
               ],

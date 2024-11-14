@@ -205,7 +205,7 @@ class _ValueInfo extends StatelessWidget {
                 style: AppTextStyle.semibold(PLUS_LARGE_TEXT_SIZE),
               ),
               Text(
-                FormatText.formatCurrency(widget.order.finalTotalPrice),
+                FormatText.formatCurrency(widget.order.totalPrice!),
                 style: AppTextStyle.semibold(
                     PLUS_LARGE_TEXT_SIZE, RED_COLOR),
               ),
@@ -365,10 +365,13 @@ class _GeneralInfo extends StatelessWidget {
                       color: order.status == 'Đang xử lý'
                           ? Colors.orange.withOpacity(0.2)
                           : order.status == 'Hoàn tất'
-                              ? Colors.green.withOpacity(0.2)
-                              : Colors.transparent,
+                          ? Colors.green.withOpacity(0.2)
+                          : order.status == 'Hủy'
+                          ? Colors.red
+                          .withOpacity(0.2)
+                          : Colors.transparent,
                       borderRadius:
-                          BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+                      BorderRadius.circular(DEFAULT_BORDER_RADIUS),
                     ),
                     child: Text(
                       order.status!,
@@ -377,8 +380,10 @@ class _GeneralInfo extends StatelessWidget {
                         order.status == 'Đang xử lý'
                             ? Colors.orange
                             : order.status == 'Hoàn tất'
-                                ? Colors.green
-                                : GREY_COLOR,
+                            ? Colors.green
+                            : order.status == 'Hủy'
+                            ? Colors.red
+                            : GREY_COLOR,
                       ),
                     ),
                   ),
@@ -406,17 +411,19 @@ class _GeneralInfo extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    FormatText.formatCurrency(order.finalTotalPrice!),
+                    FormatText.formatCurrency(order.totalPrice!),
                     style: AppTextStyle.semibold(SUPER_LARGE_TEXT_SIZE),
                   ),
                   const SizedBox(height: SMALL_MARGIN),
                   Text(
-                    order.paymentStatus == true
-                        ? 'Đã thanh toán'
-                        : 'Chưa thanh toán',
+                    '${order.paymentStatus}',
                     style: AppTextStyle.medium(
                       MEDIUM_TEXT_SIZE,
-                      order.paymentStatus == true ? Colors.green : Colors.red,
+                      order.paymentStatus == 'Đã thanh toán'
+                          ? Colors.green
+                          : order.paymentStatus == 'Thanh toán một phần'
+                          ? Colors.orange
+                          : Colors.red,
                     ),
                   ),
                 ],
