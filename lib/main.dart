@@ -5,32 +5,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:pos_flutter_app/features/customer/bloc/customer_bloc.dart';
 import 'package:pos_flutter_app/features/order/bloc/order_bloc.dart';
-import 'package:pos_flutter_app/features/order/bloc/order_bloc.dart';
 import 'package:pos_flutter_app/features/order/data/order_firebase.dart';
 import 'package:pos_flutter_app/features/product/bloc/product_bloc.dart';
 import 'package:pos_flutter_app/features/store/bloc/store_bloc.dart';
-import 'package:pos_flutter_app/routes/app_routes.dart';
-import 'package:pos_flutter_app/screens/services/login/login_screen.dart';
-import 'package:pos_flutter_app/screens/services/store/store_select_screen.dart';
+import 'package:pos_flutter_app/routes/routes.dart';
 import 'package:pos_flutter_app/features/auth/data/auth_firebase.dart';
 import 'package:pos_flutter_app/features/category/data/category_firebase.dart';
-import 'package:pos_flutter_app/services/firebase/firebase_options.dart';
 import 'package:pos_flutter_app/features/product/data/product_firebase.dart';
 import 'package:pos_flutter_app/features/store/data/store_firebase.dart';
-
-import 'features/app/bloc/app_cubit.dart';
+import 'core/services/firebase/firebase_options.dart';
 import 'features/auth/bloc/auth_bloc.dart';
+import 'features/auth/screen/login/login_screen.dart';
 import 'features/category/bloc/category_bloc.dart';
 import 'features/customer/data/customer_firebase.dart';
+import 'features/store/screen/store_select_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-  //   statusBarIconBrightness: Brightness.dark,
-  //   statusBarColor: Colors.transparent,
-  //   systemNavigationBarColor: Colors.transparent,
-  // ));
 
   if (kIsWeb) {
     await Firebase.initializeApp(
@@ -82,9 +73,6 @@ class MyApp extends StatelessWidget {
         BlocProvider<OrderBloc>(
           create: (context) => OrderBloc(OrderFirebase(context)),
         ),
-        BlocProvider<AppCubit>(
-          create: (context) => AppCubit(),
-        ),
         BlocProvider<CustomerBloc>(
           create: (context) => CustomerBloc(CustomerFirebase(context)),
         ),
@@ -98,9 +86,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
-          // fontFamily: 'Quicksand',
+          fontFamily: 'NotoSans',
         ),
-        onGenerateRoute: appRoutes,
+        onGenerateRoute: routes,
         initialRoute: LoginScreen.route,
       ),
     );

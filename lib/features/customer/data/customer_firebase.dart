@@ -3,8 +3,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../models/customer_model.dart';
-import '../../../models/store_model.dart';
+import '../model/customer_model.dart';
+import '../../store/model/store_model.dart';
 import '../../store/bloc/store_bloc.dart';
 
 class CustomerFirebase {

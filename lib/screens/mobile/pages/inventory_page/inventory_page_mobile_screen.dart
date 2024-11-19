@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:pos_flutter_app/utils/constants/constants.dart';
-import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
-
+import 'package:pos_flutter_app/core/constants/constants.dart';
+import 'package:pos_flutter_app/core/utils/app_text_style.dart';
 import '../../../../features/category/bloc/category_bloc.dart';
-import '../../../services/category/categories_list/categories_list_horizontal_screen.dart';
-import '../../../services/category/categories_list/categories_list_vertical_screen.dart';
-import '../../../services/product/products_list/list_products_screen.dart';
+import '../../../../features/category/screen/categories_list/categories_list_horizontal_screen.dart';
+import '../../../../features/category/screen/categories_list/categories_list_vertical_screen.dart';
+import '../../../../features/product/screen/products_list/product_list_screen.dart';
 
 class InventoryPageMobileScreen extends StatefulWidget {
+  static const route = 'InventoryPageMobileScreen';
   const InventoryPageMobileScreen({super.key});
 
   @override
@@ -38,11 +38,11 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: BACKGROUND_COLOR,
+      backgroundColor: kColorBackground,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: Container(
-          padding: const EdgeInsets.all(DEFAULT_PADDING),
+          padding: const EdgeInsets.all(kPaddingMd),
           color: Colors.white,
           child: SafeArea(
             child: Row(
@@ -58,18 +58,18 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen>
                       },
                       child: const Icon(
                         Iconsax.arrow_left_2_copy,
-                        color: BLACK_TEXT_COLOR,
+                        color: kColorBlack,
                       ),
                     );
                   },
                 ),
                 const SizedBox(
-                  width: DEFAULT_MARGIN,
+                  width: kMarginMd,
                 ),
                 Text(
                   'Quản lý',
                   style: AppTextStyle.medium(
-                    PLUS_LARGE_TEXT_SIZE,
+                    kTextSizeLg,
                   ),
                 ),
                 const Spacer(),
@@ -77,31 +77,31 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen>
                   onTap: () {},
                   child: const Icon(
                     Icons.search,
-                    color: BLACK_TEXT_COLOR,
+                    color: kColorBlack,
                   ),
                 ),
                 const SizedBox(
-                  width: MEDIUM_MARGIN,
+                  width: kMarginMd,
                 ),
                 InkWell(
                   onTap: () {},
                   child: const Icon(
                     Iconsax.scan_barcode_copy,
-                    color: BLACK_TEXT_COLOR,
+                    color: kColorBlack,
                   ),
                 ),
                 const SizedBox(
-                  width: MEDIUM_MARGIN,
+                  width: kMarginMd,
                 ),
                 InkWell(
                   onTap: () {},
                   child: const Icon(
                     Iconsax.filter_search_copy,
-                    color: BLACK_TEXT_COLOR,
+                    color: kColorBlack,
                   ),
                 ),
                 const SizedBox(
-                  width: MEDIUM_MARGIN,
+                  width: kMarginMd,
                 ),
                 InkWell(
                   onTap: () {
@@ -111,7 +111,7 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen>
                   },
                   child: Icon(
                     isGridView ? Iconsax.grid_8_copy : Iconsax.menu_1_copy,
-                    color: BLACK_TEXT_COLOR,
+                    color: kColorBlack,
                   ),
                 ),
               ],
@@ -123,18 +123,18 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen>
         child: Column(
           children: [
             Container(
-              color: WHITE_COLOR,
+              color: kColorWhite,
               child: Stack(
                 alignment: Alignment.center,
                 children: [
                   TabBar(
                     controller: _tabController,
-                    labelColor: PRIMARY_COLOR,
-                    unselectedLabelColor: GREY_COLOR,
+                    labelColor: kColorPrimary,
+                    unselectedLabelColor: kColorGrey,
                     indicator: const BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
-                          color: PRIMARY_COLOR,
+                          color: kColorPrimary,
                           width: 2.0,
                         ),
                       ),
@@ -144,13 +144,13 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen>
                       Tab(
                         child: Text(
                           'Sản phẩm',
-                          style: TextStyle(fontSize: LARGE_TEXT_SIZE),
+                          style: TextStyle(fontSize: kTextSizeLg),
                         ),
                       ),
                       Tab(
                         child: Text(
                           'Danh mục',
-                          style: TextStyle(fontSize: LARGE_TEXT_SIZE),
+                          style: TextStyle(fontSize: kTextSizeLg),
                         ),
                       ),
                     ],
@@ -159,13 +159,13 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen>
                     child: Container(
                       width: 1.0,
                       height: 20.0,
-                      color: GREY_LIGHT_COLOR,
+                      color: kColorLightGrey,
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: DEFAULT_MARGIN),
+            const SizedBox(height: kMarginMd),
             Expanded(
               child: TabBarView(
                 controller: _tabController,
@@ -173,9 +173,9 @@ class _InventoryPageMobileScreenState extends State<InventoryPageMobileScreen>
                   Column(
                     children: [
                       const CategoriesListHorizontalScreen(),
-                      const SizedBox(height: DEFAULT_MARGIN),
+                      const SizedBox(height: kMarginMd),
                       Expanded(
-                        child: ProductsListScreen(
+                        child: ProductListScreen(
                           isGridView: isGridView,
                           isOrderPage: false,
                           isFloating: true,

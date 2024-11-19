@@ -57,6 +57,10 @@ dependencies:
   carousel_slider: ^5.0.0
   path_drawing: ^1.0.1
   toastification: ^2.3.0
+  lottie: ^3.1.3
+  font_awesome_flutter: ^10.8.0
+  vertical_scrollable_tabview: ^0.1.1
+  buttons_tabbar: ^1.3.14
 
 dev_dependencies:
   flutter_test:
@@ -83,6 +87,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - assets/images/
+     - assets/animations/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -100,15 +105,17 @@ flutter:
      - family: Quicksand
        fonts:
          - asset: assets/fonts/Quicksand-Light.ttf
-           weight: 100
          - asset: assets/fonts/Quicksand-Regular.ttf
-           weight: 300
          - asset: assets/fonts/Quicksand-Medium.ttf
-           weight: 500
          - asset: assets/fonts/Quicksand-SemiBold.ttf
-           weight: 700
          - asset: assets/fonts/Quicksand-Bold.ttf
-           weight: 900
+     - family: NotoSans
+       fonts:
+         - asset: assets/fonts/NotoSans-Light.ttf
+         - asset: assets/fonts/NotoSans-Regular.ttf
+         - asset: assets/fonts/NotoSans-Medium.ttf
+         - asset: assets/fonts/NotoSans-SemiBold.ttf
+         - asset: assets/fonts/NotoSans-Bold.ttf
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

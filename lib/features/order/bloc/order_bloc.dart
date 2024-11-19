@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:pos_flutter_app/features/order/data/order_firebase.dart';
-import 'package:pos_flutter_app/models/customer_model.dart';
+import 'package:pos_flutter_app/features/customer/model/customer_model.dart';
 
-import '../../../models/order_model.dart';
-import '../../../models/product_model.dart';
+import '../model/order_model.dart';
+import '../../product/model/product_model.dart';
 
 part 'order_event.dart';
 

@@ -3,8 +3,8 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:pos_flutter_app/features/category/bloc/category_bloc.dart';
 import 'package:pos_flutter_app/features/product/data/product_firebase.dart';
-import 'package:pos_flutter_app/models/category_model.dart';
-import '../../../models/product_model.dart';
+import 'package:pos_flutter_app/features/category/model/category_model.dart';
+import '../model/product_model.dart';
 
 part 'product_event.dart';
 

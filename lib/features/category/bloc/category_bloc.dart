@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:pos_flutter_app/features/category/data/category_firebase.dart';
-import '../../../models/category_model.dart';
+import '../model/category_model.dart';
 import '../../product/bloc/product_bloc.dart';
 
 part 'category_event.dart';

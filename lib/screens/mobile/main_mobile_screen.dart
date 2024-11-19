@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:pos_flutter_app/screens/mobile/pages/activity_page/activity_page_mobile_screen.dart';
-import 'package:pos_flutter_app/screens/mobile/pages/customer_page/customer_page_mobile_screen.dart';
-import 'package:pos_flutter_app/screens/mobile/pages/inventory_page/inventory_page_mobile_screen.dart';
-import 'package:pos_flutter_app/screens/mobile/pages/order_page/order_page_mobile_screen.dart';
-import 'package:pos_flutter_app/utils/ui_util/app_text_style.dart';
+import 'package:pos_flutter_app/core/constants/constants.dart';
+import 'package:pos_flutter_app/core/widgets/common_widgets/custom_button.dart';
+import 'package:pos_flutter_app/features/menu/screen/menu_screen.dart';
+import 'package:pos_flutter_app/features/store/model/store_model.dart';
+import 'package:pos_flutter_app/core/utils/app_text_style.dart';
+import '../../core/widgets/common_widgets/custom_app_bar.dart';
+import '../../core/widgets/normal_widgets/image_slider.dart';
+import '../../features/search/screen/search_screen.dart';
 import '../../features/store/bloc/store_bloc.dart';
-import '../../routes/page_routes.dart';
-import '../../utils/constants/constants.dart';
-import '../../widgets/common_widgets/menu_mobile.dart';
-import '../../widgets/normal_widgets/image_slider.dart';
-import '../services/search/search_screen.dart';
 
 class MainMobileScreen extends StatefulWidget {
   static const route = 'MainMobileScreen';
@@ -41,132 +40,93 @@ class MainMobileScreenState extends State<MainMobileScreen> {
   Widget build(BuildContext context) {
     final store = context.read<StoreBloc>().selectedStore;
     return Scaffold(
-      backgroundColor: BACKGROUND_COLOR,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: DEFAULT_PADDING),
-          color: PRIMARY_COLOR,
-          child: SafeArea(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+      backgroundColor: kColorBackground,
+      appBar: _buildAppBar(store),
+      body: _buildBody(),
+    );
+  }
+
+  CustomAppBar _buildAppBar(StoreModel? store) {
+    return CustomAppBar(
+      isTitleCenter: true,
+      leading: ClipOval(
+        child: Image.asset(
+          'assets/images/store.jpg',
+          fit: BoxFit.cover,
+          width: 40,
+          height: 40,
+        ),
+      ),
+      title: store?.name,
+      titleStyle: AppTextStyle.semibold(kTextSizeLg),
+      subtitle: 'Chủ cửa hàng',
+      subtitleStyle: AppTextStyle.medium(kTextSizeSm),
+      actions: [
+        InkWell(
+          onTap: () {
+            // Navigate to menu screen
+          },
+          child: FaIcon(FontAwesomeIcons.search),
+        ),
+        InkWell(
+          onTap: () {
+            // Navigate to menu screen
+          },
+          child: FaIcon(FontAwesomeIcons.ellipsis),
+        ),
+      ],
+    );
+  }
+
+  SafeArea _buildBody() {
+    return SafeArea(
+      child: Stack(
+        children: [
+          // Positioned(
+          //   top: 0,
+          //   left: 0,
+          //   right: 0,
+          //   child: ClipPath(
+          //     clipper: BottomCurveClipper(),
+          //     child: Container(
+          //       height: 120,
+          //       color: kColorPrimary,
+          //     ),
+          //   ),
+          // ),
+          RefreshIndicator(
+            onRefresh: _refreshPage,
+            child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
               children: [
+                const MiniDashBoard(),
+                const SizedBox(
+                  height: kMarginMd,
+                ),
                 Padding(
-                  padding: const EdgeInsets.all(DEFAULT_PADDING),
-                  child: ClipOval(
-                    child: Image.asset(
-                      'assets/images/store.png',
-                      fit: BoxFit.cover,
-                    ),
+                  padding: const EdgeInsets.symmetric(horizontal: kPaddingMd),
+                  child: Text(
+                    'Chức năng',
+                    style: AppTextStyle.semibold(kTextSizeLg),
                   ),
                 ),
-                const SizedBox(width: SMALL_MARGIN),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      store!.name,
-                      style:
-                          AppTextStyle.semibold(LARGE_TEXT_SIZE, WHITE_COLOR),
-                    ),
-                    Text(
-                      'Thông tin cửa hàng >',
-                      style: AppTextStyle.medium(MEDIUM_TEXT_SIZE, WHITE_COLOR),
-                    ),
+                const MenuScreen(
+                  allowedTitles: [
+                    'Bán hàng',
+                    'Sản phẩm',
+                    'Đơn hàng',
+                    'Khách hàng'
                   ],
                 ),
-                const Spacer(),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, SearchScreen.route);
-                  },
-                  child: const Icon(Icons.search_rounded, color: WHITE_COLOR),
-                ),
-                const SizedBox(width: DEFAULT_MARGIN),
-                InkWell(
-                  onTap: () {},
-                  child: const Icon(Iconsax.message_notif_copy,
-                      color: WHITE_COLOR),
-                ),
+                SizedBox(height: kMarginMd),
+                ImageSlider(),
+                SizedBox(height: kMarginMd),
+                ContactBox(),
+                SizedBox(height: kMarginMd),
               ],
             ),
           ),
-        ),
-      ),
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: ClipPath(
-                clipper: BottomCurveClipper(),
-                child: Container(
-                  height: 120,
-                  color: PRIMARY_COLOR,
-                ),
-              ),
-            ),
-            RefreshIndicator(
-              onRefresh: _refreshPage,
-              child: ListView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                children: [
-                  const MiniDashBoard(),
-                  MenuMobile(
-                    onItemSelected: (route) {
-                      switch (route) {
-                        case PageRoutes.activityPageMobile:
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const ActivityPageMobileScreen(),
-                            ),
-                          );
-                          break;
-                        case PageRoutes.inventoryPageMobile:
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const InventoryPageMobileScreen(),
-                            ),
-                          );
-                          break;
-                        case PageRoutes.orderPageMobile:
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const OrderPageMobileScreen(),
-                            ),
-                          );
-                          break;
-                        case PageRoutes.customerPageMobile:
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const CustomerPageMobileScreen(),
-                            ),
-                          );
-                          break;
-                      }
-                    },
-                  ),
-                  const SizedBox(height: DEFAULT_MARGIN),
-                  const ImageSlider(),
-                  const SizedBox(height: DEFAULT_MARGIN),
-                  const ContactBox(),
-                  const SizedBox(height: MEDIUM_MARGIN),
-                ],
-              ),
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -180,12 +140,12 @@ class ContactBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 160,
       width: double.infinity,
-      padding: const EdgeInsets.all(DEFAULT_MARGIN),
+      padding: const EdgeInsets.all(kMarginMd),
+      margin: const EdgeInsets.symmetric(horizontal: kMarginMd),
       decoration: BoxDecoration(
-        color: WHITE_COLOR,
-        borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
+        color: kColorWhite,
+        borderRadius: BorderRadius.circular(kBorderRadiusMd),
       ),
       child: Column(
         children: [
@@ -201,7 +161,7 @@ class ContactBox extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: SMALL_MARGIN),
+              const SizedBox(width: kMarginMd),
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -209,107 +169,68 @@ class ContactBox extends StatelessWidget {
                   children: [
                     Text(
                       'Bạn cần hỗ trợ?',
-                      style: AppTextStyle.semibold(LARGE_TEXT_SIZE),
+                      style: AppTextStyle.semibold(kTextSizeMd),
                     ),
                     Text(
-                      'Hướng dẫn, giải đáp thắc mắc hoặc báo cáo sự cố',
-                      style: AppTextStyle.medium(SMALL_TEXT_SIZE),
+                      'Hướng dẫn, giải đáp thắc mắc khách hàng',
+                      style: AppTextStyle.medium(kTextSizeSm),
                     ),
                   ],
                 ),
               ),
             ],
           ),
-          const Spacer(),
+          const SizedBox(
+            height: kMarginMd,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             // Align evenly
             children: [
               Flexible(
                 flex: 1,
-                child: OutlinedButton.icon(
+                child: CustomButton(
+                  text: 'Chat ngay',
                   onPressed: () {},
-                  icon: Icon(Icons.chat, color: Colors.blue),
-                  label: Text(
-                    'Chat ngay',
-                    style: AppTextStyle.medium(PLUS_SMALL_TEXT_SIZE),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Colors.blue),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(DEFAULT_BORDER_RADIUS),
-                    ),
-                  ),
+                  isOutlineButton: true,
+                  icon: FontAwesomeIcons.solidMessage,
+                  textStyle: AppTextStyle.medium(kTextSizeXs, kColorPrimary),
+                  height: 40,
                 ),
               ),
+              const SizedBox(width: kMarginSm),
               Flexible(
                 flex: 1,
-                child: OutlinedButton.icon(
+                child: CustomButton(
+                  text: 'Messenger',
                   onPressed: () {},
-                  icon: const Icon(
-                    Icons.message,
-                    color: Colors.blue,
-                  ),
-                  label: Text(
-                    'Messenger',
-                    style: AppTextStyle.medium(PLUS_SMALL_TEXT_SIZE),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(
-                      color: Colors.blue,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(DEFAULT_BORDER_RADIUS),
-                    ),
-                  ),
+                  isOutlineButton: true,
+                  icon: FontAwesomeIcons.facebookMessenger,
+                  textStyle: AppTextStyle.medium(kTextSizeXs, kColorPrimary),
+                  height: 40,
                 ),
               ),
+              const SizedBox(width: kMarginSm),
               Flexible(
                 flex: 1,
-                child: OutlinedButton.icon(
+                child: CustomButton(
+                  text: 'ZaloOA',
                   onPressed: () {},
-                  icon: Icon(Icons.phone, color: Colors.blue),
-                  label: Text(
-                    'ZaloOA',
-                    style: AppTextStyle.medium(PLUS_SMALL_TEXT_SIZE),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Colors.blue),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(DEFAULT_BORDER_RADIUS),
-                    ),
-                  ),
+                  isOutlineButton: true,
+                  icon: FontAwesomeIcons.phoneFlip,
+                  textStyle: AppTextStyle.medium(kTextSizeXs, kColorPrimary),
+                  height: 40,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: SMALL_MARGIN),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(
-                horizontal: DEFAULT_PADDING, vertical: SMALL_PADDING),
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            alignment: Alignment.center,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.phone,
-                  color: Colors.white,
-                ),
-                SizedBox(width: 8),
-                Text(
-                  'Miễn phí tư vấn cửa hàng mẫu',
-                  style: AppTextStyle.medium(MEDIUM_TEXT_SIZE, WHITE_COLOR),
-                ),
-              ],
-            ),
+          const SizedBox(height: kMarginMd),
+          CustomButton(
+            text: 'Miễn phí tư vấn cửa hàng mẫu',
+            height: 40,
+            textStyle: AppTextStyle.medium(kTextSizeSm, kColorWhite),
+            icon: FontAwesomeIcons.phone,
+            onPressed: () {},
           ),
         ],
       ),
@@ -324,155 +245,164 @@ class MiniDashBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 110,
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: DEFAULT_MARGIN),
-      decoration: BoxDecoration(
-        color: WHITE_COLOR,
-        borderRadius: BorderRadius.circular(DEFAULT_BORDER_RADIUS),
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(DEFAULT_PADDING),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Hôm nay',
-                  style: AppTextStyle.semibold(MEDIUM_TEXT_SIZE, GREY_COLOR),
-                ),
-                const SizedBox(
-                  width: SMALL_MARGIN,
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: const Icon(
-                    Icons.visibility_outlined,
-                    color: GREY_COLOR,
-                    size: LARGE_TEXT_SIZE,
+    return const Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(kPaddingMd),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: _miniDashBoardItem(
+                      backgroundColor: Color(0xFFFFDFE2),
+                      backgroundIconColor: Color(0xFFE32A3A),
+                      title: 'Doanh thu',
+                      iconData: Iconsax.chart_21_copy,
+                      iconColor: kColorWhite,
+                    ),
                   ),
-                ),
-                const Spacer(),
-                const Icon(
-                  Iconsax.chart_21_copy,
-                  color: PRIMARY_COLOR,
-                  size: LARGE_TEXT_SIZE,
-                ),
-                const SizedBox(
-                  width: SMALL_MARGIN,
-                ),
-                Text(
-                  'Xem lãi lỗ >',
-                  style: AppTextStyle.medium(MEDIUM_TEXT_SIZE, PRIMARY_COLOR),
-                ),
-              ],
-            ),
+                  SizedBox(width: kMarginMd),
+                  Expanded(
+                    child: _miniDashBoardItem(
+                      backgroundColor: Color(0xFFDFF8FF),
+                      backgroundIconColor: Color(0xFF0587FF),
+                      title: 'Đơn hàng chờ',
+                      iconData: Iconsax.document_normal_copy,
+                      iconColor: kColorWhite,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: kMarginMd,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: _miniDashBoardItem(
+                      backgroundColor: Color(0xFFFAF3D6),
+                      backgroundIconColor: Color(0xFFE15705),
+                      title: 'Đơn hàng',
+                      iconData: Iconsax.document_normal_copy,
+                      iconColor: kColorWhite,
+                    ),
+                  ),
+                  SizedBox(width: kMarginMd),
+                  Expanded(
+                    child: _miniDashBoardItem(
+                      backgroundColor: Color(0xFFECFBD0),
+                      backgroundIconColor: Color(0xFF196F40),
+                      title: 'Lợi nhuận',
+                      iconData: Iconsax.money_4_copy,
+                      iconColor: kColorWhite,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-          const Spacer(),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(
-                  width: DEFAULT_MARGIN,
-                ),
-                const _miniDashBoardItem(
-                  title: 'Doanh thu',
-                  iconData: Iconsax.chart_21,
-                  iconColor: ORANGE_COLOR,
-                ),
-                const SizedBox(
-                  width: SUPER_LARGE_MARGIN,
-                ),
-                Container(
-                  width: 1,
-                  height: 30,
-                  color: GREY_LIGHT_COLOR,
-                ),
-                const SizedBox(
-                  width: SUPER_LARGE_MARGIN,
-                ),
-                const _miniDashBoardItem(
-                  title: 'Đơn hàng',
-                  iconData: Iconsax.document_normal,
-                  iconColor: PRIMARY_COLOR,
-                ),
-                const SizedBox(
-                  width: SUPER_LARGE_MARGIN,
-                ),
-                Container(
-                  width: 1,
-                  height: 30,
-                  color: GREY_LIGHT_COLOR,
-                ),
-                const SizedBox(
-                  width: SUPER_LARGE_MARGIN,
-                ),
-                const _miniDashBoardItem(
-                  title: 'Lợi nhuận',
-                  iconData: Iconsax.money_4,
-                  iconColor: GREEN_COLOR,
-                ),
-                const SizedBox(
-                  width: DEFAULT_MARGIN,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: DEFAULT_MARGIN,
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
 
-class _miniDashBoardItem extends StatelessWidget {
+class _miniDashBoardItem extends StatefulWidget {
   final IconData iconData;
   final String title;
   final Color iconColor;
+  final Color backgroundIconColor;
+  final Color backgroundColor;
 
   const _miniDashBoardItem({
     super.key,
     required this.iconData,
     required this.title,
     required this.iconColor,
+    required this.backgroundIconColor,
+    required this.backgroundColor,
   });
 
   @override
+  _miniDashBoardItemState createState() => _miniDashBoardItemState();
+}
+
+class _miniDashBoardItemState extends State<_miniDashBoardItem> {
+  double _scale = 1.0;
+
+  void _onTapDown(TapDownDetails details) {
+    setState(() {
+      _scale = 0.95;
+    });
+  }
+
+  void _onTapUp(TapUpDetails details) {
+    setState(() {
+      _scale = 1.0;
+    });
+  }
+
+  void _onTapCancel() {
+    setState(() {
+      _scale = 1.0;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Icon(
-              iconData,
-              color: iconColor,
-              size: LARGE_TEXT_SIZE,
+    return GestureDetector(
+      onTapDown: _onTapDown,
+      onTapUp: _onTapUp,
+      onTapCancel: _onTapCancel,
+      child: AnimatedScale(
+        scale: _scale,
+        duration: const Duration(milliseconds: 150),
+        curve: Curves.easeInOut,
+        child: Container(
+          decoration: BoxDecoration(
+            color: widget.backgroundColor,
+            borderRadius: BorderRadius.circular(kBorderRadiusLg),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(kPaddingLg),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(kPaddingSm),
+                  decoration: BoxDecoration(
+                    color: widget.backgroundIconColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    widget.iconData,
+                    color: widget.iconColor,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(
+                  height: kMarginSm,
+                ),
+                Text(
+                  widget.title,
+                  style: AppTextStyle.medium(kTextSizeMd, kColorGrey),
+                ),
+                const SizedBox(
+                  height: kMarginSm,
+                ),
+                Text(
+                  '100',
+                  style: AppTextStyle.bold(kTextSizeXl),
+                ),
+              ],
             ),
-            const SizedBox(
-              width: SMALL_MARGIN,
-            ),
-            Text(
-              title,
-              style: AppTextStyle.semibold(MEDIUM_TEXT_SIZE, GREY_COLOR),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: SMALL_MARGIN,
-        ),
-        Text(
-          '0',
-          style: AppTextStyle.semibold(
-            LARGE_TEXT_SIZE,
           ),
         ),
-      ],
+      ),
     );
   }
 }

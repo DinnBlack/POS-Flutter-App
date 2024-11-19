@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:pos_flutter_app/models/store_model.dart';
+import 'package:pos_flutter_app/features/store/model/store_model.dart';
 
 class StoreFirebase {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;

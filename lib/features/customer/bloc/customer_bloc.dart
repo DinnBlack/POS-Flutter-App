@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:pos_flutter_app/features/customer/data/customer_firebase.dart';
 
-import '../../../models/customer_model.dart';
+import '../model/customer_model.dart';
 
 part 'customer_event.dart';
 

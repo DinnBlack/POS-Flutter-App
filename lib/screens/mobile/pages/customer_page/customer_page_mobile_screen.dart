@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-
-import '../../../../utils/constants/constants.dart';
-import '../../../../utils/ui_util/app_text_style.dart';
-import '../../../../widgets/common_widgets/custom_floating_button.dart';
-import '../../../../widgets/normal_widgets/custom_text_field_search_product.dart';
-import '../../../services/customer/customer_create/customer_create_screen.dart';
-import '../../../services/customer/customers_list/customers_list_screen.dart';
+import 'package:pos_flutter_app/core/constants/constants.dart';
+import 'package:pos_flutter_app/core/widgets/common_widgets/custom_text_field.dart';
+import '../../../../core/utils/app_text_style.dart';
+import '../../../../core/widgets/common_widgets/custom_floating_button.dart';
+import '../../../../features/customer/screen/customer_create/customer_create_screen.dart';
+import '../../../../features/customer/screen/customer_list/customer_list_screen.dart';
 
 class CustomerPageMobileScreen extends StatelessWidget {
   static const route = 'CustomerPageMobileScreen';
@@ -16,11 +15,11 @@ class CustomerPageMobileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: BACKGROUND_COLOR,
+      backgroundColor: kColorBackground,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: Container(
-          padding: const EdgeInsets.all(DEFAULT_PADDING),
+          padding: const EdgeInsets.all(kPaddingMd),
           color: Colors.white,
           child: SafeArea(
             child: Row(
@@ -31,16 +30,16 @@ class CustomerPageMobileScreen extends StatelessWidget {
                   },
                   child: const Icon(
                     Iconsax.arrow_left_2_copy,
-                    color: BLACK_TEXT_COLOR,
+                    color: kColorBlack,
                   ),
                 ),
                 const SizedBox(
-                  width: DEFAULT_MARGIN,
+                  width: kMarginMd,
                 ),
                 Text(
                   'Khách hàng',
                   style: AppTextStyle.medium(
-                    PLUS_LARGE_TEXT_SIZE,
+                    kTextSizeXxl,
                   ),
                 ),
                 const Spacer(),
@@ -48,7 +47,7 @@ class CustomerPageMobileScreen extends StatelessWidget {
                   onTap: () {},
                   child: const Icon(
                     Iconsax.filter_search_copy,
-                    color: BLACK_TEXT_COLOR,
+                    color: kColorBlack,
                   ),
                 ),
               ],
@@ -58,8 +57,8 @@ class CustomerPageMobileScreen extends StatelessWidget {
       ),
       body: const Column(
         children: [
-          CustomTextFieldSearchProduct(),
-          Expanded(child: CustomersListScreen()),
+          CustomTextField(hintText: ''),
+          Expanded(child: CustomerListScreen()),
         ],
       ),
       floatingActionButton: CustomFloatingButton(
@@ -71,17 +70,17 @@ class CustomerPageMobileScreen extends StatelessWidget {
             backgroundColor: Colors.transparent,
             builder: (BuildContext context) {
               return Container(
-                margin: const EdgeInsets.only(top: LARGE_MARGIN),
+                margin: const EdgeInsets.only(top: kMarginLg),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(DEFAULT_BORDER_RADIUS),
+                    top: Radius.circular(kBorderRadiusMd),
                   ),
                 ),
                 child: Padding(
                   padding: EdgeInsets.only(
-                    left: DEFAULT_PADDING,
-                    right: DEFAULT_PADDING,
+                    left: kPaddingMd,
+                    right: kPaddingMd,
                     bottom: MediaQuery.of(context).viewInsets.bottom,
                   ),
                   child: const CustomerCreateScreen(),

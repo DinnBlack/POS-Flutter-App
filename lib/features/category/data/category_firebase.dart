@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../store/bloc/store_bloc.dart';
-import '../../../models/category_model.dart';
-import '../../../models/store_model.dart';
+import '../model/category_model.dart';
+import '../../store/model/store_model.dart';
 
 class CategoryFirebase {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
